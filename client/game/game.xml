@@ -1,0 +1,8 @@
+<server>
+	<script src="states/character/characterState.nut" type="client" />
+	<script src="states/login/loginState.nut" type="client" />
+
+	<import src="states/play/playState.xml" type="client" />
+
+	<script src="gameController.nut" type="client" />
+</server>

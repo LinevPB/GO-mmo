@@ -1,0 +1,8 @@
+<server>
+
+    <script src="interface/chat.nut" type="client" />
+    <script src="interface/interface.nut" type="client" />
+
+    <script src="playState.nut" type="client" />
+
+</server>
