@@ -42,7 +42,7 @@ function onPressButton(id) {
 
         //login menu
         case ui.login.ok_button.id:
-            sendPacket(PacketType.LOGIN, [ui.login.login_textbox.getValue(), ui.login.password_textbox.getValue()]);
+            sendPacket(PacketType.LOGIN, ui.login.login_textbox.getValue(), ui.login.password_textbox.getValue());
             break;
 
         case ui.login.back_button.id:
@@ -51,7 +51,7 @@ function onPressButton(id) {
 
         //register menu
         case ui.register.ok_button.id:
-            sendPacket(PacketType.REGISTER, [ui.register.login_textbox.getValue(), ui.register.password_textbox.getValue(), ui.register.cpassword_textbox.getValue()]);
+            sendPacket(PacketType.REGISTER, ui.register.login_textbox.getValue(), ui.register.password_textbox.getValue(), ui.register.cpassword_textbox.getValue());
             break;
 
         case ui.register.back_button.id:
@@ -73,7 +73,7 @@ function authResult(id)
             break;
 
         case 2:
-            switchWindows(ui.login.main, ui.selection.main);
+            notify("You failed to log in!");
             break;
 
         case 3:
@@ -81,9 +81,27 @@ function authResult(id)
             break;
 
         case 4:
-            switchWindows(ui.register.main, ui.selection.main);
+            notify("Account with that username already exists!");
+            break;
+
+        case 5:
+            notify("Passwords are not the same!");
+            break;
+
+        case 6:
+            notify("Unknown error! Please report it.");
             break;
     }
+}
+
+function debug_func()
+{
+    switchWindows(ui.selection.main, ui.login.main);
+}
+
+function RunDebug()
+{
+    sendPacket(PacketType.LOGIN, "DEBUG_ACCOUNT", "DEBUG_ACCOUNT_PLS_LET_ME_IN");
 }
 
 function initLoginState()

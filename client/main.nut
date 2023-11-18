@@ -3,11 +3,13 @@ local DEBUG = true;
 function onInit()
 {
     initUI();
-    if (DEBUG) {
-        ChangeGameState(GameState.PLAY);
-        return;
-    }
+    initNotifications();
     ChangeGameState(GameState.LOGIN);
+
+    if (DEBUG) {
+        debug_func();
+        setTimer(RunDebug, 500, 1);
+    }
 }
 
 addEventHandler("onInit", onInit);

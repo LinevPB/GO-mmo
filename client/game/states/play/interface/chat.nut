@@ -1,22 +1,31 @@
+Chat <- {
+    Lines = [],
+    MaxLines = 12,
+    LineSpace = 50,
+    Visible = false
+};
+
 local Span = 25;
 local ifY = Span;
 local drawHeight = 0;
+local totalSpace = 0;
 
 class ChatLineDraw
 {
     draw = null;
-    text = null;
     position = null;
     color = null;
+    text = null;
 
-    constructor(x, y, text, r = 255, g = 255, b = 255)
+    constructor(x, y, val, r = 255, g = 255, b = 255)
     {
-        draw = Draw(x, y, text);
-        draw.setColor(r, g, b);
-        draw.visible = false;
+        draw = Draw(x, y, val);
         position = {x = x, y = y};
         color = { r = r, g = g, b = b };
-        this.text = text;
+        text = val;
+
+        draw.setColor(r, g, b);
+        draw.visible = false;
     }
 
     function move(x, y) {
@@ -40,14 +49,15 @@ class ChatLine
 {
     draws = null;
     position = null;
-    desiredY = 0;
+    desiredY = null;
 
     constructor(y, ...)
     {
         draws = [];
         position = { x = Span, y = y };
-        local lineWidth = position.x;
         desiredY = ifY;
+
+        local lineWidth = position.x;
 
         if (!vargv[0])
             vargv = vargv[1];
@@ -90,39 +100,11 @@ class ChatLine
     }
 }
 
-Chat <- {}
-Chat.Lines <- [];
-Chat.MaxLines <- 12;
-Chat.LineSpace <- 50;
-local chatVisible = false;
-local totalSpace = 0;
-
-function initChat()
-{
-    local temp = Draw(0, 0, "AAAAAAA VVVVV XXXXXX");
-    temp.visible = false;
-    drawHeight = temp.height;
-    totalSpace = drawHeight + Chat.LineSpace;
-
-    for(local i = 0; i < Chat.MaxLines - 1; i++) {
-        local chatLine = ChatLine(ifY, [255, 255, 0, "Player : "], "Hello :) " + i);
-        Chat.Lines.append(chatLine);
-        ifY += totalSpace;
-    }
-}
-
-function enableChat(val)
-{
-    foreach(v in Chat.Lines) {
-        v.enable(val);
-    }
-}
-
-function addChatLine(...)
+local function addChatLine(...)
 {
     local chatLine = ChatLine(Chat.Lines[Chat.Lines.len() - 1].position.y + totalSpace, false, vargv);
     Chat.Lines.append(chatLine);
-    chatLine.enable(chatVisible);
+    chatLine.enable(Chat.Visible);
     chatLine.alpha(0);
 
     foreach(v in Chat.Lines)
@@ -130,92 +112,80 @@ function addChatLine(...)
 }
 
 local lastTime = getTickCount();
-function onRenderChat() {
+local function onRenderChat() {
     local currentTime = getTickCount();
     if (currentTime - lastTime < 20) return;
+    if(!Chat.Visible) return;
+
     lastTime = currentTime;
 
-        foreach(i, v in Chat.Lines) {
-            if (v.position.y == v.desiredY)
-                continue;
+    foreach(i, v in Chat.Lines) {
+        if (v.position.y == v.desiredY)
+            continue;
 
-            v.move(0, -10);
-            if (v.position.y <= v.desiredY) {
-                v.move(0, v.desiredY - v.position.y);
-            }
+        v.move(0, -10);
+        if (v.position.y <= v.desiredY) {
+            v.move(0, v.desiredY - v.position.y);
+        }
 
-            if (v.position.y <= Span) {
-                local calcAlpha = 255 - (Span - (v.position.y)*1.5);
-                v.alpha(calcAlpha);
-                if (calcAlpha <= 0) {
-                    Chat.Lines.remove(i);
-                }
-            }
-            else if (v.position.y + totalSpace >= ifY) {
-                local calcAlpha = ifY - v.position.y;
-                v.alpha(calcAlpha);
-            } else {
-                v.alpha(255);
+        if (v.position.y <= Span) {
+            local calcAlpha = 255 - (Span - (v.position.y)*1.5);
+            v.alpha(calcAlpha);
+            if (calcAlpha <= 0) {
+                Chat.Lines.remove(i);
             }
         }
+        else if (v.position.y + totalSpace >= ifY) {
+            local calcAlpha = ifY - v.position.y;
+            v.alpha(calcAlpha);
+        } else {
+            v.alpha(255);
+        }
+    }
 }
-
-
-
 addEventHandler("onRender", onRenderChat);
 
-function ra() {
-    return rand() % 256;
+Chat.Init <- function()
+{
+    local temp = Draw(0, 0, "AAAAAAA VVVVV XXXXXX");
+    temp.visible = false;
+    drawHeight = temp.height;
+    totalSpace = drawHeight + Chat.LineSpace;
+
+    for(local i = 0; i < Chat.MaxLines - 1; i++) {
+        local chatLine = ChatLine(ifY, " ");
+        Chat.Lines.append(chatLine);
+        ifY += totalSpace;
+    }
 }
 
-function onKey(key)
+Chat.Enable <- function(val)
 {
-    if (key == KEY_X) {
-        chatVisible = !chatVisible;
-        enableChat(chatVisible);
+    Chat.Visible = val;
+    foreach(v in Chat.Lines) {
+        v.enable(val);
     }
+}
 
-    if (key == KEY_T && !chatInputIsOpen()) {
+Chat.EnableInput <- function(val)
+{
+    if (val && !chatInputIsOpen()) {
         chatInputSetPosition(Span, ifY + Span);
         chatInputOpen();
+        return;
     }
 
-    if (key ==  KEY_Z) {
-        addChatLine([ra(), ra(), ra(), "N"],
-        [ra(), ra(), ra(), "e"],
-        [ra(), ra(), ra(), "v"],
-        [ra(), ra(), ra(), "e"],
-        [ra(), ra(), ra(), "r"],
-        [ra(), ra(), ra(), " "],
-        [ra(), ra(), ra(), "g"],
-        [ra(), ra(), ra(), "o"],
-        [ra(), ra(), ra(), "n"],
-        [ra(), ra(), ra(), "n"],
-        [ra(), ra(), ra(), "a"],
-        [ra(), ra(), ra(), " "],
-        [ra(), ra(), ra(), "g"],
-        [ra(), ra(), ra(), "i"],
-        [ra(), ra(), ra(), "v"],
-        [ra(), ra(), ra(), "e"],
-        [ra(), ra(), ra(), " "],
-        [ra(), ra(), ra(), "y"],
-        [ra(), ra(), ra(), "o"],
-        [ra(), ra(), ra(), "u"],
-        [ra(), ra(), ra(), " "],
-        [ra(), ra(), ra(), "u"],
-        [ra(), ra(), ra(), "p"]);
-    }
-
-    if (key == KEY_RETURN && chatInputIsOpen()) {
-        local text = chatInputGetText();
-        addChatLine([25, 255, 50, "Player : "], text);
-        chatInputSend();
+    if (!val && chatInputIsOpen())
         chatInputClose();
-    }
-
-    if (key == KEY_ESCAPE && chatInputIsOpen()) {
-        chatInputClose();
-    }
 }
 
-addEventHandler("onKey", onKey);
+Chat.Send <- function()
+{
+    if (!chatInputIsOpen()) return;
+    local text = chatInputGetText();
+    sendPacket(PacketType.CHAT_MESSAGE, text);
+    chatInputSend();
+    Chat.EnableInput(false);
+}
+
+Chat.Add <- addChatLine;

@@ -1,3 +1,11 @@
+class Player
+{
+    constructor()
+    {
+
+    }
+}
+
 function initPlayState()
 {
     disableControls(false);
@@ -5,5 +13,6 @@ function initPlayState()
     setFreeze(false);
     Camera.movementEnabled = true;
 
-    initChat();
+    Chat.Init();
+    Chat.Enable(true);
 }

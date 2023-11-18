@@ -1,6 +1,7 @@
 enum PacketType {
     LOGIN = 0,
-    REGISTER = 1
+    REGISTER = 1,
+    CHAT_MESSAGE = 2
 }
 
 function encode(args) {
@@ -44,28 +45,37 @@ function decode(encodedString) {
             local varvalue = encodedString.slice(currentIndex, currentIndex + varlength);
             currentIndex += varlength + 1;
 
-            result.append({
-                type = vartype,
-                value = varvalue
-            });
+            switch (vartype) {
+                case "i": varvalue = varvalue.tointeger(); break;
+                case "f": varvalue = varvalue.tofloat(); break;
+                case "b": "true" ? varvalue = true : varvalue = false; break;
+                default: break;
+            }
+
+            result.append(varvalue);
         }
     }
 
     return result;
 }
 
-function sendPacket(packetType, args)
+local function createPacket(packetType, arg)
 {
     local packet = Packet();
     packet.writeInt8(packetType);
-    packet.writeString(encode(args));
+    packet.writeString(encode(arg));
+
+    return packet;
+}
+
+function sendPacket(packetType, ...)
+{
+    local packet = createPacket(packetType, vargv);
     packet.send(RELIABLE_ORDERED);
 }
 
-function sendPlayerPacket(pid, packetType, args)
+function sendPlayerPacket(pid, packetType, ...)
 {
-    local packet = Packet();
-    packet.writeInt8(packetType);
-    packet.writeString(encode(args));
+    local packet = createPacket(packetType, vargv);
     packet.send(pid, RELIABLE_ORDERED);
 }

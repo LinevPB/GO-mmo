@@ -24,7 +24,6 @@ function ResetState()
     Player.gameState = GameState.UNKNOWN;
 }
 
-
 function ChangeGameState(state)
 {
     ResetState();
@@ -52,23 +51,43 @@ function onPacket(packet) {
 
     switch(packetType) {
         case PacketType.LOGIN:
-            if (decoded[0].value == "true") {
+            if (decoded[0] == 1) {
                 authResult(1);
                 ChangeGameState(GameState.PLAY);
-            } else {
-                authResult(2);
-            }
+            } else authResult(2);
             break;
 
         case PacketType.REGISTER:
-            if (decoded[0].value == "true") {
+            if (decoded[0] == 1) {
                 authResult(3);
                 ChangeGameState(GameState.PLAY);
-            } else {
-                authResult(4);
             }
+            else if (decoded[0] == 0) authResult(4);
+            else if (decoded[0] == -1) authResult(5);
+            else authResult(6);
+            break;
+
+        case PacketType.CHAT_MESSAGE:
+            Chat.Add([decoded[0], decoded[1], decoded[2], decoded[3]], decoded[4]);
             break;
     }
 }
 
 addEventHandler("onPacket", onPacket);
+
+function onKey(key)
+{
+    if (key == KEY_T) {
+        Chat.EnableInput(true);
+    }
+
+    if (key == KEY_RETURN ) {
+        Chat.Send();
+    }
+
+    if (key == KEY_ESCAPE) {
+        Chat.EnableInput(false);
+    }
+}
+
+addEventHandler("onKey", onKey);
