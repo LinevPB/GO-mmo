@@ -5,7 +5,8 @@ local element_id = 0;
 enum ElementType {
     WINDOW,
     BUTTON,
-    TEXTBOX
+    TEXTBOX,
+    LABEL
 }
 
 class Element {
@@ -21,19 +22,21 @@ class Element {
     active_color = null;
     letterWidth = null;
 
-    constructor(x, y, width, height, texture, title, hover_texture) {
+    constructor(x, y, width, height, texture, title, hover_texture = "NONE") {
         id = element_id;
         element_id++;
 
         pos = { x = x, y = y };
         size = { width = width, height = height };
 
-        background = {
-            regular = texture,
-            hover = hover_texture,
-            texture = Texture(x, y, width, height, texture)
+        if (texture) {
+            background = {
+                regular = texture,
+                hover = hover_texture,
+                texture = Texture(x, y, width, height, texture)
+            }
+            background.texture.visible = false;
         }
-        background.texture.visible = false;
 
         draw = Draw(x, y, "Ab# sVt uIo PE# ### ### ###");
         letterWidth = draw.width / 27;
@@ -45,6 +48,18 @@ class Element {
 
         regular_color = { r = 255, g = 255, b = 255 };
         active_color = { r = 230, g = 215, b = 207 };
+    }
+
+    function hasParent()
+    {
+        foreach(v in UI_Elements) {
+            if (v.element_type == ElementType.WINDOW) {
+                foreach(k in v.elements) {
+                    if (k.id == id) return v;
+                }
+            }
+        }
+        return false;
     }
 
     function reset() {
@@ -82,16 +97,17 @@ class Element {
     }
 
     function refresh() {
-        background.texture.setPosition(pos.x, pos.y);
+        if (background != null) background.texture.setPosition(pos.x, pos.y);
     }
 
     function setBackground(texture) {
+        if (background == null) return;
         background.texture.file = texture;
     }
 
     function enable(value) {
         if (value == true) {
-            background.texture.visible = true;
+            if (background != null) background.texture.visible = true;
             draw.visible = true;
             enabled = true;
             return;
@@ -99,7 +115,7 @@ class Element {
 
         enabled = false;
         draw.visible = false;
-        background.texture.visible = false;
+        if (background != null) background.texture.visible = false;
     }
 
     function hover() {
@@ -107,7 +123,7 @@ class Element {
     }
 
     function unhover() {
-        setBackground(background.regular);
+        if (background != null) setBackground(background.regular);
     }
 
     function isEnabled() {

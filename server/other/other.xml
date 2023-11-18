@@ -1,0 +1,5 @@
+<server>
+    <script src="algorithms.nut" type="server" />
+	<script src="console.nut" type="server" />
+	<script src="mysql.nut" type="server" />
+</server>

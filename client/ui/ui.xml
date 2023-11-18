@@ -5,6 +5,7 @@
 	<script src="widgets/window.nut" type="client" />
 	<script src="widgets/button.nut" type="client" />
 	<script src="widgets/textbox.nut" type="client" />
+	<script src="widgets/label.nut" type="client" />
 
 	<script src="render/render.nut" type="client" />
 	<script src="render/click.nut" type="client" />

@@ -183,7 +183,7 @@ Chat.Send <- function()
 {
     if (!chatInputIsOpen()) return;
     local text = chatInputGetText();
-    sendPacket(PacketType.CHAT_MESSAGE, text);
+    sendPacket(PacketType.CHAT_MESSAGE, heroId, text);
     chatInputSend();
     Chat.EnableInput(false);
 }

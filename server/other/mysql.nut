@@ -29,8 +29,7 @@ mysql.query <- function(query)
 {
     local result = mysql_query(this.handler, query);
 
-    if (result)
-    {
+    if (result) {
         local row = mysql_fetch_row(result);
         mysql_free_result(result);
         return row;
@@ -43,8 +42,7 @@ mysql.query <- function(query)
 mysql.squery <- function(query)
 {
     if (!this.handler) return false;
-
     local result = mysql_query(this.handler, query);
-    print(result);
+
     return true;
 }

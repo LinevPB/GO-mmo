@@ -1,0 +1,6 @@
+<server>
+    <import src="other/other.xml" />
+	<import src="game/game.xml" />
+
+	<script src="main.nut" type="server" />
+</server>

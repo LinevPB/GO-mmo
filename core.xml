@@ -1,17 +1,12 @@
 <server>
 	<!-- SHARED -->
-	<script src="shared/packet.nut" type="shared" />
+	<import src="shared/shared.xml" />
 
 	<!-- SERVER -->
-	<script src="server/algorithms.nut" type="server" />
-	<script src="server/console.nut" type="server" />
-	<script src="server/mysql.nut" type="server" />
-	<script src="server/main.nut" type="server" />
+	<import src="server/server.xml" />
 
 	<!-- CLIENT -->
-	<import src="client/ui/ui.xml" />
-	<import src="client/game/game.xml" />
-	<script src="client/main.nut" type="client" />
+	<import src="client/client.xml" />
 
 	<!-- MODULES -->
 	<module src="modules/mysql.dll" type="server" />

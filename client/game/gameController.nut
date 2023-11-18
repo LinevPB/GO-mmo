@@ -1,10 +1,3 @@
-enum GameState {
-    UNKNOWN,
-    LOGIN,
-    CHARACTER,
-    PLAY
-}
-
 Player <- {
     id = 0,
     gameState = GameState.UNKNOWN
@@ -44,50 +37,51 @@ function ChangeGameState(state)
     }
 }
 
-function onPacket(packet) {
+local function onPacket(packet) {
     local packetType = packet.readInt8();
-    local data = packet.readString();
-    local decoded = decode(data);
+    local data = decode(packet.readString());
 
     switch(packetType) {
         case PacketType.LOGIN:
-            if (decoded[0] == 1) {
-                authResult(1);
-                ChangeGameState(GameState.PLAY);
-            } else authResult(2);
-            break;
+            switch(data[0]) {
+                case 1:
+                    authResult(1);
+                    ChangeGameState(GameState.PLAY);
+                    break;
+                default: authResult(2); break;
+            }
+        break;
 
         case PacketType.REGISTER:
-            if (decoded[0] == 1) {
-                authResult(3);
-                ChangeGameState(GameState.PLAY);
+            switch(data[0]) {
+                case 1:
+                    authResult(3);
+                    ChangeGameState(GameState.PLAY);
+                    break;
+                case 0: authResult(4); break;
+                case -1: authResult(5); break;
+                case -2: authResult(6); break;
+                default: authResult(7); break;
             }
-            else if (decoded[0] == 0) authResult(4);
-            else if (decoded[0] == -1) authResult(5);
-            else authResult(6);
-            break;
-
-        case PacketType.CHAT_MESSAGE:
-            Chat.Add([decoded[0], decoded[1], decoded[2], decoded[3]], decoded[4]);
-            break;
+        break;
     }
 }
-
 addEventHandler("onPacket", onPacket);
 
-function onKey(key)
+local function onKey(key)
 {
-    if (key == KEY_T) {
-        Chat.EnableInput(true);
-    }
+    if (Player.gameState == GameState.PLAY) {
+        if (key == KEY_T) {
+            Chat.EnableInput(true);
+        }
 
-    if (key == KEY_RETURN ) {
-        Chat.Send();
-    }
+        if (key == KEY_RETURN ) {
+            Chat.Send();
+        }
 
-    if (key == KEY_ESCAPE) {
-        Chat.EnableInput(false);
+        if (key == KEY_ESCAPE) {
+            Chat.EnableInput(false);
+        }
     }
 }
-
 addEventHandler("onKey", onKey);

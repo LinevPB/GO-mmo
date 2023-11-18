@@ -1,0 +1,4 @@
+<server>
+    <script src="packet.nut" type="shared" />
+	<script src="gameState.nut" type="shared" />
+</server>

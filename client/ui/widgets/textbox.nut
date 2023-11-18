@@ -47,7 +47,10 @@ class Textbox extends Element {
 
     function updateValue(slash = "|") {
         if (chatInputIsOpen()) {
-            if (value == chatInputGetText() && slash) return;
+            if (value == chatInputGetText() && slash) {
+                if (value == "") draw.text = slash;
+                return;
+            };
 
             value = chatInputGetText();
             local tempText = hashed ? repeatString("#", value.len()) : value;
@@ -68,11 +71,11 @@ class Textbox extends Element {
     function open() {
         chatInputOpen();
         chatInputSetPosition(8200, 8200);
-        chatInputSetText(value);
+        local temp = value;
+        updateValue();
+        chatInputSetText(temp);
         active = true;
         draw.alpha = 255;
-        if (draw.text == placeholder)
-            draw.text = "";
     }
 
     function close() {

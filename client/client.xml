@@ -1,0 +1,6 @@
+<server>
+    <import src="ui/ui.xml" />
+	<import src="game/game.xml" />
+
+	<script src="main.nut" type="client" />
+</server>

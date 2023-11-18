@@ -18,6 +18,10 @@ function encode(args) {
             case "bool": typeIdentifier = "b"; break;
             default: break;
         }
+        if (typeIdentifier == "s" && valueStr.len() == 0) {
+            valueStr = "e";
+            typeIdentifier = "e";
+        }
 
         result += format("%s%d:%s:", typeIdentifier, valueStr.len(), valueStr);
     }
@@ -49,6 +53,7 @@ function decode(encodedString) {
                 case "i": varvalue = varvalue.tointeger(); break;
                 case "f": varvalue = varvalue.tofloat(); break;
                 case "b": "true" ? varvalue = true : varvalue = false; break;
+                case "e": varvalue = ""; break;
                 default: break;
             }
 

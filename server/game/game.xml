@@ -1,0 +1,8 @@
+<server>
+    <script src="playerStructure.nut" type="server" />
+
+    <script src="states/loginState.nut" type="server" />
+    <script src="states/playState.nut" type="server" />
+
+    <script src="gameController.nut" type="server" />
+</server>

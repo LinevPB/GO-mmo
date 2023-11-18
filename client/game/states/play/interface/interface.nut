@@ -17,7 +17,7 @@ function notify(text)
 {
     if (queue.len() > 0) {
         if (queue[0].Message == text)
-            queue[0].TimeLeft = NotificationTime - 255;
+            return queue[0].TimeLeft = NotificationTime - 255;
     }
 
     queue.append({ TimeLeft = NotificationTime, Message = text});
@@ -45,10 +45,9 @@ local function renderHandler()
                 if(i == queue.len() - 3) queue.remove(i + 1);
             }
         }
-        if (queue[0].TimeLeft > NotificationTime - 255)
-            draw.alpha = NotificationTime - queue[0].TimeLeft;
-        if (queue[0].TimeLeft < 255)
-            draw.alpha = queue[0].TimeLeft;
+        else if (queue[0].TimeLeft > NotificationTime - 255) draw.alpha = NotificationTime - queue[0].TimeLeft;
+        else if (queue[0].TimeLeft < 255) draw.alpha = queue[0].TimeLeft;
+        else if (draw.alpha != 255) draw.alpha = 255;
     }
 }
 addEventHandler("onRender", renderHandler);
