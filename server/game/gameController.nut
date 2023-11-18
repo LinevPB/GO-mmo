@@ -73,6 +73,7 @@ local function onPacket(pid, packet)
 {
     local packetType = packet.readInt8();
     local data = decode(packet.readString());
+
     switch(packetType) {
         case PacketType.LOGIN:
             loginHandler(pid, data);
