@@ -1,7 +1,10 @@
 enum PacketType {
     LOGIN = 0,
     REGISTER = 1,
-    CHAT_MESSAGE = 2
+    CHAT_MESSAGE = 2,
+    CHARACTERS_QUERY = 3,
+    CHARACTERS_RECEIVE = 4,
+    CHARACTERS_FINISHED = 5
 }
 
 function encode(args) {

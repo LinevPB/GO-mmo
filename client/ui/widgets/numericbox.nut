@@ -1,35 +1,35 @@
-class Textbox extends Element {
-    hashed = null;
+class NumericBox extends Element {
     value = "";
     active = false;
-    placeholder = "";
-    span = 100;
+    span = 0;
+    originalX = 0;
+    originalY = 0;
+    range = 0;
 
-    constructor(x, y, width, height, texture, placeholderTitle = "", hoverTexture = "DLG_CONVERSATION.TGA", hash = false) {
+    constructor(x, y, width, height, texture, scope, hoverTexture = "DLG_CONVERSATION.TGA") {
         if (hoverTexture == null) {
             hoverTexture = "DLG_CONVERSATION.TGA";
         }
 
-        base.constructor(x, y, width, height, texture, placeholderTitle, hoverTexture);
-        elementType = ElementType.TEXTBOX;
+        base.constructor(x, y, width, height, texture, "", hoverTexture);
+        elementType = ElementType.NUMERICBOX;
+        originalX = x;
+        originalY = y;
+        range = scope;
         UI_Elements.append(this);
-        hashed = hash;
-        placeholder = placeholderTitle;
     }
 
     function reset()
     {
         base.reset();
-        hashed = null;
         value = "";
         active = false;
-        placeholder = "";
-        span = 100;
+        span = 0;
     }
 
     function setPosition(x, y) {
         base.setPosition(x, y);
-        draw.setPosition(span + pos.x, pos.y + size.height / 2 - draw.height / 2);
+        draw.setPosition(x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
     }
 
     function enable(val) {
@@ -39,10 +39,16 @@ class Textbox extends Element {
         }
 
         if (val && value == "") {
-            draw.text = placeholder;
+            draw.text = range;
         }
 
-        draw.alpha = (draw.text == placeholder) ? 150 : 255;
+        draw.alpha = (draw.text == "") ? 150 : 255;
+        setPosition(pos.x, pos.y);
+    }
+
+    function updateRaw(text)
+    {
+        draw.text = text;
     }
 
     function updateValue(slash = "|") {
@@ -53,7 +59,7 @@ class Textbox extends Element {
             };
 
             value = chatInputGetText();
-            local tempText = hashed ? repeatString("#", value.len()) : value;
+            local tempText = value;
 
             if (slash) {
                 tempText += slash;
@@ -92,8 +98,12 @@ class Textbox extends Element {
         return value;
     }
 
+    function hover() {
+
+    }
+
     function unhover() {
-        if (!active)
-            base.unhover();
+        //if (!active)
+            //base.unhover();
     }
 }

@@ -1,4 +1,4 @@
-local DEBUG = false;
+local DEBUG = true;
 
 function onInit()
 {
@@ -11,5 +11,4 @@ function onInit()
         setTimer(RunDebug, 500, 1);
     }
 }
-
 addEventHandler("onInit", onInit);

@@ -1,10 +1,9 @@
 function logIn(username, password)
 {
     if (username == "" || password == "") return false;
-    local result = mysql.query("SELECT password FROM players WHERE username='" + username + "'");
-
+    local result = mysql.gquery("SELECT password, id FROM players WHERE username='" + username + "'");
     if(!result) return false;
-    if (result[0] == md5Hash(password)) return true;
+    if (result[0][0] == md5Hash(password)) return result[0][1].tointeger();
 
     return false;
 }
@@ -14,7 +13,7 @@ function signUp(username, password, cpassword)
     if (username == "" || password == "" || cpassword == "") return -2;
     if (password != cpassword) return -1;
 
-    local result = mysql.query("SELECT id FROM players WHERE username='" + username + "'");
+    local result = mysql.gquery("SELECT id FROM players WHERE username='" + username + "'");
     if (result) return 0;
     result = 0;
 
@@ -24,20 +23,21 @@ function signUp(username, password, cpassword)
         username + "', '" +
         hashedPass + "');"
     );
-
-    if (result && logIn(username, password)) return 1;
+    local login = logIn(username, password);
+    if (result && login) return login;
 
     return -3;
 }
 
-function loginSuccessful(pid, nickname, msg)
+function loginSuccessful(pid, nickname, msg, id)
 {
     local newPlayer = PlayerStructure(pid);
     newPlayer.setNickname(nickname);
     newPlayer.setStatus(true);
+    newPlayer.dbId = id;
     addPlayer(newPlayer);
-
     console.log(msg);
+
     sendPlayerPacket(pid, PacketType.LOGIN, 1);
 }
 
@@ -52,9 +52,10 @@ function registerSuccessful(pid, nickname, msg)
     local newPlayer = PlayerStructure(pid);
     newPlayer.setNickname(nickname);
     newPlayer.setStatus(true);
+    newPlayer.dbId = id;
     addPlayer(newPlayer);
-
     console.log(msg);
+
     sendPlayerPacket(pid, PacketType.REGISTER, 1);
 }
 

@@ -3,16 +3,21 @@ function onClick(button) {
         local cursor = getCursorPosition();
 
         foreach (el in UI_Elements) {
-            if (el.element_type == ElementType.TEXTBOX && el.active) {
+            if (el.elementType == ElementType.TEXTBOX && el.active) {
                 el.close();
+                continue;
             }
+
             if (inSquare(cursor, el.pos, el.size) && el.isEnabled()) {
-                el.left_clicked = true;
+                if (el.elementType == ElementType.SLIDER_MASK) {
+                    el.offsetX = cursor.x - el.maskX;
+                    el.lastX = el.maskX;
+                }
+                el.leftClicked = true;
             }
         }
     }
 }
-
 addEventHandler("onMouseClick", onClick)
 
 function onRelease(button) {
@@ -20,8 +25,8 @@ function onRelease(button) {
         local cursor = getCursorPosition();
 
         foreach (el in UI_Elements) {
-            if (el.left_clicked) {
-                el.left_clicked = false;
+            if (el.leftClicked) {
+                el.leftClicked = false;
 
                 if (inSquare(cursor, el.pos, el.size) && el.isEnabled()) {
                     handleElementClick(el);
@@ -30,11 +35,10 @@ function onRelease(button) {
         }
     }
 }
-
 addEventHandler("onMouseRelease", onRelease);
 
 function handleElementClick(el) {
-    switch (el.element_type) {
+    switch (el.elementType) {
         case ElementType.BUTTON:
             onPressButton(el.id);
             break;
@@ -42,6 +46,15 @@ function handleElementClick(el) {
         case ElementType.TEXTBOX:
             el.open();
             onPressTextbox(el.id);
+            break;
+
+        case ElementType.LIST_ELEMENT:
+            el.parent.select(el.id);
+            onPressListElement(el);
+            break;
+
+        case ElementType.SLIDER_MASK:
+            //onSlide(el);
             break;
     }
 }

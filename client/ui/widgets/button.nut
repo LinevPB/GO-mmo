@@ -1,7 +1,7 @@
 class Button extends Element {
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
-        element_type = ElementType.BUTTON;
+        elementType = ElementType.BUTTON;
         UI_Elements.append(this);
     }
 
@@ -13,6 +13,18 @@ class Button extends Element {
     function reset()
     {
         base.reset();
-        element_type = null;
+        elementType = null;
+    }
+
+    function hover()
+    {
+        base.hover();
+        draw.setColor(hoverColor.r, hoverColor.g, hoverColor.b);
+    }
+
+    function unhover()
+    {
+        base.unhover();
+        draw.setColor(regularColor.r, regularColor.g, regularColor.b);
     }
 }

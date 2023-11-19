@@ -3,6 +3,7 @@ local players = [];
 class PlayerStructure
 {
     id = null;
+    dbId = null;
     logged = null;
     nickname = null;
     gameState = null;
@@ -13,6 +14,7 @@ class PlayerStructure
         id = playerid;
         logged = false;
         nickname = "";
+        dbId = null;
     }
 
     function setNickname(nick)

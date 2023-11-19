@@ -3,7 +3,8 @@ mysql <- {
     init = null,
     query = null,
     close = null,
-    squery = null
+    squery = null,
+    gquery = null
 };
 
 mysql.init <- function()
@@ -32,12 +33,51 @@ mysql.query <- function(query)
     if (result) {
         local row = mysql_fetch_row(result);
         mysql_free_result(result);
-        return row;
+        return result;
     }
 
     console.error(mysql_errno(this.handler) + " : " + mysql_error(handler));
     return false;
 }
+
+mysql.gquery <- function(query)
+{
+    local result = mysql_query(this.handler, query);
+
+    if (!result) {
+        console.error(mysql_errno(this.handler) + " : " + mysql_error(handler));
+        return false;
+    }
+
+    local tbl = [];
+
+    local row = mysql_fetch_row(result);
+    do {
+        tbl.append(row);
+        row = mysql_fetch_row(result);
+    } while(row);
+
+    mysql_free_result(result);
+
+    return tbl;
+}
+
+// mysql.gquery <- function(query)
+// {
+//     local result = mysql_query(this.handler, query);
+
+//     if (result) {
+//         local temp = [];
+//         foreach(v in result)
+//             temp.append(v);
+
+//         mysql_free_result(result);
+//         return result;
+//     }
+
+//     console.error(mysql_errno(this.handler) + " : " + mysql_error(handler));
+//     return false;
+// }
 
 mysql.squery <- function(query)
 {

@@ -24,7 +24,7 @@ local ui = {
     }
 };
 
-function onPressButton(id) {
+function loginButtonHandler(id) {
     switch(id) {
         //main menu
         case ui.selection.login_button.id:
@@ -58,11 +58,6 @@ function onPressButton(id) {
             break;
     }
 }
-
-function onPressTextbox(id)
-{
-}
-
 
 function authResult(id)
 {
@@ -228,4 +223,6 @@ function deinitLoginState()
         login = { main = null, login_textbox = null, password_textbox = null, ok_button = null, back_button = null },
         register = { main = null, login_textbox = null, password_textbox = null, cpassword_textbox = null, ok_button = null, back_button = null }
     };
+
+    //Event.Destroy("onPressButton");
 }

@@ -3,7 +3,7 @@ class Window extends Element {
 
     constructor(x, y, width, height, texture = "DLG_CONVERSATION.TGA", title = "", hover_texture = "NONE") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
-        element_type = ElementType.WINDOW;
+        elementType = ElementType.WINDOW;
         elements = [];
         UI_Elements.append(this);
     }
@@ -27,6 +27,22 @@ class Window extends Element {
         base.reset();
         foreach(el in elements) {
             destroy(el);
+        }
+    }
+
+    function setColorForAllButtons(r,g,b)
+    {
+        foreach(v in elements) {
+            if (v.elementType == ElementType.BUTTON)
+                v.setColor(r, g, b);
+        }
+    }
+
+    function setHoverColorForAllButtons(r,g,b)
+    {
+        foreach(v in elements) {
+            if (v.elementType == ElementType.BUTTON)
+                v.setHoverColor(r, g, b);
         }
     }
 }

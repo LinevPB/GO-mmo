@@ -1,7 +1,7 @@
 class Label extends Element {
     constructor(x, y, text) {
         base.constructor(x, y, 0, 0, false, text);
-        element_type = ElementType.LABEL;
+        elementType = ElementType.LABEL;
         UI_Elements.append(this);
     }
 
@@ -29,7 +29,7 @@ class Label extends Element {
     function reset()
     {
         base.reset();
-        element_type = null;
+        elementType = null;
     }
 
     function center()

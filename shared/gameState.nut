@@ -1,6 +1,7 @@
 enum GameState {
     UNKNOWN,
     LOGIN,
-    CHARACTER,
+    CHARACTER_SELECTION,
+    CHARACTER_CREATION,
     PLAY
-}
+};

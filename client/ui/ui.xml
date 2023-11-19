@@ -3,9 +3,12 @@
 
 	<script src="widgets/element.nut" type="client" />
 	<script src="widgets/window.nut" type="client" />
-	<script src="widgets/button.nut" type="client" />
+	<script src="widgets/numericbox.nut" type="client" />
 	<script src="widgets/textbox.nut" type="client" />
+	<script src="widgets/button.nut" type="client" />
+	<script src="widgets/list.nut" type="client" />
 	<script src="widgets/label.nut" type="client" />
+	<script src="widgets/slider.nut" type="client" />
 
 	<script src="render/render.nut" type="client" />
 	<script src="render/click.nut" type="client" />

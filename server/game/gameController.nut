@@ -23,7 +23,7 @@ function loginHandler(pid, data)
     if (!result)
         return loginFailed(pid, "Player " + data[0] + " failed to log in.");
 
-    loginSuccessful(pid, data[0], "Player " + data[0] + " logged in.");
+    loginSuccessful(pid, data[0], "Player " + data[0] + " logged in.", result);
     ChangeGameState(pid, GameState.PLAY);
 }
 
@@ -31,11 +31,6 @@ function registerHandler(pid, data)
 {
     local result = signUp(data[0], data[1], data[2]);
     switch(result) {
-        case 1:
-            registerSuccessful(pid, data[0], "Player " + data[0] + " signed up.");
-            ChangeGameState(pid, GameState.PLAY);
-            break;
-
         case 0:
             registerFailed(pid, 0, "Account " + data[0] + " already exists.");
             break;
@@ -50,6 +45,11 @@ function registerHandler(pid, data)
 
         case -3:
             registerFailed(pid, -3, "Unknow error for " + data[0] + " account.");
+            break;
+
+        default:
+            registerSuccessful(pid, data[0], "Player " + data[0] + " signed up.", result);
+            ChangeGameState(pid, GameState.PLAY);
             break;
     }
 }
@@ -69,6 +69,22 @@ function messageHandler(pid, data)
     console.log(nickname + ": " + message);
 }
 
+function charactersHandler(pid, data)
+{
+    local temp = findPlayer(pid);
+    if (temp.logged) {
+        local result = mysql.gquery("SELECT id, pid, name FROM characters WHERE pid='" + temp.dbId + "'");
+        if (result[0] != null) {
+            foreach(i, v in result) {
+                if (v[1].tointeger() != temp.dbId) continue;
+                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2]);
+            }
+        }
+
+        sendPlayerPacket(pid, PacketType.CHARACTERS_FINISHED, 1);
+    }
+}
+
 local function onPacket(pid, packet)
 {
     local packetType = packet.readInt8();
@@ -85,6 +101,10 @@ local function onPacket(pid, packet)
 
         case PacketType.CHAT_MESSAGE:
             messageHandler(pid, data);
+        break;
+
+        case PacketType.CHARACTERS_QUERY:
+            charactersHandler(pid, data);
         break;
     }
 }

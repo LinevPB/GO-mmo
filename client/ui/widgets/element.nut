@@ -6,7 +6,12 @@ enum ElementType {
     WINDOW,
     BUTTON,
     TEXTBOX,
-    LABEL
+    LABEL,
+    LIST,
+    LIST_ELEMENT,
+    SLIDER,
+    SLIDER_MASK,
+    NUMERICBOX
 }
 
 class Element {
@@ -16,11 +21,13 @@ class Element {
     background = null;
     enabled = null;
     draw = null;
-    left_clicked = null;
-    element_type = null;
-    regular_color = null;
-    active_color = null;
+    leftClicked = null;
+    elementType = null;
+    regularColor = null;
+    hoverColor = null;
     letterWidth = null;
+    disableBackground = false;
+    hovered = false;
 
     constructor(x, y, width, height, texture, title, hover_texture = "NONE") {
         id = element_id;
@@ -44,16 +51,27 @@ class Element {
         draw.visible = false;
 
         enabled = false;
-        left_clicked = false;
+        leftClicked = false;
 
-        regular_color = { r = 255, g = 255, b = 255 };
-        active_color = { r = 230, g = 215, b = 207 };
+        regularColor = { r = 255, g = 255, b = 255 };
+        hoverColor = { r = 230, g = 170, b = 170 };
+        hovered = false;
+    }
+
+    function isHovered()
+    {
+        return hovered;
     }
 
     function hasParent()
     {
         foreach(v in UI_Elements) {
-            if (v.element_type == ElementType.WINDOW) {
+            if (v.elementType == ElementType.LIST) {
+                foreach(k in v.options) {
+                    if (k.id == id) return k;
+                }
+            }
+            if (v.elementType == ElementType.WINDOW) {
                 foreach(k in v.elements) {
                     if (k.id == id) return v;
                 }
@@ -69,20 +87,11 @@ class Element {
         background = null;
         enabled = null;
         draw = null;
-        left_clicked = null;
-        element_type = null;
-        regular_color = null;
-        active_color = null;
+        leftClicked = null;
+        elementType = null;
+        regularColor = null;
+        hoverColor = null;
         letterWidth = null;
-    }
-
-    function activate(val) {
-        if (val == true) {
-            draw.setColor(active_color.r, active_color.g, active_color.b);
-            return;
-        }
-
-        draw.setColor(regular_color.r, regular_color.g, regular_color.b);
     }
 
     function setPosition(x, y) {
@@ -119,15 +128,27 @@ class Element {
     }
 
     function hover() {
-        if (background.hover != "NONE") setBackground(background.hover);
+        hovered = true;
+        if (background.hover != "NONE" && !disableBackground) setBackground(background.hover);
     }
 
     function unhover() {
-        if (background != null) setBackground(background.regular);
+        hovered = false;
+        if (background != null && !disableBackground) setBackground(background.regular);
     }
 
     function isEnabled() {
         return enabled;
+    }
+
+    function setColor(r, g, b)
+    {
+        regularColor = { r = r, g = g, b = b };
+    }
+
+    function setHoverColor(r, g, b)
+    {
+        hoverColor = { r = r, g = g, b = b };
     }
 }
 
