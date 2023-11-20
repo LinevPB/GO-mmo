@@ -125,13 +125,13 @@ function initLoginState()
     temp.center();
     temp = null;
 
-    ui.selection.login_button = Button(wW / 2 - 350, 700, 700, 400, "INV_SLOT_FOCUS.TGA", "Log In", "INV_TITEL.TGA");
+    ui.selection.login_button = Button(wW / 2 - 350, 700, 700, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_MAIN_MENU_LOGIN"][Player.lang], "INV_TITEL.TGA");
     ui.selection.main.attach(ui.selection.login_button);
 
-    ui.selection.register_button = Button(wW / 2 - 350, 1300, 700, 400, "INV_SLOT_FOCUS.TGA", "Sign Up", "INV_TITEL.TGA");
+    ui.selection.register_button = Button(wW / 2 - 350, 1300, 700, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_MAIN_MENU_REGISTER"][Player.lang], "INV_TITEL.TGA");
     ui.selection.main.attach(ui.selection.register_button);
 
-    ui.selection.exit_button = Button(wW / 2 - 350, 1900, 700, 400, "INV_SLOT_FOCUS.TGA", "Quit", "INV_TITEL.TGA");
+    ui.selection.exit_button = Button(wW / 2 - 350, 1900, 700, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_MAIN_MENU_QUIT"][Player.lang], "INV_TITEL.TGA");
     ui.selection.main.attach(ui.selection.exit_button);
 
     ui.selection.main.enable(true);
@@ -149,24 +149,24 @@ function initLoginState()
     temp.center();
     temp = null;
 
-    temp = Label(wW / 2 - 750, 800, "Username");
+    temp = Label(wW / 2 - 750, 800, lang["LABEL_LOGIN_MENU_USERNAME"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.login.main.attach(temp);
     temp = null;
     ui.login.login_textbox = Textbox(wW / 2 - 750, 800, 1500, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", false);
     ui.login.main.attach(ui.login.login_textbox);
 
-    temp = Label(wW / 2 - 750, 1500, "Password");
+    temp = Label(wW / 2 - 750, 1500, lang["LABEL_LOGIN_MENU_PASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.login.main.attach(temp);
     temp = null;
     ui.login.password_textbox = Textbox(wW / 2 - 750, 1500, 1500, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", true);
     ui.login.main.attach(ui.login.password_textbox);
 
-    ui.login.ok_button = Button(wW / 2 - 600, 2100, 500, 300, "INV_SLOT_FOCUS.TGA", "Ok", "INV_TITEL.TGA");
+    ui.login.ok_button = Button(wW / 2 - 600, 2100, 500, 300, "INV_SLOT_FOCUS.TGA", lang["BUTTON_LOGIN_MENU_OK"][Player.lang], "INV_TITEL.TGA");
     ui.login.main.attach(ui.login.ok_button);
 
-    ui.login.back_button = Button(wW / 2 + 100, 2100, 500, 300, "INV_SLOT_FOCUS.TGA", "Back", "INV_TITEL.TGA");
+    ui.login.back_button = Button(wW / 2 + 100, 2100, 500, 300, "INV_SLOT_FOCUS.TGA", lang["BUTTON_LOGIN_MENU_BACK"][Player.lang], "INV_TITEL.TGA");
     ui.login.main.attach(ui.login.back_button);
 
     //////////////////
@@ -182,31 +182,31 @@ function initLoginState()
     temp.center();
     temp = null;
 
-    temp = Label(wW / 2 - 750, 800, "Username");
+    temp = Label(wW / 2 - 750, 800, lang["LABEL_REGISTER_MENU_USERNAME"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
     ui.register.login_textbox = Textbox(wW / 2 - 750, 800, 1500, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", false);
     ui.register.main.attach(ui.register.login_textbox);
 
-    temp = Label(wW / 2 - 750, 1500, "Password");
+    temp = Label(wW / 2 - 750, 1500, lang["LABEL_REGISTER_MENU_PASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
     ui.register.password_textbox = Textbox(wW / 2 - 750, 1500, 1500, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", true);
     ui.register.main.attach(ui.register.password_textbox);
 
-    temp = Label(wW / 2 - 750, 2200, "Confirm password");
+    temp = Label(wW / 2 - 750, 2200, lang["LABEL_REGISTER_MENU_CPASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
     ui.register.cpassword_textbox = Textbox(wW / 2 - 750, 2200, 1500, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", true);
     ui.register.main.attach(ui.register.cpassword_textbox);
 
-    ui.register.ok_button = Button(wW / 2 - 600, 2800, 500, 300, "INV_SLOT_FOCUS.TGA", "Ok", "INV_TITEL.TGA");
+    ui.register.ok_button = Button(wW / 2 - 600, 2800, 500, 300, "INV_SLOT_FOCUS.TGA", lang["BUTTON_REGISTER_MENU_OK"][Player.lang], "INV_TITEL.TGA");
     ui.register.main.attach(ui.register.ok_button);
 
-    ui.register.back_button = Button(wW / 2 + 100, 2800, 500, 300, "INV_SLOT_FOCUS.TGA", "Back", "INV_TITEL.TGA");
+    ui.register.back_button = Button(wW / 2 + 100, 2800, 500, 300, "INV_SLOT_FOCUS.TGA", lang["BUTTON_REGISTER_MENU_BACK"][Player.lang], "INV_TITEL.TGA");
     ui.register.main.attach(ui.register.back_button);
 }
 
@@ -223,6 +223,4 @@ function deinitLoginState()
         login = { main = null, login_textbox = null, password_textbox = null, ok_button = null, back_button = null },
         register = { main = null, login_textbox = null, password_textbox = null, cpassword_textbox = null, ok_button = null, back_button = null }
     };
-
-    //Event.Destroy("onPressButton");
 }

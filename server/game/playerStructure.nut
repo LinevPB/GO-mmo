@@ -7,6 +7,9 @@ class PlayerStructure
     logged = null;
     nickname = null;
     gameState = null;
+    charId = null;
+    charSlot = null;
+    charName = null;
 
     constructor(playerid)
     {
@@ -15,6 +18,9 @@ class PlayerStructure
         logged = false;
         nickname = "";
         dbId = null;
+        charId = null;
+        charSlot = null;
+        charName = null;
     }
 
     function setNickname(nick)

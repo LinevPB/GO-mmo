@@ -8,6 +8,14 @@ function ChangeGameState(pid, state)
         case GameState.PLAY:
             findPlayer(pid).gameState = GameState.PLAY;
             break;
+
+        case GameState.CHARACTER_SELECTION:
+            findPlayer(pid).gameState = GameState.CHARACTER_SELECTION;
+            break;
+
+        case GameState.CHARACTER_CREATION:
+            findPlayer(pid).gameState = GameState.CHARACTER_CREATION;
+            break;
     }
 }
 
@@ -24,7 +32,7 @@ function loginHandler(pid, data)
         return loginFailed(pid, "Player " + data[0] + " failed to log in.");
 
     loginSuccessful(pid, data[0], "Player " + data[0] + " logged in.", result);
-    ChangeGameState(pid, GameState.PLAY);
+    ChangeGameState(pid, GameState.CHARACTER_SELECTION);
 }
 
 function registerHandler(pid, data)
@@ -49,7 +57,7 @@ function registerHandler(pid, data)
 
         default:
             registerSuccessful(pid, data[0], "Player " + data[0] + " signed up.", result);
-            ChangeGameState(pid, GameState.PLAY);
+            ChangeGameState(pid, GameState.CHARACTER_SELECTION);
             break;
     }
 }
@@ -58,7 +66,7 @@ function messageHandler(pid, data)
 {
     local sid = data[0];
     local message = data[1];
-    local nickname = findPlayer(sid).nickname;
+    local nickname = findPlayer(sid).charName;
 
     foreach(player in getPlayers()) {
         if (player.logged) {
@@ -73,16 +81,87 @@ function charactersHandler(pid, data)
 {
     local temp = findPlayer(pid);
     if (temp.logged) {
-        local result = mysql.gquery("SELECT id, pid, name FROM characters WHERE pid='" + temp.dbId + "'");
+        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId FROM characters WHERE pid='" + temp.dbId + "'");
         if (result[0] != null) {
             foreach(i, v in result) {
                 if (v[1].tointeger() != temp.dbId) continue;
-                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2]);
+                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9]);
             }
         }
 
         sendPlayerPacket(pid, PacketType.CHARACTERS_FINISHED, 1);
     }
+}
+
+function selectHandler(pid, data)
+{
+    local charId = data[0];
+    local temp = findPlayer(pid);
+    temp.charId = charId;
+
+    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId FROM characters WHERE id='" + charId + "'");
+    local v = result[0];
+
+    if (v[1] != temp.dbId) return sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, -1);
+
+    setupChar(pid, v[2], v[9]);
+    sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9]);
+}
+
+function createHandler(pid, data)
+{
+    sendPlayerPacket(pid, PacketType.CHARACTERS_CREATE, data[0]);
+}
+
+function setupChar(pid, name, charSlot)
+{
+    local temp = findPlayer(pid);
+    temp.charName = name;
+    temp.charSlot = charSlot;
+}
+
+function creationConfirmHandler(pid, data)
+{
+    local name = data[0];
+    local bodyMod = data[1];
+    local bodyTex = data[2];
+    local headMod = data[3];
+    local headTex = data[4];
+    local dbId = findPlayer(pid).dbId;
+    local slotId = data[5];
+
+    local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`) VALUES (NULL,'" +
+    dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1')");
+    local result1 = mysql.gquery("SELECT id FROM characters WHERE pid='" + dbId + "' AND slotId='" + slotId "'");
+    findPlayer(pid).charId = result1[0];
+
+    sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex);
+
+    setupChar(pid, name, slotId);
+}
+
+function GiveItem(pid, instance, amount)
+{
+    giveItem(pid, Items.id(instance), amount);
+}
+
+function RemoveItem(pid, instance, amount)
+{
+
+}
+
+function LoadItems(pid, heroId)
+{
+    local result = mysql.gquery("SELECT instance, amount FROM items WHERE owner=" + findPlayer(pid).charId);
+    if (result[0] == null) return;
+    foreach(v in result) {
+        GiveItem(pid, v[0], v[1]);
+    }
+}
+
+function SaveItems(pid, heroId)
+{
+
 }
 
 local function onPacket(pid, packet)
@@ -105,6 +184,26 @@ local function onPacket(pid, packet)
 
         case PacketType.CHARACTERS_QUERY:
             charactersHandler(pid, data);
+        break;
+
+        case PacketType.CHARACTERS_SELECT:
+            selectHandler(pid, data);
+        break;
+
+        case PacketType.CHARACTERS_CREATE:
+            createHandler(pid, data);
+        break;
+
+        case PacketType.CHARACTER_CREATION_CONFIRM:
+            creationConfirmHandler(pid, data);
+        break;
+
+        case PacketType.CHARACTER_CREATION_BACK:
+            sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_BACK, 1);
+        break;
+
+        case PacketType.LOAD_ITEMS:
+            LoadItems(pid, data[0]);
         break;
     }
 }

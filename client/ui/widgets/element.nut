@@ -157,6 +157,7 @@ function destroy(el)
     foreach(i, val in UI_Elements) {
         if (el == val) {
             UI_Elements.remove(i);
+            el.enable(false);
             el.reset();
             break;
         }

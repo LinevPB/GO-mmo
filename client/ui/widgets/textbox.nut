@@ -27,6 +27,11 @@ class Textbox extends Element {
         span = 100;
     }
 
+    function getValue()
+    {
+        return value;
+    }
+
     function setPosition(x, y) {
         base.setPosition(x, y);
         draw.setPosition(span + pos.x, pos.y + size.height / 2 - draw.height / 2);

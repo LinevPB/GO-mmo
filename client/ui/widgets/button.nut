@@ -10,6 +10,11 @@ class Button extends Element {
         draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
     }
 
+    function changeText(val) {
+        draw.text = val;
+        setPosition(pos.x, pos.y);
+    }
+
     function reset()
     {
         base.reset();

@@ -25,6 +25,7 @@ class NPC
         id = 0;
         pos = { x = x, y = y, z = z };
         spawned = false;
+
         setPlayerPosition(npc, pos.x, pos.y, pos.z);
     }
 
@@ -50,7 +51,11 @@ class NPC
     }
 }
 
-local dasnpc = NPC("Mark", 0, 0, 0);
+function LoadItems()
+{
+    sendPacket(PacketType.LOAD_ITEMS, Player.charSlot);
+}
+
 function initPlayState()
 {
     disableControls(false);
@@ -60,29 +65,13 @@ function initPlayState()
 
     Chat.Init();
     Chat.Enable(true);
+    Player.music.stop();
 
-    local pos = getPlayerPosition(heroId);
-    dasnpc.setPosition(pos.x, pos.y, pos.z);
-    dasnpc.spawn();
+    LoadItems();
 }
 
 local function onkey(key)
 {
-    if (key == KEY_Z) {
-        dasnpc.spawn();
-    }
 
-    if (key == KEY_X) {
-        dasnpc.unspawn();
-    }
-
-    if (key == KEY_V) {
-        local pos = getPlayerPosition(heroId);
-        dasnpc.setPosition(pos.x, pos.y, pos.z);
-    }
-
-    if (key == KEY_H) {
-        Camera.setTargetPlayer(getPlayerIdByPtr(dasnpc));
-    }
 }
 addEventHandler("onKey", onkey);

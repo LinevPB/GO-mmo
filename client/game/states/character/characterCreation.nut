@@ -20,7 +20,11 @@ function creationButtonHandler(id)
 {
     switch(id) {
         case makeupMenu.quit.id:
-            exitGame();
+            sendPacket(PacketType.CHARACTER_CREATION_BACK, 1);
+            break;
+
+        case makeupMenu.ok.id:
+            sendPacket(PacketType.CHARACTER_CREATION_CONFIRM, makeupMenu.nickTextbox.getValue(), Player.cBodyModel, Player.cBodyTexture, Player.cHeadModel, Player.cHeadTexture, Player.charSlot);
             break;
     }
 }
@@ -42,48 +46,81 @@ function initCharacterCreation()
     local wH = 6000;
     makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "DLG_CONVERSATION.TGA");
 
-    local temp = Label(0, 100, "Creation");
+    local temp = Label(0, 100, lang["LABEL_CREATION_TITLE"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");
     temp.setColor(255, 180, 0);
     makeupMenu.window.attach(temp);
     temp.center();
     temp = null;
 
-    temp = Label(wW / 2 - 850, 800, "Name:");
+    temp = Label(wW / 2 - 850, 800, lang["LABEL_CREATION_NAME"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
     makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", false);
     makeupMenu.window.attach(makeupMenu.nickTextbox);
 
-    temp = Label(wW / 2 - 850, 1500, "Sex:");
+    temp = Label(wW / 2 - 850, 1500, lang["LABEL_CREATION_SEX"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
-    makeupMenu.characterList = List(wW/2, 1500, 1700, 300, "DLG_CONVERSATION.TGA", ["Male", "Female"], 800, 300, 900, 0, "INV_SLOT_FOCUS.TGA", "INV_TITEL.TGA");
+    makeupMenu.characterList = List(wW/2, 1500, 1700, 300, "DLG_CONVERSATION.TGA", [lang["LABEL_CREATION_MALE"][Player.lang], lang["LABEL_CREATION_FEMALE"][Player.lang]], 800, 300, 900, 0, "INV_SLOT_FOCUS.TGA", "INV_TITEL.TGA");
     makeupMenu.window.attach(makeupMenu.characterList);
     makeupMenu.characterList.center();
     makeupMenu.characterList.selectFirstAsDefault();
 
-    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "INV_TITEL.TGA", 12, "Body texture: ", "MENU_MASKE.TGA");
+    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "INV_TITEL.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_MASKE.TGA");
     makeupMenu.window.attach(makeupMenu.bodySlider);
-    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "INV_TITEL.TGA", 6, "Head model: ", "MENU_MASKE.TGA");
+    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "INV_TITEL.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_MASKE.TGA");
     makeupMenu.window.attach(makeupMenu.headSlider);
-    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "INV_TITEL.TGA", 163, "Head texture: ", "MENU_MASKE.TGA");
+    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "INV_TITEL.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_MASKE.TGA");
     makeupMenu.window.attach(makeupMenu.headTexSlider);
 
-    makeupMenu.ok = Button(300, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", "Ok", "INV_TITEL.TGA");
-    makeupMenu.quit = Button(1100, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", "Quit", "INV_TITEL.TGA");
+    makeupMenu.ok = Button(300, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "INV_TITEL.TGA");
+    makeupMenu.quit = Button(1100, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "INV_TITEL.TGA");
     makeupMenu.window.attach(makeupMenu.ok);
     makeupMenu.window.attach(makeupMenu.quit);
 
     makeupMenu.window.enable(true);
+
+    Player.cBodyModel = 0;
+    Player.cBodyTexture = 0;
+    Player.cHeadModel = 0;
+    Player.cHeadTexture = 0;
     Player.updateVisual(Player.helper);
+    setPlayerVisualAlpha(Player.helper, 1.0);
 
     tex1 = Texture(7192/2 - 200, 7200, 150, 200, "L.TGA");
     tex2 = Texture(7192/2 + 1400, 7200, 150, 200, "R.TGA");
     tex1.visible = true;
     tex2.visible = true;
+}
+
+function deinitCharacterCreation()
+{
+    destroy(makeupMenu.window);
+    tex1.visible = false;
+    tex2.visible = false;
+    tex1 = null;
+    tex2 = null;
+
+    makeupMenu = {
+        window = null,
+        characterList = null,
+        nickTextbox = null,
+        bodySlider = null,
+        headSlider = null,
+        headTexSlider = null,
+        ok = null,
+        quit = null
+    };
+
+    control = {
+        lclicked = false,
+        lastCursX = 0,
+        lastTime = getTickCount(),
+        cursX = 0
+    };
 }
 
 function onSlide(el)

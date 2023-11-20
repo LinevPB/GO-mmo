@@ -16,6 +16,13 @@ class ListElement extends Element {
         draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
     }
 
+    function getSlot()
+    {
+        foreach(i, v in parent.options) {
+            if (v == this) return i;
+        }
+    }
+
     function move(x, y) {
         pos.x += x;
         pos.y += y;
@@ -67,6 +74,7 @@ class ListElement extends Element {
 class List extends Element {
     options = null;
     currentOpt = null;
+    firstAsDefault = false;
     constructor(x, y, width, height, texture, set, elWidth, elHeight, elX, elY, elTex, elHovTex) {
         base.constructor(x, y, width, height, texture, "", "NONE");
         elementType = ElementType.LIST;
@@ -77,7 +85,6 @@ class List extends Element {
             options.append(el);
         }
         currentOpt = -1;
-        check(options[0]);
 
         UI_Elements.append(this);
     }
@@ -85,6 +92,7 @@ class List extends Element {
     function selectFirstAsDefault()
     {
         select(options[0].id);
+        onPressListElement(options[0]);
     }
 
     function enable(val)
