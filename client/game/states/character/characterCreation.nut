@@ -16,6 +16,9 @@ local control = {
     cursX = 0
 };
 
+local tex1 = null;
+local tex2 = null;
+
 function creationButtonHandler(id)
 {
     switch(id) {
@@ -34,9 +37,6 @@ function creationListHandler(el)
     Player.cBodyModel = el.parent.getSlot();
     Player.updateVisual(Player.helper);
 }
-
-local tex1 = null;
-local tex2 = null;
 
 function initCharacterCreation()
 {
@@ -123,7 +123,7 @@ function deinitCharacterCreation()
     };
 }
 
-function onSlide(el)
+function onSlideChar(el)
 {
     switch(el.id) {
         case makeupMenu.bodySlider.id:

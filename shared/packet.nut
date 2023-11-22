@@ -9,7 +9,7 @@ enum PacketType {
     CHARACTERS_CREATE = 7,
     CHARACTER_CREATION_CONFIRM = 8,
     CHARACTER_CREATION_BACK = 9,
-    LOAD_ITEMS = 10
+    UPDATE_ITEM = 10
 }
 
 function encode(args) {
@@ -76,19 +76,19 @@ local function createPacket(packetType, arg)
 {
     local packet = Packet();
     packet.writeInt8(packetType);
-    packet.writeString(encode(arg));
+    packet.writeString(arg);
 
     return packet;
 }
 
 function sendPacket(packetType, ...)
 {
-    local packet = createPacket(packetType, vargv);
+    local packet = createPacket(packetType, encode(vargv));
     packet.send(RELIABLE_ORDERED);
 }
 
 function sendPlayerPacket(pid, packetType, ...)
 {
-    local packet = createPacket(packetType, vargv);
+    local packet = createPacket(packetType, encode(vargv));
     packet.send(pid, RELIABLE_ORDERED);
 }

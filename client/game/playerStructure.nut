@@ -1,3 +1,5 @@
+DEBUG <- true;
+
 lang <- {
     ["SERVER_NAME"] = {
         ["en"]= "Memory",
@@ -74,17 +76,17 @@ lang <- {
 
     ["LABEL_CHAR_SELECTION_MENU_SLOT1"] = {
         ["en"]= "(Slot 1)",
-        ["pl"]= "(Slot 2)"
+        ["pl"]= "(Slot 1)"
     },
 
     ["LABEL_CHAR_SELECTION_MENU_SLOT2"] = {
-        ["en"]= "(Slot 1)",
+        ["en"]= "(Slot 2)",
         ["pl"]= "(Slot 2)"
     },
 
     ["LABEL_CHAR_SELECTION_MENU_SLOT3"] = {
-        ["en"]= "(Slot 1)",
-        ["pl"]= "(Slot 2)"
+        ["en"]= "(Slot 3)",
+        ["pl"]= "(Slot 3)"
     },
 
     ["BUTTON_CHAR_SELECTION_MENU_OK"] = {
@@ -173,11 +175,67 @@ Player <- {
     cHeadTexture = 108,
     music = Sound("muzyka.wav"),
     lang = "en",
-    charSlot = -1
+    charSlot = -1,
+    eqArmor = "",
+    eqWeapon = "",
+    eqWeapon2h = "",
+    items = []
 };
 
 Player.updateVisual <- function(id = -1)
 {
     if (id == -1) id = heroId;
     setPlayerVisual(id, Player.bodyModel[Player.cBodyModel], Player.cBodyTexture, Player.headModel[Player.cHeadModel], Player.cHeadTexture);
+}
+
+Player.manageItem <- function(act, instance, amount)
+{
+    if (act == 0 || act == 1) {
+        foreach(v in Player.items) {
+            if (v.instance == instance)
+                return v.amount += amount;
+        }
+        Player.items.append({instance = instance, amount = amount });
+    } else {
+        foreach(i, v in Player.items) {
+            if (v.instance == instance) {
+                v.amount -= amount;
+                if (v.amount < 0) {
+                    v.amount = 0;
+                    return Player.items.remove(i);
+                }
+            }
+        }
+    }
+}
+
+Player.updateEquipped <- function(armor, weapon, ranged)
+{
+    if (armor != Player.eqArmor) {
+        if (armor == "-1") {
+            unequipItem(Player.helper, Items.id(Player.eqArmor));
+        }
+        Player.eqArmor = armor;
+        equipItem(Player.helper, Items.id(armor));
+    }
+
+    if (weapon != Player.eqWeapon) {
+        if (weapon == "-1") {
+            unequipItem(Player.helper, Items.id(Player.eqWeapon));
+        }
+        Player.eqWeapon = weapon;
+        setPlayerDexterity(Player.helper, 300);
+        setPlayerStrength(Player.helper, 300);
+        equipItem(Player.helper, Items.id(weapon));
+    }
+
+    if (ranged != Player.eqWeapon2h) {
+        if (ranged == "-1") {
+            unequipItem(Player.helper, Items.id(Player.eqWeapon2h));
+        }
+        Player.eqWeapon2h = ranged;
+        setPlayerDexterity(Player.helper, 300);
+        setPlayerStrength(Player.helper, 300);
+        equipItem(Player.helper, Items.id(ranged));
+    }
 }

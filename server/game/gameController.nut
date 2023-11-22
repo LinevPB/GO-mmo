@@ -81,11 +81,11 @@ function charactersHandler(pid, data)
 {
     local temp = findPlayer(pid);
     if (temp.logged) {
-        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId FROM characters WHERE pid='" + temp.dbId + "'");
+        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, slotId, eqWeapon2h FROM characters WHERE pid='" + temp.dbId + "'");
         if (result[0] != null) {
             foreach(i, v in result) {
                 if (v[1].tointeger() != temp.dbId) continue;
-                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9]);
+                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10]);
             }
         }
 
@@ -99,13 +99,13 @@ function selectHandler(pid, data)
     local temp = findPlayer(pid);
     temp.charId = charId;
 
-    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId FROM characters WHERE id='" + charId + "'");
+    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqWeapon, eqArmor, eqWeapon2h FROM characters WHERE id='" + charId + "'");
     local v = result[0];
 
     if (v[1] != temp.dbId) return sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, -1);
 
-    setupChar(pid, v[2], v[9]);
-    sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9]);
+    setupChar(pid, v[2], v[9], v[8], v[9], v[10], charId);
+    sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[8], v[9], v[7]);
 }
 
 function createHandler(pid, data)
@@ -113,11 +113,15 @@ function createHandler(pid, data)
     sendPlayerPacket(pid, PacketType.CHARACTERS_CREATE, data[0]);
 }
 
-function setupChar(pid, name, charSlot)
+function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId)
 {
     local temp = findPlayer(pid);
     temp.charName = name;
     temp.charSlot = charSlot;
+    LoadItems(pid, charId);
+    EquipArmor(pid, eqArmor);
+    EquipWeapon(pid, eqWeapon);
+    EquipWeapon2h(pid, eqWeapon2h);
 }
 
 function creationConfirmHandler(pid, data)
@@ -127,41 +131,19 @@ function creationConfirmHandler(pid, data)
     local bodyTex = data[2];
     local headMod = data[3];
     local headTex = data[4];
-    local dbId = findPlayer(pid).dbId;
     local slotId = data[5];
+    local player = findPlayer(pid);
+    local dbId = player.dbId;
 
     local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`) VALUES (NULL,'" +
     dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1')");
-    local result1 = mysql.gquery("SELECT id FROM characters WHERE pid='" + dbId + "' AND slotId='" + slotId "'");
-    findPlayer(pid).charId = result1[0];
+    local result1 = mysql.gquery("SELECT id FROM characters WHERE pid='" + dbId + "' AND slotId='" + slotId + "'");
+    player.charId = result1[0];
+    player.charName = name;
 
     sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex);
 
-    setupChar(pid, name, slotId);
-}
-
-function GiveItem(pid, instance, amount)
-{
-    giveItem(pid, Items.id(instance), amount);
-}
-
-function RemoveItem(pid, instance, amount)
-{
-
-}
-
-function LoadItems(pid, heroId)
-{
-    local result = mysql.gquery("SELECT instance, amount FROM items WHERE owner=" + findPlayer(pid).charId);
-    if (result[0] == null) return;
-    foreach(v in result) {
-        GiveItem(pid, v[0], v[1]);
-    }
-}
-
-function SaveItems(pid, heroId)
-{
-
+    setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0]);
 }
 
 local function onPacket(pid, packet)
@@ -200,10 +182,6 @@ local function onPacket(pid, packet)
 
         case PacketType.CHARACTER_CREATION_BACK:
             sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_BACK, 1);
-        break;
-
-        case PacketType.LOAD_ITEMS:
-            LoadItems(pid, data[0]);
         break;
     }
 }

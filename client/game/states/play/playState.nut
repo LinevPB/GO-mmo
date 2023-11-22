@@ -1,63 +1,6 @@
-local function onPacket(packet) {
-    local packetType = packet.readInt8();
-    switch(packetType) {
-        case PacketType.CHAT_MESSAGE:
-            local data = packet.readString();
-            local decoded = decode(data);
-            Chat.Add([decoded[0], decoded[1], decoded[2], decoded[3]], decoded[4]);
-            break;
-    }
-}
-addEventHandler("onPacket", onPacket);
-
-
-
-class NPC
-{
-    id = null;
-    npc = null;
-    pos = null;
-    spawned = null;
-
-    constructor(name, x, y, z)
-    {
-        npc = createNpc("Mark");
-        id = 0;
-        pos = { x = x, y = y, z = z };
-        spawned = false;
-
-        setPlayerPosition(npc, pos.x, pos.y, pos.z);
-    }
-
-    function spawn()
-    {
-        spawnNpc(npc, "PC_HERO");
-        setPlayerPosition(npc, pos.x, pos.y, pos.z);
-        spawned = true;
-    }
-
-    function unspawn()
-    {
-        unspawnNpc(npc);
-        spawned = false;
-    }
-
-    function setPosition(x, y, z)
-    {
-        pos.x = x;
-        pos.y = y;
-        pos.z = z;
-        setPlayerPosition(npc, pos.x, pos.y, pos.z);
-    }
-}
-
-function LoadItems()
-{
-    sendPacket(PacketType.LOAD_ITEMS, Player.charSlot);
-}
-
 function initPlayState()
 {
+    Player.music.stop();
     disableControls(false);
     setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
     setFreeze(false);
@@ -65,13 +8,33 @@ function initPlayState()
 
     Chat.Init();
     Chat.Enable(true);
-    Player.music.stop();
 
-    LoadItems();
+    Inventory.Init();
+    Inventory.Enable(true);
+
+    setPlayerPosition(heroId, 0, 0, 0);
+}
+
+function onMessage(data)
+{
+    Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
+}
+
+function onRenderP(currentTime, lastTime)
+{
 }
 
 local function onkey(key)
 {
-
+    if (key == KEY_Z) {
+        exitGame();
+    }
+    if (key == KEY_X) {
+        Inventory.Enable(true);
+    }
+    if (key == KEY_V) {
+        Inventory.Enable(false);
+    }
 }
+
 addEventHandler("onKey", onkey);

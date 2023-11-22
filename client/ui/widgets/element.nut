@@ -28,6 +28,14 @@ class Element {
     letterWidth = null;
     disableBackground = false;
     hovered = false;
+    bg_color = null;
+    bg_color_hover = null;
+    parent = null;
+
+    baseX = null;
+    baseY = null;
+
+    more = null;
 
     constructor(x, y, width, height, texture, title, hover_texture = "NONE") {
         id = element_id;
@@ -43,6 +51,8 @@ class Element {
                 texture = Texture(x, y, width, height, texture)
             }
             background.texture.visible = false;
+            bg_color = null;
+            bg_color_hover = null;
         }
 
         draw = Draw(x, y, "Ab# sVt uIo PE# ### ### ###");
@@ -56,6 +66,9 @@ class Element {
         regularColor = { r = 255, g = 255, b = 255 };
         hoverColor = { r = 230, g = 170, b = 170 };
         hovered = false;
+
+        baseX = x;
+        baseY = y;
     }
 
     function isHovered()
@@ -97,7 +110,13 @@ class Element {
     function setPosition(x, y) {
         pos.x = x;
         pos.y = y;
+
         refresh();
+    }
+
+    function getPosition()
+    {
+        return pos;
     }
 
     function move(x, y) {
@@ -114,6 +133,21 @@ class Element {
         background.texture.file = texture;
     }
 
+    function setBackgroundColor(r,g,b) {
+        if (background == null) return;
+        background.texture.setColor(r, g, b);
+    }
+
+    function setBackgroundRegularColor(r,g,b) {
+        if (background == null) return;
+        bg_color = {r = r, g = g, b = b};
+    }
+
+    function setBackgroundHoverColor(r,g,b) {
+        if (background == null) return;
+        bg_color_hover = {r = r, g = g, b = b};
+    }
+
     function enable(value) {
         if (value == true) {
             if (background != null) background.texture.visible = true;
@@ -128,13 +162,29 @@ class Element {
     }
 
     function hover() {
+        if (hovered) return;
+
         hovered = true;
-        if (background.hover != "NONE" && !disableBackground) setBackground(background.hover);
+        if (background.hover == "NONE" || disableBackground) return;
+
+        setBackground(background.hover);
+        if (bg_color != null)
+            setBackgroundColor(bg_color.r, bg_color.g, bg_color.b);
+
+        onHover(this);
     }
 
     function unhover() {
+        if (!hovered) return;
+
         hovered = false;
-        if (background != null && !disableBackground) setBackground(background.regular);
+        if (background == null || disableBackground) return;
+
+        setBackground(background.regular);
+        if (bg_color_hover != null)
+            setBackgroundColor(bg_color_hover.r, bg_color_hover.g, bg_color_hover.b);
+
+        onUnhover(this);
     }
 
     function isEnabled() {

@@ -85,10 +85,16 @@ function onPressListElement(element)
     }
 }
 
+local lastTime = getTickCount();
 local function onRenderH()
 {
+    local currentTime = getTickCount();
+    if (currentTime - lastTime < 50)
+        lastTime = currentTime;
+
     switch(Player.gameState) {
         case GameState.CHARACTER_CREATION: onRenderC(); break;
+        case GameState.PLAY: onRenderP(currentTime, lastTime); break;
     }
 }
 addEventHandler("onRender", onRenderH);
@@ -117,6 +123,28 @@ function setupPlayer(name, bodyMod, bodyTex, headMod, headTex)
     Player.cHeadTexture = headTex;
     Player.updateVisual();
     setPlayerName(heroId, name);
+}
+
+function onSlide(el)
+{
+    switch(Player.gameState) {
+        case GameState.CHARACTER_CREATION: onSlideChar(el);
+        case GameState.PLAY: onSlidePlay(el);
+    }
+}
+
+function onHover(el)
+{
+    switch(Player.gameState) {
+        case GameState.PLAY: invHover(el);
+    }
+}
+
+function onUnhover(el)
+{
+    switch(Player.gameState) {
+        case GameState.PLAY: invUnhover(el);
+    }
 }
 
 local function onPacket(packet) {
@@ -148,12 +176,24 @@ local function onPacket(packet) {
         break;
 
         case PacketType.CHARACTERS_RECEIVE:
-            loadCharacter(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10]);
+            loadCharacter(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11]);
         break;
 
         case PacketType.CHARACTERS_FINISHED:
             if(data[0] == 1) {
                 moveCameraToNPC();
+
+
+
+                ///////////////
+
+
+                ///// DEBUG
+
+
+                /////////
+
+                if (DEBUG) debug_funcx();
             }
         break;
 
@@ -175,6 +215,16 @@ local function onPacket(packet) {
 
         case PacketType.CHARACTER_CREATION_BACK:
             ChangeGameState(GameState.CHARACTER_SELECTION);
+        break;
+
+        case PacketType.CHAT_MESSAGE:
+            if (Player.gameState == GameState.PLAY) {
+                onMessage(data);
+            }
+        break;
+
+        case PacketType.UPDATE_ITEM:
+            Player.manageItem(data[0], data[1], data[2]);
         break;
     }
 }

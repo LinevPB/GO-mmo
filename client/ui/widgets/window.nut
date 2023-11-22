@@ -9,6 +9,7 @@ class Window extends Element {
     }
 
     function attach(val) {
+        val.parent = this;
         val.setPosition(val.pos.x + pos.x, val.pos.y + pos.y);
         elements.append(val);
         refresh();
@@ -44,6 +45,14 @@ class Window extends Element {
             if (v.elementType == ElementType.BUTTON)
                 v.setHoverColor(r, g, b);
         }
+    }
+
+    function setPosition(x, y)
+    {
+        foreach(v in elements) {
+            v.setPosition(v.pos.x - pos.x + x, v.pos.y - pos.y + y);
+        }
+        base.setPosition(x, y);
     }
 }
 

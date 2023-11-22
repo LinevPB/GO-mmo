@@ -1,6 +1,5 @@
 class ListElement extends Element {
     selected = null;
-    parent = null;
     unchanged = null;
 
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {

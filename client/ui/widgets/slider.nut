@@ -3,33 +3,55 @@ local sliderSize = 200;
 class SliderMask extends Element
 {
     range = null;
+
     lastX = null;
+    lastY = null;
+
     maskX = null;
+    maskY = null;
+
     offsetX = null;
+    offsetY = null;
+
+    lengthX = null;
+    lengthY = null;
+
     leftClicked = null;
-    lengthX = 0;
-    parent = null;
 
     constructor(x, y, width, tex, scope, length = 0)
     {
         base.constructor(x, y, width, width, tex, "", "NONE");
+
         elementType = ElementType.SLIDER_MASK;
         range = scope;
         maskX = 0;
         lastX = 0;
+        lastY = 0;
+        offsetY = 0;
         offsetX = 0;
+        maskY = 0;
         leftClicked = false;
         lengthX = length - size.width;
+        lengthY = length - size.height;
 
         UI_Elements.append(this);
     }
 
     function update()
     {
-        maskX = getCursorPosition().x - offsetX;
-        if (maskX < 0) maskX = 0;
-        if (maskX > lengthX) maskX = lengthX;
-        setPosition(parent.pos.x + maskX, pos.y);
+        if (!parent.vertical) {
+            maskX = getCursorPosition().x - offsetX;
+            if (maskX < 0) maskX = 0;
+            if (maskX > lengthX) maskX = lengthX;
+            setPosition(parent.pos.x + maskX, pos.y);
+            parent.update();
+            return;
+        }
+
+        maskY = getCursorPosition().y - offsetY;
+        if (maskY < 0) maskY = 0;
+        if (maskY > lengthY) maskY = lengthY;
+        setPosition(parent.pos.x + parent.size.width / 2 - size.width / 2, parent.pos.y + maskY);
         parent.update();
     }
 
@@ -40,7 +62,6 @@ class SliderMask extends Element
 
     function setPosition(x, y) {
         base.setPosition(x, y);
-        draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
     }
 
     function reset()
@@ -52,13 +73,11 @@ class SliderMask extends Element
     function hover()
     {
         base.hover();
-        //draw.setColor(hoverColor.r, hoverColor.g, hoverColor.b);
     }
 
     function unhover()
     {
         base.unhover();
-        //draw.setColor(regularColor.r, regularColor.g, regularColor.b);
     }
 }
 
@@ -68,12 +87,27 @@ class Slider extends Element {
     labelu = null;
     leftBtn = null;
     rightBtn = null;
-    constructor(x, y, width, texture, scope, label="", sliderTex = "MENU_MASKE.TGA") {
-        base.constructor(x, y, width, sliderSize / 2, texture, "", "NONE");
+    vertical = null;
+    hasLabel = null;
+
+    constructor(x, y, width, texture, scope, label="", sliderTex = "MENU_MASKE.TGA", vert = false) {
+        vertical = vert;
+
+        if (!vertical)
+            base.constructor(x, y, width, sliderSize / 2, texture, "", "NONE");
+        else
+            base.constructor(x, y, sliderSize / 2, width, texture, "", "NONE");
+
         elementType = ElementType.SLIDER;
-        mask = SliderMask(x, y, sliderSize * 1.25, "MENU_MASKE.TGA", 12, width);
-        textuboxu = NumericBox(x, y, 250, 250, "INV_SLOT_FOCUS.TGA", scope);
-        labelu = Label(x, y, label);
+
+        if (label) {
+            textuboxu = NumericBox(x, y, 250, 250, "INV_SLOT_FOCUS.TGA", scope);
+            labelu = Label(x, y, label);
+            hasLabel = true;
+        }
+
+        hasLabel = false;
+        mask = SliderMask(x, y, sliderSize * 1.25, "MENU_MASKE.TGA", scope, width);
         mask.parent = this;
 
         UI_Elements.append(this);
@@ -81,37 +115,50 @@ class Slider extends Element {
 
     function update()
     {
-        local calc = (textuboxu.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
-        textuboxu.updateRaw(calc);
+        if (hasLabel) {
+            local calc = (textuboxu.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
+            textuboxu.updateRaw(calc);
+        }
     }
 
     function getValue()
     {
-        return (textuboxu.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
+        if (hasLabel) {
+            return (mask.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
+        }
+
+        return (mask.range * (mask.maskY / (size.height - mask.size.height))).tointeger();
     }
 
     function enable(val)
     {
+        if (hasLabel) {
+            textuboxu.enable(val);
+            labelu.enable(val);
+        }
+
+        base.enable(val);
+
         if(mask) {
             mask.enable(val);
         }
-        if (textuboxu) {
-            textuboxu.enable(val);
-        }
-        if (labelu) {
-            labelu.enable(val);
-        }
-        base.enable(val);
+
         setPosition(pos.x, pos.y);
         update();
     }
 
     function setPosition(x, y) {
         base.setPosition(x, y);
-        mask.setPosition(x + mask.maskX, y - mask.size.height / 2 + size.height / 2);
-        draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
-        labelu.setPosition(x, mask.pos.y - draw.height - 50);
-        textuboxu.setPosition(labelu.pos.x + 50 + labelu.draw.width, labelu.pos.y + draw.height / 2 - textuboxu.size.height / 2);
+
+        if (!vertical) {
+            draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
+            labelu.setPosition(x, mask.pos.y - draw.height - 50);
+            textuboxu.setPosition(labelu.pos.x + 50 + labelu.draw.width, labelu.pos.y + draw.height / 2 - textuboxu.size.height / 2);
+
+            mask.setPosition(x + mask.maskX, y - mask.size.height / 2);
+        } else {
+            mask.setPosition(pos.x + size.width / 2 - mask.size.width / 2, y + mask.maskY);
+        }
     }
 
     function reset()

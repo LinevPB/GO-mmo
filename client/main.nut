@@ -1,5 +1,3 @@
-local DEBUG = true;
-
 function onInit()
 {
     initUI();

@@ -1,13 +1,32 @@
 class Button extends Element {
+    centered = null;
+    my_pos = null;
+
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
+        centered = true;
         elementType = ElementType.BUTTON;
         UI_Elements.append(this);
+        my_pos = { x = x, y = y };
     }
 
     function setPosition(x, y) {
         base.setPosition(x, y);
-        draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
+        if (centered) {
+            my_pos.x = pos.x + size.width / 2 - draw.width / 2;
+            my_pos.y = pos.y + size.height / 2 - draw.height / 2;
+            draw.setPosition(my_pos.x, my_pos.y);
+        }
+        else {
+            draw.setPosition(pos.x + size.width - draw.width - 25, pos.y + size.height - draw.height - 25);
+        }
+    }
+
+    function setDrawPosition(x, y)
+    {
+        my_pos.x = pos.x + x;
+        my_pos.y = pos.y + y;
+        draw.setPosition(my_pos.x, my_pos.y);
     }
 
     function changeText(val) {
@@ -31,5 +50,11 @@ class Button extends Element {
     {
         base.unhover();
         draw.setColor(regularColor.r, regularColor.g, regularColor.b);
+    }
+
+    function rehover()
+    {
+        hover();
+        unhover();
     }
 }

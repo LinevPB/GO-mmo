@@ -10,8 +10,13 @@ function onClick(button) {
 
             if (inSquare(cursor, el.pos, el.size) && el.isEnabled()) {
                 if (el.elementType == ElementType.SLIDER_MASK) {
-                    el.offsetX = cursor.x - el.maskX;
-                    el.lastX = el.maskX;
+                    if (!el.parent.vertical) {
+                        el.offsetX = cursor.x - el.maskX;
+                        el.lastX = el.maskX;
+                    } else {
+                        el.offsetY = cursor.y - el.maskY;
+                        el.lastY = el.maskY;
+                    }
                 }
                 el.leftClicked = true;
             }

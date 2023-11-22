@@ -6,6 +6,7 @@ local charMenu = {
 };
 
 local characters = [];
+local maxchar = 3;
 local charcount = 0;
 
 class CharSlot
@@ -21,9 +22,10 @@ class CharSlot
     headTex = null;
 
     eqWeapon = null;
+    eqWeapon2h = null;
     eqArmor = null;
 
-    constructor(charSlota, charIda, ownerIda, namea, bodyModela, bodyTexa, headModela, headTexa, eqWeapona, eqArmora)
+    constructor(charSlota, charIda, ownerIda, namea, bodyModela, bodyTexa, headModela, headTexa, eqArmora, eqWeapona, eqWeapon2ha)
     {
         name = namea;
         charSlot = charSlota;
@@ -37,6 +39,7 @@ class CharSlot
 
         eqWeapon = eqWeapona;
         eqArmor = eqArmora;
+        eqWeapon2h = eqWeapon2ha;
     }
 }
 
@@ -45,7 +48,7 @@ function characterButtonHandler(id)
     switch(id) {
         case charMenu.ok.id:
             if (charMenu.characterList.currentOpt == -1) return;
-            if (charMenu.characterList.getSlot() <= charcount - 1) {
+            if (characters[charMenu.characterList.getSlot()] != 0) {
                 sendPacket(PacketType.CHARACTERS_SELECT, characters[charMenu.characterList.getSlot()].charId);
                 return;
             }
@@ -87,6 +90,9 @@ function initCharacterSelection()
     setPlayerPosition(Player.helper, 9947, 368, -717);
     setPlayerAngle(Player.helper, 270);
     sendPacket(PacketType.CHARACTERS_QUERY, 0);
+
+    for(local i = 0; i < maxchar; i++)
+        characters.append(0);
 }
 
 function moveCameraToNPC()
@@ -117,30 +123,21 @@ function deinitNpc()
     unspawnNpc(Player.helper);
 }
 
-function loadCharacter(charSlot, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId)
+function loadCharacter(charSlot, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId, eqWeapon2h)
 {
     local link = null;
     foreach (i, v in charMenu.characterList.options) {
         if (i == slotId) link = v;
     }
     link.changeText(charName);
-    local temp = CharSlot(charSlot, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor);
-    characters.append(temp);
+    local temp = CharSlot(slotId, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, eqWeapon2h);
+    characters[slotId] = temp;
     charcount++;
 }
 
-local function onkey(key)
-{
-    if (key == KEY_Z) {
-        exitGame();
-    }
-
-}
-addEventHandler("onKey", onkey);
-
 function characterListHandler(el)
 {
-    if (el.getSlot() > charcount - 1)  {
+    if (characters[el.getSlot()] == 0) {
         charMenu.ok.changeText(lang["BUTTON_CHAR_SELECTION_MENU_CREATE"][Player.lang]);
         setPlayerVisualAlpha(Player.helper, 0.0);
     }
@@ -149,13 +146,21 @@ function characterListHandler(el)
         setPlayerVisualAlpha(Player.helper, 1.0);
     }
 
-    foreach(v in characters) {
+    foreach(i, v in characters) {
+        if (v == 0) continue;
         if (el.getSlot() == v.charSlot) {
             Player.cBodyModel = v.bodyModel;
             Player.cBodyTexture = v.bodyTex;
             Player.cHeadModel = v.headModel;
             Player.cHeadTexture = v.headTex;
             Player.updateVisual(Player.helper);
+            Player.updateEquipped(v.eqArmor, v.eqWeapon, v.eqWeapon2h);
+            return;
         }
     }
+}
+
+function debug_funcx()
+{
+    sendPacket(PacketType.CHARACTERS_SELECT, characters[charMenu.characterList.getSlot()].charId);
 }
