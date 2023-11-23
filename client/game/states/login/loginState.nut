@@ -110,6 +110,9 @@ function initLoginState()
     setCursorPosition(0, 0);
     setCursorSensitivity(1.0);
 
+    Camera.setPosition(9650, 400, -730);
+    Camera.setRotation(0, 85, 0);
+
     local wW; // window width
     local wH; // window height
     //////////////

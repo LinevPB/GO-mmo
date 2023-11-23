@@ -87,8 +87,8 @@ function initCharacterSelection()
     charMenu.window.enable(true);
 
     spawnNpc(Player.helper, "PC_HERO");
-    setPlayerPosition(Player.helper, 9947, 368, -717);
-    setPlayerAngle(Player.helper, 270);
+    setPlayerPosition(Player.helper, 37730, 4680, 44830);
+    setPlayerAngle(Player.helper, 230);
     sendPacket(PacketType.CHARACTERS_QUERY, 0);
 
     for(local i = 0; i < maxchar; i++)
@@ -98,8 +98,8 @@ function initCharacterSelection()
 function moveCameraToNPC()
 {
     Player.canProceed = true;
-    Camera.setPosition(9650, 400, -730);
-    Camera.setRotation(0, 85, 0);
+    Camera.setPosition(37530, 4680, 44650);
+    Camera.setRotation(0, 45, 0);
     Player.updateVisual(Player.helper);
     charMenu.characterList.selectFirstAsDefault();
 }

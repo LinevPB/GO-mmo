@@ -4,6 +4,7 @@
     <script src="interface/chat.nut" type="client" />
     <script src="interface/notification.nut" type="client" />
     <script src="interface/inventory.nut" type="client" />
+    <script src="interface/npcInteraction.nut" type="client" />
 
     <script src="playState.nut" type="client" />
 

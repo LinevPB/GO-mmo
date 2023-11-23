@@ -371,7 +371,7 @@ function moveItems(btn1, id1, btn2, id2)
     Player.moveItems(id1, id2);
 }
 
-function playButtonHandler(id)
+function INVplayButtonHandler(id)
 {
     if (!invEnabled) return;
     if (isclicked) {
@@ -698,14 +698,12 @@ Inventory.Enable <- function(val)
 
     if (val == true) {
         setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
-        Camera.setPosition(30117, 5250, -15815);
-        Camera.setRotation(0, -90, 0);
+        Camera.setPosition(37900, 4680, 44440);
+        Camera.setRotation(0, 30, 0);
         vob.addToWorld();
         vob.setPosition(29912, 5246, -15710);
         vob.floor();
         vob.physicsEnabled = val;
-        setPlayerPosition(Player.helper, 29912, 5246, -15710);
-        setPlayerAngle(Player.helper, 140);
         //inv.menu.setBackgroundColor(0, 0, 0);
 
         foreach(v in Player.items) {
