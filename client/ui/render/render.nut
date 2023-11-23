@@ -12,6 +12,7 @@ function onRender() {
         local isInSquare = inSquare(cursor, el.pos, el.size);
         if (isInSquare && !el.isHovered()) el.hover();
         else if(!isInSquare && el.isHovered()) el.unhover();
+        else if (isInSquare && el.isHovered()) onElementRender(el);
         if (el.elementType == ElementType.SLIDER_MASK && el.leftClicked) {
             el.update();
             onSlide(el.parent);

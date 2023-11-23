@@ -179,7 +179,8 @@ Player <- {
     eqArmor = "",
     eqWeapon = "",
     eqWeapon2h = "",
-    items = []
+    items = [],
+    gold = 3000000
 };
 
 Player.updateVisual <- function(id = -1)
@@ -188,14 +189,14 @@ Player.updateVisual <- function(id = -1)
     setPlayerVisual(id, Player.bodyModel[Player.cBodyModel], Player.cBodyTexture, Player.headModel[Player.cHeadModel], Player.cHeadTexture);
 }
 
-Player.manageItem <- function(act, instance, amount)
+Player.manageItem <- function(act, instance, amount, slot)
 {
     if (act == 0 || act == 1) {
         foreach(v in Player.items) {
             if (v.instance == instance)
                 return v.amount += amount;
         }
-        Player.items.append({instance = instance, amount = amount });
+        Player.items.append({instance = instance, amount = amount, slot = slot });
     } else {
         foreach(i, v in Player.items) {
             if (v.instance == instance) {
@@ -209,7 +210,7 @@ Player.manageItem <- function(act, instance, amount)
     }
 }
 
-Player.updateEquipped <- function(armor, weapon, ranged)
+Player.updateEquipped <- function(weapon, armor, ranged)
 {
     if (armor != Player.eqArmor) {
         if (armor == "-1") {
@@ -238,4 +239,42 @@ Player.updateEquipped <- function(armor, weapon, ranged)
         setPlayerStrength(Player.helper, 300);
         equipItem(Player.helper, Items.id(ranged));
     }
+}
+
+Player.refreshEq <- function(id)
+{
+    switch(id) {
+        case 2:
+            sendPacket(PacketType.EQUIP_MELEE, Player.eqWeapon);
+        break;
+
+        case 4:
+            sendPacket(PacketType.EQUIP_RANGED, Player.eqWeapon2h)
+        break;
+
+        case 16:
+            sendPacket(PacketType.EQUIP_ARMOR, Player.eqArmor);
+        break;
+    }
+}
+
+Player.moveItems <- function(id1, id2)
+{
+    local fur = false;
+    foreach(v in Player.items) {
+        if (v.slot == id1 && !fur) {
+            v.slot = id2;
+            continue;
+        }
+        if (v.slot == id2 && fur) {
+            v.slot = id1;
+            break;
+        }
+        if (v.slot == id2) {
+            v.slot = id1;
+            fur = true;
+            continue;
+        }
+    }
+    sendPacket(PacketType.MOVE_ITEMS, id1, id2);
 }

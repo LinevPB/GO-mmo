@@ -189,3 +189,7 @@ Chat.Send <- function()
 }
 
 Chat.Add <- addChatLine;
+
+Chat.IsEnabled <- function() {
+    return chatInputIsOpen();
+}

@@ -44,7 +44,7 @@ class Element {
         pos = { x = x, y = y };
         size = { width = width, height = height };
 
-        if (texture) {
+        if (texture != "NONE" && texture != null) {
             background = {
                 regular = texture,
                 hover = hover_texture,
@@ -165,12 +165,13 @@ class Element {
         if (hovered) return;
 
         hovered = true;
-        if (background.hover == "NONE" || disableBackground) return;
+        if (background != null && background != "NONE") {
+            if (background.hover == "NONE" || disableBackground) return;
 
-        setBackground(background.hover);
-        if (bg_color != null)
-            setBackgroundColor(bg_color.r, bg_color.g, bg_color.b);
-
+            setBackground(background.hover);
+            if (bg_color_hover != null)
+                setBackgroundColor(bg_color_hover.r, bg_color_hover.g, bg_color_hover.b);
+        }
         onHover(this);
     }
 
@@ -178,11 +179,11 @@ class Element {
         if (!hovered) return;
 
         hovered = false;
-        if (background == null || disableBackground) return;
-
-        setBackground(background.regular);
-        if (bg_color_hover != null)
-            setBackgroundColor(bg_color_hover.r, bg_color_hover.g, bg_color_hover.b);
+        if (background != null && !disableBackground) {
+            setBackground(background.regular);
+            if (bg_color != null)
+                setBackgroundColor(bg_color.r, bg_color.g, bg_color.b);
+        }
 
         onUnhover(this);
     }

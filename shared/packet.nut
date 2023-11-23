@@ -9,7 +9,11 @@ enum PacketType {
     CHARACTERS_CREATE = 7,
     CHARACTER_CREATION_CONFIRM = 8,
     CHARACTER_CREATION_BACK = 9,
-    UPDATE_ITEM = 10
+    UPDATE_ITEM = 10,
+    MOVE_ITEMS = 11,
+    EQUIP_ARMOR = 12,
+    EQUIP_MELEE = 13,
+    EQUIP_RANGED = 14
 }
 
 function encode(args) {

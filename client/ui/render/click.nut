@@ -19,6 +19,7 @@ function onClick(button) {
                     }
                 }
                 el.leftClicked = true;
+                handleElementPress(el);
             }
         }
     }
@@ -33,8 +34,20 @@ function onRelease(button) {
             if (el.leftClicked) {
                 el.leftClicked = false;
 
-                if (inSquare(cursor, el.pos, el.size) && el.isEnabled()) {
-                    handleElementClick(el);
+                if (el.isEnabled()) {
+                    if (el.elementType == ElementType.BUTTON) {
+                        if (el.outer_release) {
+                            handleElementClick(el);
+                        } else {
+                            if (inSquare(cursor, el.pos, el.size)) {
+                                handleElementClick(el);
+                            }
+                        }
+                    } else {
+                        if (inSquare(cursor, el.pos, el.size)) {
+                            handleElementClick(el);
+                        }
+                    }
                 }
             }
         }
@@ -60,6 +73,14 @@ function handleElementClick(el) {
 
         case ElementType.SLIDER_MASK:
             //onSlide(el);
+            break;
+    }
+}
+
+function handleElementPress(el) {
+    switch (el.elementType) {
+        case ElementType.BUTTON:
+            onClickButton(el.id);
             break;
     }
 }

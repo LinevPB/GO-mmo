@@ -99,7 +99,7 @@ function selectHandler(pid, data)
     local temp = findPlayer(pid);
     temp.charId = charId;
 
-    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqWeapon, eqArmor, eqWeapon2h FROM characters WHERE id='" + charId + "'");
+    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqArmor, eqWeapon, eqWeapon2h FROM characters WHERE id='" + charId + "'");
     local v = result[0];
 
     if (v[1] != temp.dbId) return sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, -1);
@@ -182,6 +182,22 @@ local function onPacket(pid, packet)
 
         case PacketType.CHARACTER_CREATION_BACK:
             sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_BACK, 1);
+        break;
+
+        case PacketType.MOVE_ITEMS:
+            MoveItems(pid, data[0], data[1]);
+        break;
+
+        case PacketType.EQUIP_ARMOR:
+            EquipArmor(pid, data[0]);
+        break;
+
+        case PacketType.EQUIP_MELEE:
+            EquipWeapon(pid, data[0]);
+        break;
+
+        case PacketType.EQUIP_RANGED:
+            EquipWeapon2h(pid, data[0]);
         break;
     }
 }

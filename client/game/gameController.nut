@@ -45,30 +45,20 @@ function ChangeGameState(state)
     }
 }
 
-local function onKey(key)
-{
-    if (Player.gameState == GameState.PLAY) {
-        if (key == KEY_T) {
-            Chat.EnableInput(true);
-        }
-
-        if (key == KEY_RETURN ) {
-            Chat.Send();
-        }
-
-        if (key == KEY_ESCAPE) {
-            Chat.EnableInput(false);
-        }
-    }
-}
-addEventHandler("onKey", onKey);
-
 function onPressButton(id)
 {
     switch(Player.gameState) {
         case GameState.LOGIN: loginButtonHandler(id); break;
         case GameState.CHARACTER_SELECTION: characterButtonHandler(id); break;
         case GameState.CHARACTER_CREATION: creationButtonHandler(id); break;
+        case GameState.PLAY: playButtonHandler(id); break;
+    }
+}
+
+function onClickButton(id)
+{
+    switch(Player.gameState) {
+        case GameState.PLAY: playClickButtonHandler(id); break;
     }
 }
 
@@ -224,7 +214,7 @@ local function onPacket(packet) {
         break;
 
         case PacketType.UPDATE_ITEM:
-            Player.manageItem(data[0], data[1], data[2]);
+            Player.manageItem(data[0], data[1], data[2], data[3]);
         break;
     }
 }

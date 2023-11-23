@@ -33,19 +33,42 @@ class PlayerStructure
         eqWeapon2h = null;
     }
 
-    function addItem(instance, amount, loading = false)
+    function addItem(instance, amount, loading = false, slot = -1)
     {
         if (amount <= 0) return;
         foreach(v in items) {
             if (v.instance == instance) {
                 v.amount += amount;
-                sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount);
+                sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount, v.slot);
                 return v;
             }
         }
-        items.append({instance = instance, amount = amount});
-        sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount);
-        return true;
+
+        if (slot == -1) {
+            local marked = false;
+            for(local i = 0; i < 90; i++) {
+                foreach(v in items) {
+                    if (v.slot == i) marked = true;
+                }
+                if (!marked) {
+                    items.append({instance = instance, amount = amount, slot = i});
+                    slot = i;
+                    marked = false;
+                    break;
+                }
+                if (marked && i < 90) {
+                    marked = false;
+                }
+            }
+
+            if (!marked) sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot); return true;
+        } else {
+            items.append({instance = instance, amount = amount, slot = slot});
+            sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
+            return true;
+        }
+
+        return false;
     }
 
     function removeItem(instance, amount)
@@ -55,10 +78,10 @@ class PlayerStructure
                 v.amount -= amount;
                 if (v.amount <= 0) {
                     v.amount = 0;
-                    sendPlayerPacket(id, PacketType.UPDATE_ITEM, 3, v.instance, v.amount);
+                    sendPlayerPacket(id, PacketType.UPDATE_ITEM, 3, v.instance, v.amount, v.slot);
                     return items.remove(i);
                 }
-                sendPlayerPacket(id, PacketType.UPDATE_ITEM, 2, v.instance, v.amount);
+                sendPlayerPacket(id, PacketType.UPDATE_ITEM, 2, v.instance, v.amount, v.slot);
                 return v;
             }
         }
@@ -113,15 +136,15 @@ function removePlayerById(id)
     }
 }
 
-function GiveItem(pid, instance, amount, loading = false)
+function GiveItem(pid, instance, amount, loading = false, slot = -1)
 {
     local player = findPlayer(pid);
-    local item = player.addItem(instance, amount, loading);
+    local item = player.addItem(instance, amount, loading, slot);
     if (loading == true)
         return giveItem(pid, Items.id(instance), amount);
 
     if (item == true)
-        mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + player.charId + "')");
+        mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `slot`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + item.slot + "', '" + player.charId + "')");
     else
         mysql.squery("UPDATE `items` SET `amount` = '" + item.amount + "' WHERE `owner`=" + player.charId + "' AND `instance`='" + item.instance + "'");
 }
@@ -134,72 +157,98 @@ function RemoveItem(pid, instance, amount)
 
 function LoadItems(pid, heroId)
 {
-    local result = mysql.gquery("SELECT `instance`, `amount` FROM `items` WHERE `owner`='" + heroId + "'");
+    local result = mysql.gquery("SELECT `instance`, `amount`, `slot` FROM `items` WHERE `owner`='" + heroId + "'");
     if (result[0] == null) return;
 
     foreach(v in result) {
-        GiveItem(pid, v[0], v[1], true);
+        GiveItem(pid, v[0], v[1], true, v[2]);
     }
 }
 
 function EquipArmor(pid, instance)
 {
+    if (instance == "") return UnequipArmor(pid);
     if (instance == -1) return;
 
     local player = findPlayer(pid);
     player.eqArmor = instance;
     equipItem(pid, Items.id(instance));
 
-    mysql.squery("UPDATE `items` SET `eqArmor` = '" + instance + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqArmor` = '" + instance + "' WHERE `id`=" + player.charId);
 }
 
 function UnequipArmor(pid)
 {
     local player = findPlayer(pid);
-    unequipItem(Items.id(player.eqArmor));
+    if (player.eqArmor != null) unequipItem(pid, Items.id(player.eqArmor));
     player.eqArmor = null;
 
-    mysql.squery("UPDATE `items` SET `eqArmor` = '" + "-1" + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqArmor` = '" + "-1" + "' WHERE `id`=" + player.charId);
 }
 
 function EquipWeapon(pid, instance)
 {
+    if (instance == "") return UnequipWeapon(pid);
     if (instance == -1) return;
 
     local player = findPlayer(pid);
     player.eqWeapon = instance;
     equipItem(pid, Items.id(instance));
 
-    mysql.squery("UPDATE `items` SET `eqWeapon` = '" + instance + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqWeapon` = '" + instance + "' WHERE `id`=" + player.charId);
 }
 
 function UnequipWeapon(pid)
 {
     local player = findPlayer(pid);
-    unequipItem(Items.id(player.eqWeapon));
+    if (player.eqWeapon != null) unequipItem(pid, Items.id(player.eqWeapon));
     player.eqWeapon = null;
 
-    mysql.squery("UPDATE `items` SET `eqWeapon` = '" + "-1" + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqWeapon` = '" + "-1" + "' WHERE `id`=" + player.charId);
 }
 
 function EquipWeapon2h(pid, instance)
 {
+    if (instance == "") return UnequipWeapon2h(pid);
     if (instance == -1) return;
 
     local player = findPlayer(pid);
     player.eqWeapon2h = instance;
     equipItem(pid, Items.id(instance));
 
-    mysql.squery("UPDATE `items` SET `eqWeapon2h` = '" + instance + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqWeapon2h` = '" + instance + "' WHERE `id`=" + player.charId);
 }
 
 function UnequipWeapon2h(pid)
 {
     local player = findPlayer(pid);
-    unequipItem(Items.id(player.eqWeapon2h));
+    if (player.eqWeapon2h != null) unequipItem(pid, Items.id(player.eqWeapon2h));
     player.eqWeapon2h = null;
 
-    mysql.squery("UPDATE `items` SET `eqWeapon2h` = '" + "-1" + "' WHERE `id`=" + player.charId + "')");
+    mysql.squery("UPDATE `characters` SET `eqWeapon2h` = '" + "-1" + "' WHERE `id`=" + player.charId);
+}
+
+function MoveItems(pid, fid1, fid2)
+{
+    if (fid1 == fid2) return;
+
+    local player = findPlayer(pid);
+    local id1 = mysql.gquery("SELECT id FROM items WHERE owner=" + player.charId + " AND slot=" + fid1);
+    local id2 = mysql.gquery("SELECT id FROM items WHERE owner=" + player.charId + " AND slot=" + fid2);
+
+    if (id1[0] == null && id2[0] != null) {
+        mysql.squery("UPDATE `items` SET `slot` = '" + fid1 + "' WHERE `id`=" + id2[0][0]);
+    }
+    if (id1[0] != null && id2[0] == null) {
+        mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
+    }
+    if (id1[0] != null && id2[0] != null) {
+        mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
+        mysql.squery("UPDATE `items` SET `slot` = '" + fid1 + "' WHERE `id`=" + id2[0][0]);
+    }
+    if (id1[0] == null && id2[0] == null) {
+        print("???");
+    }
 }
 
 // function SaveItems(pid, heroId)
