@@ -22,7 +22,10 @@ function initPlayState()
     Sky.setCloudsColor(0, 0, 0);
     Sky.setLightingColor(255, 140, 20);
     Sky.setFogColor(0, 220, 140, 20);
+
     initInteraction();
+    initNpcs();
+    setPlayerStrength(heroId, 100);
 }
 
 function onMessage(data)
@@ -33,6 +36,7 @@ function onMessage(data)
 function onRenderP(currentTime, lastTime)
 {
     npcInteractionHandler();
+    enemyRender();
 }
 
 local function onplaykey(key)
@@ -70,8 +74,7 @@ local function onplaykey(key)
     }
 
     if (key == KEY_X) {
-        local pos = getPlayerPosition(heroId);
-        print(pos.x + " : " + pos.y + " : " + pos.z);
+        sendPacket(PacketType.TEST, 0);
     }
     if (key == KEY_V) {
         local pos = getPlayerAngle(heroId);

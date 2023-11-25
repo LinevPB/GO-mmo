@@ -13,7 +13,10 @@ enum PacketType {
     MOVE_ITEMS = 11,
     EQUIP_ARMOR = 12,
     EQUIP_MELEE = 13,
-    EQUIP_RANGED = 14
+    EQUIP_RANGED = 14,
+    TEST = 15,
+    SPAWN_ENEMIES = 16,
+    QUEST = 17
 }
 
 function encode(args) {

@@ -199,6 +199,24 @@ local function onPacket(pid, packet)
         case PacketType.EQUIP_RANGED:
             EquipWeapon2h(pid, data[0]);
         break;
+
+        case PacketType.QUEST:
+            GiveItem(pid, "ItMw_1H_Common_01", 1, false, 3);
+        break;
+
+        case PacketType.TEST:
+            print("called");
+            local pos = getPlayerPosition(pid);
+            local angle = getPlayerAngle(pid);
+            local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";
+            local myfile = file("pos.txt", "r+");
+            local xd = myfile.read("a");
+            myfile.close();
+            myfile = file("pos.txt", "w+");
+            res += "\n" + xd;
+            myfile.write(res);
+            myfile.close();
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

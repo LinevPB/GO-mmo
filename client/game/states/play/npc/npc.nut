@@ -1,0 +1,5 @@
+function initNpcs()
+{
+    initMilko();
+    initZiobro();
+}

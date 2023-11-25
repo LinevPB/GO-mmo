@@ -40,7 +40,7 @@ class PlayerStructure
             if (v.instance == instance) {
                 v.amount += amount;
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount, v.slot);
-                return v;
+                return {val = true, instance = v.instance, amount = v.amount, slot = v.slot};
             }
         }
 
@@ -65,10 +65,10 @@ class PlayerStructure
         } else {
             items.append({instance = instance, amount = amount, slot = slot});
             sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
-            return true;
+            return {val = true, instance = instance, amount = amount, slot = slot};
         }
 
-        return false;
+        return {val = false };
     }
 
     function removeItem(instance, amount)
@@ -143,7 +143,7 @@ function GiveItem(pid, instance, amount, loading = false, slot = -1)
     if (loading == true)
         return giveItem(pid, Items.id(instance), amount);
 
-    if (item == true)
+    if (item.val == true)
         mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `slot`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + item.slot + "', '" + player.charId + "')");
     else
         mysql.squery("UPDATE `items` SET `amount` = '" + item.amount + "' WHERE `owner`=" + player.charId + "' AND `instance`='" + item.instance + "'");

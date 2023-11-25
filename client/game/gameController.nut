@@ -216,6 +216,10 @@ local function onPacket(packet) {
         case PacketType.UPDATE_ITEM:
             Player.manageItem(data[0], data[1], data[2], data[3]);
         break;
+
+        case PacketType.SPAWN_ENEMIES:
+            spawnEnemy(data[0], data[1], data[2], data[3], data[4], data[5]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

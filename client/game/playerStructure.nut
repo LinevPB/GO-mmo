@@ -210,34 +210,34 @@ Player.manageItem <- function(act, instance, amount, slot)
     }
 }
 
-Player.updateEquipped <- function(weapon, armor, ranged)
+Player.updateEquipped <- function(weapon, armor, ranged, helpers = Player.helper)
 {
     if (armor != Player.eqArmor) {
         if (armor == "-1") {
-            unequipItem(Player.helper, Items.id(Player.eqArmor));
+            unequipItem(helpers, Items.id(Player.eqArmor));
         }
         Player.eqArmor = armor;
-        equipItem(Player.helper, Items.id(armor));
+        equipItem(helpers, Items.id(armor));
     }
 
     if (weapon != Player.eqWeapon) {
         if (weapon == "-1") {
-            unequipItem(Player.helper, Items.id(Player.eqWeapon));
+            unequipItem(helpers, Items.id(Player.eqWeapon));
         }
         Player.eqWeapon = weapon;
-        setPlayerDexterity(Player.helper, 300);
-        setPlayerStrength(Player.helper, 300);
-        equipItem(Player.helper, Items.id(weapon));
+        setPlayerDexterity(helpers, 300);
+        setPlayerStrength(helpers, 300);
+        equipItem(helpers, Items.id(weapon));
     }
 
     if (ranged != Player.eqWeapon2h) {
         if (ranged == "-1") {
-            unequipItem(Player.helper, Items.id(Player.eqWeapon2h));
+            unequipItem(helpers, Items.id(Player.eqWeapon2h));
         }
         Player.eqWeapon2h = ranged;
-        setPlayerDexterity(Player.helper, 300);
-        setPlayerStrength(Player.helper, 300);
-        equipItem(Player.helper, Items.id(ranged));
+        setPlayerDexterity(helpers, 300);
+        setPlayerStrength(helpers, 300);
+        equipItem(helpers, Items.id(ranged));
     }
 }
 

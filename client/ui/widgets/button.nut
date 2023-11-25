@@ -3,6 +3,7 @@ class Button extends Element {
     align_left = null;
     my_pos = null;
     outer_release = null;
+    forced = null;
 
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
@@ -29,7 +30,14 @@ class Button extends Element {
         }
     }
 
+    function force_enable(val)
+    {
+        forced = val;
+        if (forced != null) enable(forced);
+    }
+
     function enable(val) {
+        if (forced != null) val = forced;
         base.enable(val);
         setPosition(pos.x, pos.y);
     }

@@ -64,6 +64,7 @@ class InventorySlot
 
         btn.enable(val);
         enabledA = val;
+        invUnhover(this.btn);
 
         if (instance == null) render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, "");
         else render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, instance);

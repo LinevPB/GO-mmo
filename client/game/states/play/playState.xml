@@ -6,6 +6,10 @@
     <script src="interface/inventory.nut" type="client" />
     <script src="interface/npcInteraction.nut" type="client" />
 
+    <import src="npc/npc.xml" type="client" />
+
+    <script src="enemy.nut" type="client" />
+
     <script src="playState.nut" type="client" />
 
 </server>
