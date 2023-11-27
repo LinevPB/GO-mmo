@@ -79,6 +79,7 @@ class Enemy
     lastAttackTime = null;
     lastMovementTime = null;
     healthTex = null;
+    healthTexCover = null;
 
     constructor(name, x, y, z, ang)
     {
@@ -96,8 +97,10 @@ class Enemy
         lastAttackTime = 0;
         lastMovementTime = 0;
         healthTex = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");
+        healthTexCover = Texture(0, 0, 1000, 100, "MENU_CHOICE_BACK.TGA");
         healthTex.setColor(255, 0, 0);
         healthTex.visible = false;
+        healthTexCover.visible = false;
 
         enemy_list.append(this);
     }
@@ -147,20 +150,29 @@ function enemyRender()
     local pos = getPlayerPosition(heroId);
     foreach(v in enemy_list) {
         local npos = getPlayerPosition(v.npc);
+        if (isPlayerDead(v.npc)) {
+            if (v.healthTex.visible || v.healthTexCover.visible) {
+                v.healthTex.visible = false;
+                v.healthTexCover.visible = false;
+                v.draw.setLineColor(0, 180, 180, 180);
+                v.draw.setLineColor(1, 180, 180, 180);
+                continue;
+            }
+            continue;
+        }
 
         if (getDistance2d(pos.x, pos.z, npos.x, npos.z) < distance_draw)  {
             v.draw.visible = true;
             v.draw.setWorldPosition(npos.x, npos.y + 120, npos.z);
             local dpos = v.draw.getPosition();
             v.healthTex.setPosition(dpos.x + v.draw.width / 2 - 500, dpos.y - v.draw.height / 2 - 100);
+            v.healthTexCover.setPosition(dpos.x + v.draw.width / 2 - 500, dpos.y - v.draw.height / 2 - 100);
             local calc = getPlayerHealth(v.npc).tofloat()/getPlayerMaxHealth(v.npc).tofloat();
             v.healthTex.setSize(1000 * calc, 100)
             v.healthTex.visible = true;
+            v.healthTexCover.visible = true;
 
-            if (isPlayerDead(v.npc)) {
-                v.draw.setLineColor(0, 180, 180, 180);
-                v.draw.setLineColor(1, 180, 180, 180);
-            } else {
+            if (!isPlayerDead(v.npc)) {
                 v.draw.setLineColor(0, 255, 0, 0);
                 v.draw.setLineColor(1, 255, 200, 200);
             }
@@ -169,6 +181,7 @@ function enemyRender()
         if (getDistance2d(pos.x, pos.z, npos.x, npos.z) >= distance_draw && v.draw.visible == true) {
             v.draw.visible = false;
             v.healthTex.visible = false;
+            v.healthTexCover.visible = false;
         }
     }
 }

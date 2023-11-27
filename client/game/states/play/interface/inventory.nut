@@ -131,14 +131,14 @@ function getInvSlots()
     return inv.itemSlots;
 }
 
-local showcaseTex = Texture(0, 0, 2000, 2300, "SR_BLANK.TGA");
-local showcaseId = -1;
-local showcaseName = Draw(0, 0, "Laga");
-local showcaseRender = ItemRender(200, 1200, 1000, 1000, "");
-local showcaseAdd1 = Draw(0, 0, "Obrażenia: ");
-local showcaseAdd2 = Draw(0, 0, "Obrażenia: ");
-local showcaseAdd3 = Draw(0, 0, "Obrażenia: ");
-local showcaseAdd4 = Draw(0, 0, "Obrażenia: ");
+local showcase = {
+    texture = Texture(0, 0, 2000, 2300, "SR_BLANK.TGA"),
+    nameDraw = Draw(0, 0, "Laga")
+    draws = [Draw(0, 0, "Obrażenia: "),Draw(0, 0, "Obrażenia: "),Draw(0, 0, "Obrażenia: "),Draw(0, 0, "Obrażenia: ")],
+    render = ItemRender(200, 1200, 1000, 1000, ""),
+    id = -1
+}
+
 local itemR = ItemRender(0, 0, 600, 600, "");
 local isclicked = false;
 
@@ -200,23 +200,23 @@ function invHover(el)
     if (el.more == null) return;
     if (el.more.instance == null || el.more.instance == "") return;
 
-    showcaseRender.instance = el.more.render.instance;
-    if (showcaseRender.instance == "") return;
+    showcase.render.instance = el.more.render.instance;
+    if (showcase.render.instance == "") return;
 
-    showcaseTex.visible = true;
-    showcaseId = el.id;
-    showcaseName.visible = true;
-    showcaseName.text = getItemName(showcaseRender.instance);
-    showcaseRender.visible = true;
-    showcaseName.setColor(100, 255, 100);
-    showcaseTex.setColor(10, 10, 60);
-    showcaseRender.lightingswell = true;
-    showcaseRender.rotX = -30;
-    showcaseRender.rotZ = 0;
-    showcaseRender.rotY = 0;
+    showcase.texture.visible = true;
+    showcase.id = el.id;
+    showcase.nameDraw.visible = true;
+    showcase.nameDraw.text = getItemName(showcase.render.instance);
+    showcase.render.visible = true;
+    showcase.nameDraw.setColor(100, 255, 100);
+    showcase.texture.setColor(10, 10, 60);
+    showcase.render.lightingswell = true;
+    showcase.render.rotX = -30;
+    showcase.render.rotZ = 0;
+    showcase.render.rotY = 0;
     showcaseEl = el;
 
-    local item = Daedalus.instance(showcaseRender.instance);
+    local item = Daedalus.instance(showcase.render.instance);
     // foreach(i, v in item) {
     //     if (typeof v == "array") {
     //         foreach(l, k in v) {
@@ -228,38 +228,38 @@ function invHover(el)
     switch(item.mainflag) {
         case 2:
         case 4:
-            showcaseAdd1.text = "";
-            showcaseAdd2.text = "";
-            showcaseAdd3.text = item.text[2] + ": " + item.count[2];
-            showcaseAdd4.text = item.text[3] + " " + item.count[3];
+            showcase.draws[0].text = "";
+            showcase.draws[1].text = "";
+            showcase.draws[2].text = item.text[2] + ": " + item.count[2];
+            showcase.draws[3].text = item.text[3] + " " + item.count[3];
         break;
         case 16:
-            showcaseAdd1.text = item.text[1] + " " + item.count[1];
-            showcaseAdd2.text = item.text[2] + " " + item.count[2];
-            showcaseAdd3.text = item.text[3] + " " + item.count[3];
-            showcaseAdd4.text = item.text[4] + " " + item.count[4];
+            showcase.draws[0].text = item.text[1] + " " + item.count[1];
+            showcase.draws[1].text = item.text[2] + " " + item.count[2];
+            showcase.draws[2].text = item.text[3] + " " + item.count[3];
+            showcase.draws[3].text = item.text[4] + " " + item.count[4];
         break;
         case 32:
-            showcaseAdd1.text = "";
-            showcaseAdd2.text = "";
-            showcaseAdd3.text = "";
-            showcaseAdd4.text = "";
+            showcase.draws[0].text = "";
+            showcase.draws[1].text = "";
+            showcase.draws[2].text = "";
+            showcase.draws[3].text = "";
         break;
         default:
-            showcaseAdd1.text = "";
-            showcaseAdd2.text = "";
-            showcaseAdd3.text = "";
-            showcaseAdd4.text = description;
+            showcase.draws[0].text = "";
+            showcase.draws[1].text = "";
+            showcase.draws[2].text = "";
+            showcase.draws[3].text = description;
         break;
     }
-    showcaseAdd1.setColor(190, 190, 190);
-    showcaseAdd1.visible = true;
-    showcaseAdd2.setColor(190, 190, 190);
-    showcaseAdd2.visible = true;
-    showcaseAdd3.setColor(190, 190, 190);
-    showcaseAdd3.visible = true;
-    showcaseAdd4.setColor(190, 190, 190);
-    showcaseAdd4.visible = true;
+    showcase.draws[0].setColor(190, 190, 190);
+    showcase.draws[0].visible = true;
+    showcase.draws[1].setColor(190, 190, 190);
+    showcase.draws[1].visible = true;
+    showcase.draws[2].setColor(190, 190, 190);
+    showcase.draws[2].visible = true;
+    showcase.draws[3].setColor(190, 190, 190);
+    showcase.draws[3].visible = true;
 
     onElementRender(el);
 }
@@ -267,19 +267,21 @@ function invHover(el)
 function invUnhover(el)
 {
     if (el.elementType != ElementType.BUTTON) return;
-    if (showcaseId == el.id) {
-        showcaseTex.visible = false;
-        showcaseName.visible = false;
-        showcaseRender.visible = false;
-        showcaseAdd1.visible = false;
-        showcaseAdd2.visible = false;
-        showcaseAdd3.visible = false;
-        showcaseAdd4.visible = false;
+    if (showcase.id == el.id) {
+        showcase.texture.visible = false;
+        showcase.nameDraw.visible = false;
+        showcase.render.visible = false;
+        showcase.draws[0].visible = false;
+        showcase.draws[1].visible = false;
+        showcase.draws[2].visible = false;
+        showcase.draws[3].visible = false;
     }
 }
 
 local oler = false;
 local slid = -1;
+local renderOffsetX = 0;
+local renderOffsetY = 0;
 function playClickButtonHandler(id)
 {
     if (!invEnabled) return;
@@ -305,7 +307,7 @@ function playClickButtonHandler(id)
     itemR.visible = true;
     isclicked = true;
     showcaseEl = temp;
-    if (showcaseTex.visible == true) invUnhover({id = id, elementType = ElementType.BUTTON});
+    if (showcase.texture.visible == true) invUnhover({id = id, elementType = ElementType.BUTTON});
     onElementRender(temp.btn)
 }
 
@@ -471,18 +473,18 @@ function onElementRender(el)
 
     if (!invEnabled) return;
 
-    if (showcaseTex.visible) {
+    if (showcase.texture.visible) {
         local curs = getCursorPosition();
-        showcaseTex.setPosition(curs.x, curs.y);
-        showcaseName.setPosition(curs.x + 1000 - showcaseName.width / 2, curs.y + 100);
-        showcaseRender.setPosition(curs.x + 500, curs.y + showcaseName.height + 50);
-        showcaseAdd1.setPosition(curs.x + 100, showcaseRender.getPosition().y + showcaseRender.getSize().height + 50);
-        showcaseAdd2.setPosition(curs.x + 100, showcaseAdd1.getPosition().y + showcaseAdd1.height + 50);
-        showcaseAdd3.setPosition(curs.x + 100, showcaseAdd2.getPosition().y + showcaseAdd2.height + 50);
-        showcaseAdd4.setPosition(curs.x + 100, showcaseAdd3.getPosition().y + showcaseAdd3.height + 50);
-        if (showcaseTex.getSize().height + showcaseTex.getPosition().y < showcaseAdd4.getPosition().y + showcaseAdd4.height + 50)
-            showcaseTex.setSize(showcaseTex.getSize().width, showcaseAdd4.getPosition().y - showcaseTex.getPosition().y + 50 + showcaseAdd4.height);
-        showcaseRender.rotY += 1;
+        showcase.texture.setPosition(curs.x, curs.y);
+        showcase.nameDraw.setPosition(curs.x + 1000 - showcase.nameDraw.width / 2, curs.y + 100);
+        showcase.render.setPosition(curs.x + 500, curs.y + showcase.nameDraw.height + 50);
+        showcase.draws[0].setPosition(curs.x + 100, showcase.render.getPosition().y + showcase.render.getSize().height + 50);
+        showcase.draws[1].setPosition(curs.x + 100, showcase.draws[0].getPosition().y + showcase.draws[0].height + 50);
+        showcase.draws[2].setPosition(curs.x + 100, showcase.draws[1].getPosition().y + showcase.draws[1].height + 50);
+        showcase.draws[3].setPosition(curs.x + 100, showcase.draws[2].getPosition().y + showcase.draws[2].height + 50);
+        if (showcase.texture.getSize().height + showcase.texture.getPosition().y < showcase.draws[3].getPosition().y + showcase.draws[3].height + 50)
+            showcase.texture.setSize(showcase.texture.getSize().width, showcase.draws[3].getPosition().y - showcase.texture.getPosition().y + 50 + showcase.draws[3].height);
+        showcase.render.rotY += 1;
     }
 
     if (isclicked) {
@@ -724,8 +726,6 @@ function initializeInventorySlots() {
     inv.itemSlots = [];
     for (local i = 0; i < MAX_ITEMS; i++) {
         local temp = InventorySlot(SIZE * column, SIZE * row, SIZE, SIZE, "INV_SLOT.TGA", "INV_SLOT_HIGHLIGHTED.TGA");
-        //temp.btn.setBackgroundRegularColor(255, 255, 255);
-        //temp.btn.setBackgroundHoverColor(255, 255, 0);
         temp.btn.rehover();
         temp.row = row;
         temp.column = column;

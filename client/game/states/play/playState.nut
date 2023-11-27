@@ -15,11 +15,9 @@ function initPlayState()
     setPlayerPosition(heroId, 0, 300, 0);
     setPlayerPosition(Player.helper, 38086, 4681, 44551);
     setPlayerAngle(Player.helper, 250);
-    //Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);
-    //Sky.setPlanetColor(PLANET_SUN, 220, 140, 20, 200);
-    //Sky.darkSky = true;
-    //Sky.weather = WEATHER_SNOW;
-    Sky.setCloudsColor(0, 0, 0);
+    Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);
+    Sky.setPlanetColor(PLANET_SUN, 220, 140, 20, 200);
+    Sky.setCloudsColor(220, 140, 20);
     Sky.setLightingColor(255, 140, 20);
     Sky.setFogColor(0, 220, 140, 20);
 

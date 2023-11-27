@@ -201,7 +201,7 @@ local function onPacket(pid, packet)
         break;
 
         case PacketType.QUEST:
-            GiveItem(pid, "ITFO_MUTTONRAW", 1);
+            GiveItem(pid, "ItFo_Bacon", 1);
         break;
 
         case PacketType.TEST:
