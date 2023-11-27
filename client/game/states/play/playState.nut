@@ -26,6 +26,10 @@ function initPlayState()
     initInteraction();
     initNpcs();
     setPlayerStrength(heroId, 100);
+    applyPlayerOverlay(heroId, Mds.id("HUMANS_SPRINT.MDS"));
+    Player.refreshEq(2);
+    Player.refreshEq(4);
+    Player.refreshEq(16);
 }
 
 function onMessage(data)

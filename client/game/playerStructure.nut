@@ -192,9 +192,11 @@ Player.updateVisual <- function(id = -1)
 Player.manageItem <- function(act, instance, amount, slot)
 {
     if (act == 0 || act == 1) {
-        foreach(v in Player.items) {
-            if (v.instance == instance)
-                return v.amount += amount;
+        if (act == 1) {
+            foreach(v in Player.items) {
+                if (v.instance == instance)
+                    return v.amount += amount;
+            }
         }
         Player.items.append({instance = instance, amount = amount, slot = slot });
     } else {
@@ -260,9 +262,16 @@ Player.refreshEq <- function(id)
 
 Player.moveItems <- function(id1, id2)
 {
+    sendPacket(PacketType.MOVE_ITEMS, id1, id2);
+
     local fur = false;
     foreach(v in Player.items) {
         if (v.slot == id1 && !fur) {
+            v.slot = id2;
+            fur = true;
+            continue;
+        }
+        if (v.slot == id1 && fur) {
             v.slot = id2;
             continue;
         }
@@ -270,11 +279,32 @@ Player.moveItems <- function(id1, id2)
             v.slot = id1;
             break;
         }
-        if (v.slot == id2) {
+        if (v.slot == id2 && !fur) {
             v.slot = id1;
             fur = true;
             continue;
         }
     }
-    sendPacket(PacketType.MOVE_ITEMS, id1, id2);
+
+    updateInvEqColor();
+}
+
+function findItemBySlot(slot)
+{
+    foreach (item in Player.items) {
+        if (item.slot == slot) {
+            return item;
+        }
+    }
+
+    return -1;
+}
+
+function findPositionBySlot(item)
+{
+    foreach(i, v in Player.items) {
+        if (v.slot == item) return i;
+    }
+
+    return -1;
 }

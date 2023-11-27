@@ -179,7 +179,7 @@ local function onplayerkey1(key)
         if (anyId != -1) {
             if (!isPlayerDead(anyId.npc)) return;
             playAni(heroId, "T_PLUNDER");
-            //sendPacket(PacketType.QUEST, 1);
+            sendPacket(PacketType.QUEST, 1);
             Chat.Add("You found: ", [255, 220, 180, "Sword x1"]);
         }
     }

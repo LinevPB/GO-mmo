@@ -32,6 +32,7 @@ class InventorySlot
     slot = null;
     enabledA = null;
     alpha = null;
+    equipped = null;
 
     constructor(x, y, width, height, texture, textureActive)
     {
@@ -45,6 +46,13 @@ class InventorySlot
         alpha = false;
         enabledA = false;
         btn.more = this;
+        equipped = false;
+    }
+
+    function reset()
+    {
+        amount = null;
+        instance = null;
     }
 
     function setAlpha(val)
@@ -111,6 +119,18 @@ class InventorySlot
     }
 }
 
+function getRawSlot(slot)
+{
+    foreach(v in inv.itemSlots) {
+        if (slot == v.slot) return v;
+    }
+}
+
+function getInvSlots()
+{
+    return inv.itemSlots;
+}
+
 local showcaseTex = Texture(0, 0, 2000, 2300, "SR_BLANK.TGA");
 local showcaseId = -1;
 local showcaseName = Draw(0, 0, "Laga");
@@ -162,13 +182,10 @@ local showcaseEl = null;
 function updateInvEqColor()
 {
     foreach(v in inv.itemSlots) {
-        if (v.instance == "" || v.instance == null) continue;
-        if (v.instance.toupper() == Player.eqArmor.toupper() || v.instance.toupper() == Player.eqWeapon.toupper() || v.instance.toupper() == Player.eqWeapon2h.toupper()) {
-            //v.btn.setBackgroundRegularColor(200, 50, 50);
+        if (v.equipped) {
             v.btn.background.regular = "INV_SLOT_EQUIPPED.TGA";
             v.btn.background.hover = "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
         } else {
-            //v.btn.setBackgroundRegularColor(255, 255, 255);
             v.btn.background.regular = "INV_SLOT.TGA";
             v.btn.background.hover = "INV_SLOT_HIGHLIGHTED.TGA";
         }
@@ -292,6 +309,12 @@ function playClickButtonHandler(id)
     onElementRender(temp.btn)
 }
 
+function handleEquip(slot, instance, val)
+{
+    if (val) return invEquip(slot, instance);
+    invUnequip(slot, instance);
+}
+
 function invEquip(slot, instance)
 {
     local item = Daedalus.instance(instance);
@@ -370,6 +393,7 @@ function moveItems(btn1, id1, btn2, id2)
     inv.itemSlots[id1].setRender(inv.itemSlots[id2].instance, inv.itemSlots[id2].amount);
     inv.itemSlots[id2].setRender(temp1, temp2);
     Player.moveItems(id1, id2);
+    updateInvEqColor();
 }
 
 function INVplayButtonHandler(id)
@@ -423,7 +447,30 @@ function INVplayButtonHandler(id)
 
 function onElementRender(el)
 {
+    foreach(v in inv.itemSlots) {
+        if (v.render == null) continue;
+        if (v.equipped) {
+            if (v.render.instance == "") {
+                v.equipped = false;
+                updateInvEqColor();
+                continue;
+            }
+            if (v.render.instance != Player.eqArmor && v.render.instance != Player.eqWeapon && v.render.instance != Player.eqWeapon2h) {
+                v.equipped = false;
+                updateInvEqColor();
+                continue;
+            }
+        } else {
+            if (v.render.instance == Player.eqArmor || v.render.instance == Player.eqWeapon || v.render.instance == Player.eqWeapon2h) {
+                if (v.render.instance == "") continue;
+                v.equipped = true;
+                updateInvEqColor();
+            }
+        }
+    }
+
     if (!invEnabled) return;
+
     if (showcaseTex.visible) {
         local curs = getCursorPosition();
         showcaseTex.setPosition(curs.x, curs.y);
@@ -433,6 +480,8 @@ function onElementRender(el)
         showcaseAdd2.setPosition(curs.x + 100, showcaseAdd1.getPosition().y + showcaseAdd1.height + 50);
         showcaseAdd3.setPosition(curs.x + 100, showcaseAdd2.getPosition().y + showcaseAdd2.height + 50);
         showcaseAdd4.setPosition(curs.x + 100, showcaseAdd3.getPosition().y + showcaseAdd3.height + 50);
+        if (showcaseTex.getSize().height + showcaseTex.getPosition().y < showcaseAdd4.getPosition().y + showcaseAdd4.height + 50)
+            showcaseTex.setSize(showcaseTex.getSize().width, showcaseAdd4.getPosition().y - showcaseTex.getPosition().y + 50 + showcaseAdd4.height);
         showcaseRender.rotY += 1;
     }
 
@@ -591,13 +640,33 @@ function onSlidePlay(el)
     }
 }
 
-Inventory.Init <- function()
-{
-    local wW = 8192/2;
-    local wH = 8192;
+local wW = 8192 / 2;
+local wH = 8192;
+
+Inventory.Init <- function() {
     local column = 0;
     local row = 0;
 
+    // Set up inventory menu
+    setupInventoryMenu();
+
+    // Set up cover textures
+    setupCoverTextures();
+
+    // Set up draws positions
+    setupDrawsPositions();
+
+    // Initialize inventory slots
+    initializeInventorySlots();
+
+    // Set up item slider
+    setupItemSlider();
+
+    // Initialize item renders
+    initializeItemRenders();
+}
+
+function setupInventoryMenu() {
     inv.menu = Window(0, 0, wW, wH, "SR_BLANK.TGA");
     inv.menu.background.texture.setColor(10, 10, 10);
 
@@ -612,34 +681,46 @@ Inventory.Init <- function()
     inv.twoMenu = Window(100, SIZE + SIZE + MAX_ROW * SIZE - 200, 4192 - 292, 4192 - 3 * SIZE + 300, "LOG_PAPER.TGA");
     inv.twoMenu.setBackgroundColor(255, 255, 0);
     inv.menu.attach(inv.twoMenu);
+}
 
+function setupCoverTextures() {
     gold_cover_tex = Texture(0, 0, 0, 0, "MENU_CHOICE_BACK.TGA");
 
-    coverTex1 = Texture(0, 0, wW, SIZE - 25, "MENU_CHOICE_BACK.TGA");
-    coverTex11 = Texture(coverTex1.getPosition().x, coverTex1.getPosition().y, coverTex1.getSize().width, coverTex1.getSize().height, "SR_BLANK.TGA");
+    coverTex1 = createCoverTexture(0, 0, wW, SIZE - 25);
+    coverTex11 = createCoverTexture(coverTex1.getPosition().x, coverTex1.getPosition().y, coverTex1.getSize().width, coverTex1.getSize().height);
     coverTex11.setColor(0, 0, 0);
 
-    coverTex2 = Texture(0, SIZE + MAX_ROW * SIZE, wW, 100 + inv.twoMenu.pos.y - ((MAX_ROW + 1) * SIZE), "MENU_CHOICE_BACK.TGA");
-    coverTex22 = Texture(coverTex2.getPosition().x, coverTex2.getPosition().y, coverTex2.getSize().width, coverTex2.getSize().height, "SR_BLANK.TGA");
+    coverTex2 = createCoverTexture(0, SIZE + MAX_ROW * SIZE, wW, 100 + inv.twoMenu.pos.y - ((MAX_ROW + 1) * SIZE));
+    coverTex22 = createCoverTexture(coverTex2.getPosition().x, coverTex2.getPosition().y, coverTex2.getSize().width, coverTex2.getSize().height);
     coverTex22.setColor(0, 0, 0);
 
-    coverTex3 = Texture(0, inv.twoMenu.pos.y + inv.twoMenu.size.height - 150, wW, 8192 - inv.twoMenu.pos.y - inv.twoMenu.size.height + 150, "MENU_CHOICE_BACK.TGA");
-    coverTex33 = Texture(coverTex3.getPosition().x, coverTex3.getPosition().y, coverTex3.getSize().width, coverTex3.getSize().height, "SR_BLANK.TGA");
+    coverTex3 = createCoverTexture(0, inv.twoMenu.pos.y + inv.twoMenu.size.height - 150, wW, 8192 - inv.twoMenu.pos.y - inv.twoMenu.size.height + 150);
+    coverTex33 = createCoverTexture(coverTex3.getPosition().x, coverTex3.getPosition().y, coverTex3.getSize().width, coverTex3.getSize().height);
     coverTex33.setColor(0, 0, 0);
 
-    coverTex4 = Texture(inv.twoMenu.pos.x, inv.twoMenu.pos.y, inv.twoMenu.size.width, inv.twoMenu.size.height, "SR_BLANK.TGA");
+    coverTex4 = createCoverTexture(inv.twoMenu.pos.x, inv.twoMenu.pos.y, inv.twoMenu.size.width, inv.twoMenu.size.height);
     coverTex4.setColor(0, 0, 0);
+}
 
+function createCoverTexture(x, y, width, height) {
+    return Texture(x, y, width, height, "MENU_CHOICE_BACK.TGA");
+}
+
+function setupDrawsPositions() {
     local ls = 0;
-    foreach(i, v in draws) {
+    foreach (i, v in draws) {
         v.setPosition(250, inv.twoMenu.pos.y + 125 + i * (50 + v.height));
-        if (v.getPosition().y + v.height > inv.twoMenu.pos.y + inv.twoMenu.size.height) {
+        if (v.getPosition().y + v.height + 50 > inv.twoMenu.pos.y + inv.twoMenu.size.height) {
             v.setPosition(inv.twoMenu.size.width / 2 + 250, inv.twoMenu.pos.y + 125 + ls * (50 + v.height));
             ls++;
         }
         v.setColor(220, 210, 189);
     }
+}
 
+function initializeInventorySlots() {
+    local column = 0;
+    local row = 0;
     inv.itemSlots = [];
     for (local i = 0; i < MAX_ITEMS; i++) {
         local temp = InventorySlot(SIZE * column, SIZE * row, SIZE, SIZE, "INV_SLOT.TGA", "INV_SLOT_HIGHLIGHTED.TGA");
@@ -662,12 +743,15 @@ Inventory.Init <- function()
         }
         column++;
     }
+}
 
+function setupItemSlider() {
     inv.itemSlider = Slider(MAX_COLUMN * SIZE + 300, SIZE + 50, MAX_ROW * SIZE - 100, "LOG_PAPER.TGA", SIZE * (MAX_ITEMS / MAX_COLUMN - MAX_ROW), false, "MENU_MASKE.TGA", true);
     inv.itemSlider.setBackgroundColor(255, 255, 0);
     inv.menu.attach(inv.itemSlider);
+}
 
-    ////////////////////////////
+function initializeItemRenders() {
     for (local i = 0; i < MAX_ITEMS; i++) {
         inv.itemSlots[i].setRender("", 0);
     }
@@ -675,39 +759,27 @@ Inventory.Init <- function()
     test_inv();
 }
 
-local vob = Vob("nw_misc_big_tent_430p.3DS");
-Inventory.Enable <- function(val)
-{
+Inventory.Enable <- function(val) {
     setFreeze(val);
     Camera.movementEnabled = !val;
     disableControls(val);
     setCursorVisible(val);
     inv.menu.enable(val);
-    coverTex1.visible = val;
-    coverTex11.visible = val;
-    coverTex2.visible = val;
-    coverTex22.visible = val;
-    coverTex3.visible = val;
-    coverTex33.visible = val;
-    coverTex4.visible = val;
+    setCoverTexturesVisibility(val);
     invEnabled = val;
 
-    foreach(v in draws) {
+    // Set visibility of all draws
+    foreach (v in draws) {
         v.visible = val;
     }
-
 
     if (val == true) {
         setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
         Camera.setPosition(37900, 4680, 44440);
         Camera.setRotation(0, 30, 0);
-        vob.addToWorld();
-        vob.setPosition(29912, 5246, -15710);
-        vob.floor();
-        vob.physicsEnabled = val;
-        //inv.menu.setBackgroundColor(0, 0, 0);
 
-        foreach(v in Player.items) {
+        // Set item renders in inventory slots
+        foreach (v in Player.items) {
             inv.itemSlots[v.slot].setRender(v.instance, v.amount);
             inv.itemSlots[v.slot].setAlpha(true);
         }
@@ -721,12 +793,24 @@ Inventory.Enable <- function(val)
             inv.itemSlots[i].setRender("", 0);
         }
         setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
-        vob.removeFromWorld();
-        foreach(v in inv.itemSlots) {
+
+        // Disable all inventory slots
+        foreach (v in inv.itemSlots) {
             v.enable(false);
         }
+
         off_inv_s();
     }
+}
+
+function setCoverTexturesVisibility(val) {
+    coverTex1.visible = val;
+    coverTex11.visible = val;
+    coverTex2.visible = val;
+    coverTex22.visible = val;
+    coverTex3.visible = val;
+    coverTex33.visible = val;
+    coverTex4.visible = val;
 }
 
 Inventory.IsEnabled <- function() {

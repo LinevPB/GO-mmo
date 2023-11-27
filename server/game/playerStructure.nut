@@ -40,7 +40,7 @@ class PlayerStructure
             if (v.instance == instance) {
                 v.amount += amount;
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount, v.slot);
-                return {val = true, instance = v.instance, amount = v.amount, slot = v.slot};
+                return {val = false, instance = v.instance, amount = v.amount, slot = v.slot};
             }
         }
 
@@ -54,21 +54,20 @@ class PlayerStructure
                     items.append({instance = instance, amount = amount, slot = i});
                     slot = i;
                     marked = false;
-                    break;
+                    sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
+                    return {val = true, instance = instance, amount = amount, slot = slot}
                 }
                 if (marked && i < 90) {
                     marked = false;
                 }
             }
-
-            if (!marked) sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot); return true;
         } else {
             items.append({instance = instance, amount = amount, slot = slot});
             sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
             return {val = true, instance = instance, amount = amount, slot = slot};
         }
 
-        return {val = false };
+        return;
     }
 
     function removeItem(instance, amount)
@@ -145,8 +144,9 @@ function GiveItem(pid, instance, amount, loading = false, slot = -1)
 
     if (item.val == true)
         mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `slot`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + item.slot + "', '" + player.charId + "')");
-    else
-        mysql.squery("UPDATE `items` SET `amount` = '" + item.amount + "' WHERE `owner`=" + player.charId + "' AND `instance`='" + item.instance + "'");
+    else {
+        mysql.squery("UPDATE `items` SET `amount` = '" + item.amount + "' WHERE `owner`='" + player.charId + "' AND `instance`='" + item.instance + "'");
+    }
 }
 
 function RemoveItem(pid, instance, amount)
