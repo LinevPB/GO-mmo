@@ -1,11 +1,13 @@
 class Window extends Element {
     elements = null;
+    frozen = null;
 
     constructor(x, y, width, height, texture = "DLG_CONVERSATION.TGA", title = "", hover_texture = "NONE") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
         elementType = ElementType.WINDOW;
         elements = [];
         UI_Elements.append(this);
+        frozen = false;
     }
 
     function attach(val) {

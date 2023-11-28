@@ -3,9 +3,9 @@
     <script src="interface/interface.nut" type="client" />
     <script src="interface/chat.nut" type="client" />
     <script src="interface/notification.nut" type="client" />
-    <script src="interface/inventory.nut" type="client" />
     <script src="interface/npcInteraction.nut" type="client" />
 
+    <import src="inventory/inventory.xml" type="client" />
     <import src="npc/npc.xml" type="client" />
 
     <script src="enemy.nut" type="client" />

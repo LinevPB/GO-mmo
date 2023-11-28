@@ -201,7 +201,14 @@ local function onPacket(pid, packet)
         break;
 
         case PacketType.QUEST:
-            GiveItem(pid, "ItFo_Bacon", 1);
+            GiveItem(pid, "ItAm_Addon_MANA", 1);
+            GiveItem(pid, "ItFo_Addon_Rum", 1);
+            GiveItem(pid, "ITRu_Thunderstorm", 1);
+            GiveItem(pid, "ItSc_Icelance", 1);
+            GiveItem(pid, "ItPo_Health_Addon_04", 1);
+            GiveItem(pid, "ITMW_2H_ORCAXE_03", 1);
+            GiveItem(pid, "ItMi_GoldNugget_Addon", 1);
+            GiveItem(pid, "ItRu_Icebolt", 1);
         break;
 
         case PacketType.TEST:

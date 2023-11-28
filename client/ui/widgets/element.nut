@@ -36,6 +36,7 @@ class Element {
     baseY = null;
 
     more = null;
+    frozen = null;
 
     constructor(x, y, width, height, texture, title, hover_texture = "NONE") {
         id = element_id;
@@ -69,6 +70,8 @@ class Element {
 
         baseX = x;
         baseY = y;
+
+        frozen = false;
     }
 
     function isHovered()
