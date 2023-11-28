@@ -81,15 +81,19 @@ function charactersHandler(pid, data)
 {
     local temp = findPlayer(pid);
     if (temp.logged) {
-        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, slotId, eqWeapon2h FROM characters WHERE pid='" + temp.dbId + "'");
+        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, slotId, eqWeapon2h, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, x, y, z FROM characters WHERE pid='" + temp.dbId + "'");
         if (result[0] != null) {
             foreach(i, v in result) {
                 if (v[1].tointeger() != temp.dbId) continue;
                 sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10]);
+                updatePlayer(pid, v[11], v[12], v[13], v[14], v[15], v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23], v[24]);
+                setPlayerPosition(pid, v[25], v[26], v[27]);
+
             }
         }
 
         sendPlayerPacket(pid, PacketType.CHARACTERS_FINISHED, 1);
+        ChangeGameState(pid, GameState.PLAY);
     }
 }
 

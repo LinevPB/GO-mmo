@@ -17,6 +17,21 @@ class PlayerStructure
     eqWeapon = null;
     eqWeapon2h = null;
 
+    level = null;
+    experience = null;
+    health = null;
+    max_health = null;
+    mana = null;
+    max_mana = null;
+    strength = null;
+    dexterity = null;
+    skill_1h = null;
+    skill_2h = null;
+    skill_bow = null;
+    skill_cbow = null;
+    magic_circle = null;
+    gold = null;
+
     constructor(playerid)
     {
         gameState = GameState.UNKNOWN;
@@ -31,6 +46,21 @@ class PlayerStructure
         eqArmor = null;
         eqWeapon = null;
         eqWeapon2h = null;
+
+        level = null;
+        experience = null;
+        health = null;
+        max_health = null;
+        mana = null;
+        max_mana = null;
+        strength = null;
+        dexterity = null;
+        skill_1h = null;
+        skill_2h = null;
+        skill_bow = null;
+        skill_cbow = null;
+        magic_circle = null;
+        gold = null;
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
@@ -100,6 +130,132 @@ class PlayerStructure
     {
         logged = val;
     }
+
+    function setLevel(val, loading=false)
+    {
+        level = val;
+        sendPlayerPacket(id, PacketType.UPDATE_LEVEL, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `level` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setExperience(val, loading=false)
+    {
+        experience = val;
+        sendPlayerPacket(id, PacketType.UPDATE_EXPERIENCE, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `exp` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setHealth(val, loading=false)
+    {
+        health = val;
+        setPlayerHealth(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `health` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setMaxHealth(val, loading=false)
+    {
+        max_health = val;
+        setPlayerMaxHealth(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `max_health` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setMana(val, loading=false)
+    {
+        mana = val;
+        setPlayerMana(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `mana` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setMaxMana(val, loading=false)
+    {
+        max_mana = val;
+        setPlayerMaxMana(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `max_mana` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setStrength(val, loading=false)
+    {
+        strength = val;
+        setPlayerStrength(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `strength` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setDexterity(val, loading=false)
+    {
+        dexterity = val;
+        setPlayerDexterity(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `dexterity` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setSkill1h(val, loading=false)
+    {
+        skill_1h = val;
+        setPlayerSkillWeapon(id, WEAPON_1H, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `skill_1h` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setSkill2h(val, loading=false)
+    {
+        skill_2h = val;
+        setPlayerSkillWeapon(id, WEAPON_2H, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `skill_2h` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setSkillBow(val, loading=false)
+    {
+        skill_bow = val;
+        setPlayerSkillWeapon(id, WEAPON_BOW, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `skill_bow` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setSkillCBow(val, loading=false)
+    {
+        skill_cbow = val;
+        setPlayerSkillWeapon(id, WEAPON_CBOW, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `skill_cbow` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setMagicCircle(val, loading=false)
+    {
+        magic_circle = val;
+        setPlayerMagicLevel(id, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `magic_circle` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setGold(val, loading=false)
+    {
+        gold = val;
+        sendPlayerPacket(id, PacketType.UPDATE_GOLD, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `gold` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
 }
 
 function findPlayer(pid)
@@ -133,6 +289,26 @@ function removePlayerById(id)
     foreach(i, v in players) {
         if (v.id == id) return players.remove(i);
     }
+}
+
+function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold)
+{
+    local player = findPlayer(pid);
+
+    player.setLevel(level, true);
+    player.setExperience(exp, true);
+    player.setHealth(health, true);
+    player.setMaxHealth(max_health, true);
+    player.setMana(mana, true);
+    player.setMaxMana(max_mana, true);
+    player.setStrength(strength, true);
+    player.setDexterity(dexterity, true);
+    player.setSkill1h(skill_1h, true);
+    player.setSkill2h(skill_2h, true);
+    player.setSkillBow(skill_bow, true);
+    player.setSkillCBow(skill_cbow, true);
+    player.setMagicCircle(magic_circle, true);
+    player.setGold(gold, true);
 }
 
 function GiveItem(pid, instance, amount, loading = false, slot = -1)
@@ -250,22 +426,3 @@ function MoveItems(pid, fid1, fid2)
         print("???");
     }
 }
-
-// function SaveItems(pid, heroId)
-// {
-//     local player = findPlayer(pid);
-//     local items = player.getItems();
-//     local itemsDb = mysql.gquery("SELECT instance, amount FROM items WHERE owner=" + player.charId);
-//     //mysql.squery("DELETE FROM items WHERE `owner`=" + findPlayer(pid).charId + "' AND `instance`='" + v.instance + "'");
-//     local ids = [];
-//     foreach(i, v in items) {
-//         foreach(i, k in itemsDb) {
-//             if (v.instance == k[0]) {
-//                 if (v.amount == k[1]) continue;
-//                 mysql.squery("UPDATE `items` SET `amount` = '" + v.amount + "' WHERE `owner`=" + findPlayer(pid).charId + "' AND `instance`='" + v.instance + "'");
-//                 continue;
-//             }
-//         }
-//         mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `owner`) VALUES (NULL, '" + v.instance + "', '" + v.amount + "', '" + player.charId + "')");
-//     }
-// }

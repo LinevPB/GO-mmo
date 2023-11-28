@@ -19,6 +19,11 @@ function showcaseHover(el)
     showcase.id = el.id;
     showcase.nameDraw.visible = true;
     showcase.nameDraw.text = getItemName(showcase.render.instance);
+
+    local amount = getItemAmount(showcase.render.instance);
+    if (amount > 1)
+        showcase.nameDraw.text = showcase.nameDraw.text + " x" + amount;
+
     showcase.render.visible = true;
     showcase.nameDraw.setColor(100, 255, 100);
     showcase.texture.setColor(10, 10, 60);

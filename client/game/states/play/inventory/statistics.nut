@@ -23,8 +23,8 @@ local draws = [
 function updateDraws()
 {
     draws[0].text = "Name: " + getPlayerName(heroId);
-    draws[1].text = "Level: " + getPlayerLevel(heroId);
-    draws[2].text = "Experience: " + getExp() + "/" + getNextLevelExp();
+    draws[1].text = "Level: " + Player.level;
+    draws[2].text = "Experience: " + Player.experience + "/" + calcNextLevelExperience(Player.level);
     draws[3].text = ""
     draws[4].text = "Health: " + getPlayerHealth(heroId) + "/" + getPlayerMaxHealth(heroId);
     draws[5].text = "Mana: " + getPlayerMana(heroId) + "/" + getPlayerMaxMana(heroId);

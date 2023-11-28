@@ -180,7 +180,9 @@ Player <- {
     eqWeapon = "",
     eqWeapon2h = "",
     items = [],
-    gold = 3000000
+    gold = 3000000,
+    level = 0,
+    experience = 0
 };
 
 Player.updateVisual <- function(id = -1)
@@ -287,6 +289,16 @@ Player.moveItems <- function(id1, id2)
     }
 
     updateInvEqColor();
+}
+
+function getItemAmount(instance)
+{
+    foreach(v in Player.items) {
+        if (v.instance.toupper() == instance.toupper())
+        {
+            return v.amount;
+        }
+    }
 }
 
 function findItemBySlot(slot)

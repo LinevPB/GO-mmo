@@ -12,7 +12,7 @@ function initPlayState()
     Chat.Enable(true);
     Inventory.Init();
     disableLogicalKey(GAME_INVENTORY, true);
-    setPlayerPosition(heroId, 0, 300, 0);
+    // setPlayerPosition(heroId, 0, 300, 0);
     setPlayerPosition(Player.helper, 38086, 4681, 44551);
     setPlayerAngle(Player.helper, 250);
     Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);

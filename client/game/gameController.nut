@@ -93,6 +93,7 @@ local function onClickH(key)
 {
     switch(Player.gameState) {
         case GameState.CHARACTER_CREATION: onClickC(key); break;
+        case GameState.PLAY: rawOnClick(key); break;
     }
 }
 addEventHandler("onMouseClick", onClickH);
@@ -219,6 +220,18 @@ local function onPacket(packet) {
 
         case PacketType.SPAWN_ENEMIES:
             spawnEnemy(data[0], data[1], data[2], data[3], data[4], data[5]);
+        break;
+
+        case PacketType.UPDATE_LEVEL:
+            Player.level = data[0];
+        break;
+
+        case PacketType.UPDATE_EXPERIENCE:
+            Player.experience = data[0];
+        break;
+
+        case PacketType.UPDATE_GOLD:
+            Player.gold = data[0];
         break;
     }
 }

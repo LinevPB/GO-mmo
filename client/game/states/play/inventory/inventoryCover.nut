@@ -1,6 +1,6 @@
 local gold_cover_tex = null;
 local esc_lab = Draw(200, 8000, "(ESC) Press to resume");
-local gold_lab = Draw(0, 0, "Gold: ");
+local gold_lab = Draw(0, 0, "Ore: ");
 local sec_gold_lab = Draw(0, 0, "0");
 local big_inv_title = Draw(0, 0, "Inventory");
 local big_stat_title = Draw(0, 0, "Statistics");
@@ -52,7 +52,7 @@ function updateGoldDraws()
     }
     res = temp + res;
 
-    gold_lab.text = "Gold: ";
+    gold_lab.text = "Ore: ";
     sec_gold_lab.text = res;
 }
 
@@ -102,7 +102,7 @@ function enableCover()
     gold_lab.setColor(255, 255, 255);
     gold_lab.setPosition(50 + getCharacterMenu().pos.x, getCharacterMenu().pos.y - gold_lab.height);
     sec_gold_lab.visible = true;
-    sec_gold_lab.setColor(255, 150, 0);
+    sec_gold_lab.setColor(0, 150, 255);
     sec_gold_lab.setPosition(gold_lab.getPosition().x + gold_lab.width, getCharacterMenu().pos.y - gold_lab.height);
 
     gold_cover_tex.visible = true;

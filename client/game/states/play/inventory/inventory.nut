@@ -7,8 +7,13 @@ Inventory.width <- 8192 / 2;
 Inventory.height <- 8192;
 Inventory.invEnabled <- false;
 
-local isClicked = false;
 local mainMenu = null;
+local slotMenu = null;
+local slotMenuButtons = {
+    useButton = null,
+    dropButton = null
+};
+local isClicked = false;
 
 function getMainMenu()
 {
@@ -18,6 +23,12 @@ function getMainMenu()
 Inventory.Init <- function()
 {
     setupInventoryMenu();
+
+    setupInventorySlots();
+
+    setupCharacterSetup();
+
+    setupStatistics();
 
     setupCoverTextures();
 
@@ -30,15 +41,23 @@ Inventory.Init <- function()
     initializeItemRenders();
 }
 
-function setupInventoryMenu() {
+function setupInventoryMenu()
+{
     mainMenu = Window(0, 0, Inventory.width, Inventory.height, "SR_BLANK.TGA");
     mainMenu.background.texture.setColor(10, 10, 10);
 
-    setupInventorySlots();
+    slotMenu = Window(0, 0, 1000, 500, "SR_BLANK.TGA");
+    slotMenu.background.texture.setColor(10, 10, 90);
 
-    setupCharacterSetup();
+    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", "Use", "INV_TITEL.TGA");
+    slotMenuButtons.useButton.setBackgroundRegularColor(10, 10, 90);
+    slotMenuButtons.useButton.setBackgroundHoverColor(255, 255, 255);
+    slotMenu.attach(slotMenuButtons.useButton);
 
-    setupStatistics();
+    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", "Drop", "INV_TITEL.TGA");
+    slotMenuButtons.dropButton.setBackgroundRegularColor(10, 10, 90);
+    slotMenuButtons.dropButton.setBackgroundHoverColor(255, 255, 255);
+    slotMenu.attach(slotMenuButtons.dropButton);
 }
 
 Inventory.Enable <- function(val)
@@ -161,20 +180,35 @@ function playClickButtonHandler(id) // click
     return;
 }
 
-local itemChoiceTex = Texture(5000, 5000, 1000, 500, "SR_BLANK.TGA");
-
 function handleSlotMenu(id, pointer)
 {
-    if (clickTick < 400 && !itemChoiceTex.visible)
+    if (clickTick < 400 && !slotMenu.enabled)
     {
+        local curs = getCursorPosition();
+
         getItemMenu().frozen = true;
-        itemChoiceTex.visible = true;
-        itemChoiceTex.setPosition(getCursorPosition().x, getCursorPosition().y);
+        slotMenu.enable(true);
+        slotMenu.setPosition(curs.x, curs.y);
     }
     else
     {
-        itemChoiceTex.visible = false;
+        slotMenu.enable(false);
         getItemMenu().frozen = false;
+    }
+}
+
+function rawOnClick(key)
+{
+    if (!slotMenu.enabled)
+    {
+        return;
+    }
+
+    if (!inSquare(getCursorPosition(), slotMenu.pos, slotMenu.size) && !inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
+    {
+        slotMenu.enable(false);
+        getItemMenu().frozen = false;
+        return;
     }
 }
 
