@@ -108,10 +108,10 @@ class PlayerStructure
                 if (v.amount <= 0) {
                     v.amount = 0;
                     sendPlayerPacket(id, PacketType.UPDATE_ITEM, 3, v.instance, v.amount, v.slot);
-                    return items.remove(i);
+                    return {removed = true, more = items.remove(i)};
                 }
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 2, v.instance, v.amount, v.slot);
-                return v;
+                return {removed = false, more = v};
             }
         }
     }
@@ -327,8 +327,13 @@ function GiveItem(pid, instance, amount, loading = false, slot = -1)
 
 function RemoveItem(pid, instance, amount)
 {
-    local item = Player.removeItem(instance, amount);
-    mysql.squery("UPDATE `items` SET `amount` = '" + item.amount + "' WHERE `owner`=" + findPlayer(pid).charId + "' AND `instance`='" + item.instance + "'");
+    local player = findPlayer(pid);
+    local item = player.removeItem(instance, amount);
+
+    if (!item.removed)
+        mysql.squery("UPDATE `items` SET `amount` = '" + item.more.amount + "' WHERE `owner`='" + findPlayer(pid).charId + "' AND `instance`='" + item.more.instance + "'");
+    else
+        mysql.squery("DELETE FROM `items` WHERE `owner`='" + player.charId + "' AND `instance`='" + item.more.instance + "'");
 }
 
 function LoadItems(pid, heroId)
@@ -425,4 +430,17 @@ function MoveItems(pid, fid1, fid2)
     if (id1[0] == null && id2[0] == null) {
         print("???");
     }
+}
+
+function UseItem(pid, instance, amount)
+{
+    local player = findPlayer(pid);
+    print("Trying to use " + instance + " with amount of " + amount);
+    RemoveItem(pid, instance, amount);
+}
+
+function DropItem(pid, instance, amount)
+{
+    local player = findPlayer(pid);
+    print("Trying to drop " + instance + " with amount of " + amount);
 }

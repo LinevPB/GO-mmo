@@ -20,7 +20,7 @@ class SliderMask extends Element
 
     constructor(x, y, width, tex, scope, length = 0)
     {
-        base.constructor(x, y, width, width, tex, "", "NONE");
+        base.constructor(x, y + width / 2, width, width, tex, "", "NONE");
 
         elementType = ElementType.SLIDER_MASK;
         range = scope;
@@ -100,14 +100,18 @@ class Slider extends Element {
 
         elementType = ElementType.SLIDER;
 
-        if (label) {
-            textuboxu = NumericBox(x, y, 250, 250, "INV_SLOT_FOCUS.TGA", scope);
+        if (label != "")
+        {
+            textuboxu = NumericBox(x, y, 250, 250, "MENU_CHOICE_BACK.TGA", scope);
             labelu = Label(x, y, label);
             hasLabel = true;
         }
+        else
+        {
+            hasLabel = false;
+        }
 
-        hasLabel = false;
-        mask = SliderMask(x, y, sliderSize * 1.25, "MENU_MASKE.TGA", scope, width);
+        mask = SliderMask(x, y, sliderSize * 1.25, sliderTex, scope, width);
         mask.parent = this;
 
         UI_Elements.append(this);
@@ -123,7 +127,8 @@ class Slider extends Element {
 
     function getValue()
     {
-        if (hasLabel) {
+        if (hasLabel)
+        {
             return (mask.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
         }
 

@@ -204,6 +204,14 @@ local function onPacket(pid, packet)
             EquipWeapon2h(pid, data[0]);
         break;
 
+        case PacketType.USE_ITEM:
+            UseItem(pid, data[0], data[1]);
+        break;
+
+        case PacketType.DROP_ITEM:
+            DropItem(pid, data[0], data[1]);
+        break;
+
         case PacketType.QUEST:
             GiveItem(pid, "ItAm_Addon_MANA", 1);
             GiveItem(pid, "ItFo_Addon_Rum", 1);
@@ -216,7 +224,6 @@ local function onPacket(pid, packet)
         break;
 
         case PacketType.TEST:
-            print("called");
             local pos = getPlayerPosition(pid);
             local angle = getPlayerAngle(pid);
             local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";

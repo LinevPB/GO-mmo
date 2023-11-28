@@ -49,6 +49,7 @@ class NumericBox extends Element {
     function updateRaw(text)
     {
         draw.text = text;
+        draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
     }
 
     function updateValue(slash = "|") {

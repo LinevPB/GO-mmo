@@ -1,4 +1,4 @@
-DEBUG <- true;
+DEBUG <- false;
 
 lang <- {
     ["SERVER_NAME"] = {
@@ -182,8 +182,14 @@ Player <- {
     items = [],
     gold = 3000000,
     level = 0,
-    experience = 0
+    experience = 0,
+    qa1 = "",
+    qa2 = "",
+    qa3 = "",
+    qa4 = ""
 };
+
+ITEM_CHANGE <- false;
 
 Player.updateVisual <- function(id = -1)
 {
@@ -193,22 +199,40 @@ Player.updateVisual <- function(id = -1)
 
 Player.manageItem <- function(act, instance, amount, slot)
 {
-    if (act == 0 || act == 1) {
-        if (act == 1) {
-            foreach(v in Player.items) {
+    if (act == 0 || act == 1)
+    {
+        if (act == 1)
+        {
+            foreach(v in Player.items)
+            {
                 if (v.instance == instance)
+                {
                     return v.amount += amount;
+                }
             }
         }
         Player.items.append({instance = instance, amount = amount, slot = slot });
-    } else {
-        foreach(i, v in Player.items) {
-            if (v.instance == instance) {
-                v.amount -= amount;
-                if (v.amount < 0) {
-                    v.amount = 0;
-                    return Player.items.remove(i);
-                }
+    }
+    else
+    {
+        foreach(i, v in Player.items)
+        {
+            if (v.instance != instance)
+            {
+                continue;
+            }
+
+            if (act == 2)
+            {
+                ITEM_CHANGE = true;
+                v.amount = amount;
+                break;
+            }
+
+            if (act == 3)
+            {
+                ITEM_CHANGE = true;
+                return Player.items.remove(i);
             }
         }
     }

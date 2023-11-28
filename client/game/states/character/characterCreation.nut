@@ -44,7 +44,9 @@ function initCharacterCreation()
 
     local wW = 2000;
     local wH = 6000;
-    makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "DLG_CONVERSATION.TGA");
+    makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
+    makeupMenu.window.setBackgroundColor(10, 10, 40);
+    makeupMenu.window.setCover("MENU_INGAME.TGA");
 
     local temp = Label(0, 100, lang["LABEL_CREATION_TITLE"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");
@@ -57,27 +59,29 @@ function initCharacterCreation()
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
-    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "INV_SLOT_FOCUS.TGA", "", "INV_TITEL.TGA", false);
+    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", false);
     makeupMenu.window.attach(makeupMenu.nickTextbox);
 
     temp = Label(wW / 2 - 850, 1500, lang["LABEL_CREATION_SEX"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
-    makeupMenu.characterList = List(wW/2, 1500, 1700, 300, "DLG_CONVERSATION.TGA", [lang["LABEL_CREATION_MALE"][Player.lang], lang["LABEL_CREATION_FEMALE"][Player.lang]], 800, 300, 900, 0, "INV_SLOT_FOCUS.TGA", "INV_TITEL.TGA");
+    makeupMenu.characterList = List(wW/2, 1500, 1700, 300, "DLG_CONVERSATION.TGA", [lang["LABEL_CREATION_MALE"][Player.lang], lang["LABEL_CREATION_FEMALE"][Player.lang]], 800, 300, 900, 0, "MENU_CHOICE_BACK.TGA", "INV_TITEL.TGA");
     makeupMenu.window.attach(makeupMenu.characterList);
     makeupMenu.characterList.center();
     makeupMenu.characterList.selectFirstAsDefault();
 
-    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "INV_TITEL.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_MASKE.TGA");
+    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "MENU_CHOICE_BACK.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_CHOICE_BACK.TGA");
     makeupMenu.window.attach(makeupMenu.bodySlider);
-    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "INV_TITEL.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_MASKE.TGA");
+
+    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "MENU_CHOICE_BACK.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_CHOICE_BACK.TGA");
     makeupMenu.window.attach(makeupMenu.headSlider);
-    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "INV_TITEL.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_MASKE.TGA");
+
+    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "MENU_CHOICE_BACK.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_CHOICE_BACK.TGA");
     makeupMenu.window.attach(makeupMenu.headTexSlider);
 
-    makeupMenu.ok = Button(300, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "INV_TITEL.TGA");
-    makeupMenu.quit = Button(1100, 5400, 600, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "INV_TITEL.TGA");
+    makeupMenu.ok = Button(300, 5400, 600, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "INV_TITEL.TGA");
+    makeupMenu.quit = Button(1100, 5400, 600, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "INV_TITEL.TGA");
     makeupMenu.window.attach(makeupMenu.ok);
     makeupMenu.window.attach(makeupMenu.quit);
 
@@ -125,7 +129,8 @@ function deinitCharacterCreation()
 
 function onSlideChar(el)
 {
-    switch(el.id) {
+    switch(el.id)
+    {
         case makeupMenu.bodySlider.id:
             Player.cBodyTexture = makeupMenu.bodySlider.getValue();
             Player.updateVisual(Player.helper);

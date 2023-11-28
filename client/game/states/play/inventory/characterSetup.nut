@@ -5,6 +5,7 @@ local calw1 = 0;
 
 local labs = [];
 local labs_title = [];
+local qa_draws = [];
 
 local characterMenu = null;
 
@@ -31,8 +32,20 @@ function enableCharacterSetup()
         if (i == 0) v.setRender(Player.eqWeapon, 0);
         if (i == 1) v.setRender(Player.eqWeapon2h, 0);
         if (i == 2) v.setRender(Player.eqArmor, 0);
+        if (i == 3) {}
+        if (i == 4) v.setRender(Player.qa1, 0);
+        if (i == 5) v.setRender(Player.qa2, 0);
+        if (i == 6) v.setRender(Player.qa3, 0);
+        if (i == 7) v.setRender(Player.qa4, 0);
 
         v.enable(true);
+
+        if (i > 3)
+        {
+            qa_draws[i-4].setPosition(v.btn.pos.x + v.btn.size.width - qa_draws[i-4].width, v.btn.pos.y + v.btn.size.height - qa_draws[i-4].height);
+            qa_draws[i-4].visible = true;
+            qa_draws[i-4].setColor(240, 220, 180);
+        }
     }
 }
 
@@ -43,9 +56,14 @@ function disableCharacterSetup()
         v.visible = false;
     }
 
-    foreach(v in labs)
+    foreach(i, v in labs)
     {
         v.enable(false);
+
+        if (i > 3)
+        {
+            qa_draws[i-4].visible = false;
+        }
     }
 }
 
@@ -91,8 +109,12 @@ function setupCharacterSetup()
 
         ///
     characterMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, Inventory.SIZE + 250, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, Inventory.MAX_ROW * Inventory.SIZE - 250, "LOG_PAPER.TGA");
-
     getMainMenu().attach(characterMenu);
+
+    for(local i = 1; i < 5; i++)
+    {
+        qa_draws.append(Draw(0, 0, "F"+i));
+    }
 }
 
 function handleCharacterEqRelease()

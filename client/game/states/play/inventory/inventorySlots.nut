@@ -158,7 +158,7 @@ function getInvSlots()
 
 function setupItemSlider()
 {
-    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), false, "MENU_MASKE.TGA", true);
+    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), false, "MENU_CHOICE_BACK.TGA", true);
     itemSlider.setBackgroundColor(255, 255, 0);
     getMainMenu().attach(itemSlider);
 }
@@ -230,6 +230,8 @@ function handleEquip(slot, instance, val)
 
 function invEquip(slot, instance)
 {
+    if (instance == "" || instance == null) return false;
+
     local item = Daedalus.instance(instance);
     switch(slot)
     {
@@ -269,12 +271,20 @@ function invEquip(slot, instance)
         case 3:
             break;
         case 4:
+            Player.qa1 = instance;
+            return true;
             break;
         case 5:
+            Player.qa2 = instance;
+            return true;
             break;
         case 6:
+            Player.qa3 = instance;
+            return true;
             break;
         case 7:
+            Player.qa4 = instance;
+            return true;
             break;
     }
 }

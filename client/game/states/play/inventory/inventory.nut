@@ -13,7 +13,16 @@ local slotMenuButtons = {
     useButton = null,
     dropButton = null
 };
+local slotHolder = null;
+local slotIdHolder = null;
 local isClicked = false;
+local renderOffsetX = 0;
+local renderOffsetY = 0;
+local clickTick = 0;
+
+local slotId = -1;
+local holdedRender = null;
+local slotPointer = false;
 
 function getMainMenu()
 {
@@ -47,17 +56,20 @@ function setupInventoryMenu()
     mainMenu.background.texture.setColor(10, 10, 10);
 
     slotMenu = Window(0, 0, 1000, 500, "SR_BLANK.TGA");
-    slotMenu.background.texture.setColor(10, 10, 90);
+    slotMenu.background.texture.setColor(10, 10, 60);
+    slotMenu.setCover("MENU_CHOICE_BACK.TGA");
 
-    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", "Use", "INV_TITEL.TGA");
-    slotMenuButtons.useButton.setBackgroundRegularColor(10, 10, 90);
+    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", "Use", "MENU_CHOICE_BACK.TGA");
+    slotMenuButtons.useButton.setBackgroundRegularColor(10, 10, 60);
     slotMenuButtons.useButton.setBackgroundHoverColor(255, 255, 255);
     slotMenu.attach(slotMenuButtons.useButton);
 
-    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", "Drop", "INV_TITEL.TGA");
-    slotMenuButtons.dropButton.setBackgroundRegularColor(10, 10, 90);
+    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", "Drop", "MENU_CHOICE_BACK.TGA");
+    slotMenuButtons.dropButton.setBackgroundRegularColor(10, 10, 60);
     slotMenuButtons.dropButton.setBackgroundHoverColor(255, 255, 255);
     slotMenu.attach(slotMenuButtons.dropButton);
+
+    holdedRender = ItemRender(5000, 0, 600, 600, "");
 }
 
 Inventory.Enable <- function(val)
@@ -130,14 +142,6 @@ function invUnhover(el)
     showcaseUnhover(el);
 }
 
-local renderOffsetX = 0;
-local renderOffsetY = 0;
-local clickTick = 0;
-
-local slotId = -1;
-local holdedRender = ItemRender(5000, 0, 600, 600, "");
-local slotPointer = false;
-
 function playClickButtonHandler(id) // click
 {
     if (!Inventory.invEnabled) return;
@@ -177,23 +181,32 @@ function playClickButtonHandler(id) // click
 
     slotPointer = temp;
 
+    if (!slotMenu.enabled)
+    {
+        slotHolder = temp;
+        slotIdHolder = slotId;
+    }
+
     return;
 }
 
 function handleSlotMenu(id, pointer)
 {
-    if (clickTick < 400 && !slotMenu.enabled)
+    if (clickTick < 400 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null)
     {
         local curs = getCursorPosition();
 
         getItemMenu().frozen = true;
         slotMenu.enable(true);
         slotMenu.setPosition(curs.x, curs.y);
+        pointer.btn.unhover();
     }
     else
     {
         slotMenu.enable(false);
         getItemMenu().frozen = false;
+        slotHolder = null;
+        slotIdHolder = null;
     }
 }
 
@@ -212,8 +225,39 @@ function rawOnClick(key)
     }
 }
 
+function handleUseItem(slot)
+{
+    sendPacket(PacketType.USE_ITEM, slot.instance, 1);
+}
+
+function handleDropItem(slot)
+{
+    sendPacket(PacketType.DROP_ITEM, slot.instance, 1);
+}
+
 function INVplayButtonHandler(id) // release
 {
+    if (id == slotMenuButtons.useButton.id)
+    {
+        if (!inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
+        {
+            slotMenu.enable(false);
+            getItemMenu().frozen = false;
+        }
+
+        handleUseItem(slotHolder);
+    }
+    else if (id == slotMenuButtons.dropButton.id)
+    {
+        if (!inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
+        {
+            slotMenu.enable(false);
+            getItemMenu().frozen = false;
+        }
+
+        handleDropItem(slotHolder);
+    }
+
     if (!Inventory.invEnabled) return;
     if (!isClicked) return;
 
@@ -225,7 +269,7 @@ function INVplayButtonHandler(id) // release
 
     foreach(i, v in getCharacterLabs())
     {
-        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size) && v.instance != "" && v.instance != null)
+        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
         {
             temp = v;
             found = i;
@@ -267,7 +311,7 @@ function INVplayButtonHandler(id) // release
         }
         else
         {
-            handleSlotMenu(slotId, slotPointer);
+            handleSlotMenu(slotIdHolder, slotHolder);
         }
 
         slotPointer = null;
@@ -296,6 +340,17 @@ function INVplayButtonHandler(id) // release
 
 function onElementRender(el)
 {
+    if (!Inventory.IsEnabled()) return;
+
+    if (ITEM_CHANGE)
+    {
+        foreach (v in Player.items)
+        {
+            getItemSlots()[v.slot].setRender(v.instance, v.amount);
+        }
+        ITEM_CHANGE = false;
+    }
+
     handleItemMenuRender();
 
     if (!Inventory.invEnabled) return;

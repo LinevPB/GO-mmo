@@ -66,7 +66,9 @@ function initCharacterSelection()
 
     local wW = 1600;
     local wH = 3300;
-    charMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "DLG_CONVERSATION.TGA");
+    charMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
+    charMenu.window.setBackgroundColor(10, 10, 40);
+    charMenu.window.setCover("MENU_INGAME.TGA");
 
     local temp = Label(0, 100, lang["LABEL_CHAR_SELECTION_MENU_CHARACTERS"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");
@@ -75,12 +77,12 @@ function initCharacterSelection()
     temp.center();
     temp = null;
 
-    charMenu.characterList = List(0, 700, 1200, 1800, "DLG_CONVERSATION.TGA", [lang["LABEL_CHAR_SELECTION_MENU_SLOT1"][Player.lang], lang["LABEL_CHAR_SELECTION_MENU_SLOT2"][Player.lang], lang["LABEL_CHAR_SELECTION_MENU_SLOT3"][Player.lang]], 1200, 400, 0, 600, "INV_SLOT_FOCUS.TGA", "INV_TITEL.TGA");
+    charMenu.characterList = List(0, 700, 1200, 1800, "DLG_CONVERSATION.TGA", [lang["LABEL_CHAR_SELECTION_MENU_SLOT1"][Player.lang], lang["LABEL_CHAR_SELECTION_MENU_SLOT2"][Player.lang], lang["LABEL_CHAR_SELECTION_MENU_SLOT3"][Player.lang]], 1200, 400, 0, 600, "MENU_CHOICE_BACK.TGA", "INV_TITEL.TGA");
     charMenu.window.attach(charMenu.characterList);
     charMenu.characterList.center();
 
-    charMenu.ok = Button(200, 2700, 500, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CHAR_SELECTION_MENU_OK"][Player.lang], "INV_TITEL.TGA");
-    charMenu.quit = Button(900, 2700, 500, 400, "INV_SLOT_FOCUS.TGA", lang["BUTTON_CHAR_SELECTION_MENU_QUIT"][Player.lang], "INV_TITEL.TGA");
+    charMenu.ok = Button(200, 2700, 500, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CHAR_SELECTION_MENU_OK"][Player.lang], "INV_TITEL.TGA");
+    charMenu.quit = Button(900, 2700, 500, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CHAR_SELECTION_MENU_QUIT"][Player.lang], "INV_TITEL.TGA");
     charMenu.window.attach(charMenu.ok);
     charMenu.window.attach(charMenu.quit);
 

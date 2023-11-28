@@ -1,6 +1,7 @@
 class Window extends Element {
     elements = null;
     frozen = null;
+    coverTex = null;
 
     constructor(x, y, width, height, texture = "DLG_CONVERSATION.TGA", title = "", hover_texture = "NONE") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
@@ -8,6 +9,7 @@ class Window extends Element {
         elements = [];
         UI_Elements.append(this);
         frozen = false;
+        coverTex = null;
     }
 
     function attach(val) {
@@ -20,15 +22,27 @@ class Window extends Element {
     function enable(val) {
         base.enable(val);
 
-        foreach (el in elements) {
+        if (coverTex != null)
+        {
+            coverTex.visible = val;
+        }
+
+        foreach (el in elements)
+        {
             el.enable(val);
         }
+    }
+
+    function setCover(tex)
+    {
+        coverTex = Texture(pos.x, pos.y, size.width, size.height, tex);
     }
 
     function reset()
     {
         base.reset();
-        foreach(el in elements) {
+        foreach(el in elements)
+        {
             destroy(el);
         }
     }
@@ -51,9 +65,16 @@ class Window extends Element {
 
     function setPosition(x, y)
     {
-        foreach(v in elements) {
+        foreach(v in elements)
+        {
             v.setPosition(v.pos.x - pos.x + x, v.pos.y - pos.y + y);
         }
+
+        if (coverTex!= null)
+        {
+            coverTex.setPosition(x, y);
+        }
+
         base.setPosition(x, y);
     }
 }

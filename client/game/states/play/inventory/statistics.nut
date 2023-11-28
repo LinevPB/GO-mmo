@@ -18,6 +18,7 @@ local draws = [
     Draw(0, 0, "Skill 2h: 0"),
     Draw(0, 0, "Skill Bow: 0"),
     Draw(0, 0, "Skill Crossbow: 0")
+    Draw(0, 0, "Magic Circle: 0")
 ];
 
 function updateDraws()
@@ -34,6 +35,7 @@ function updateDraws()
     draws[9].text = "Skill 2h: " + getPlayerSkillWeapon(heroId, WEAPON_2H);
     draws[10].text = "Skill Bow: " + getPlayerSkillWeapon(heroId, WEAPON_BOW);
     draws[11].text = "Skill Crossbow: " + getPlayerSkillWeapon(heroId, WEAPON_CBOW);
+    draws[12].text = "Magic Circle: " + getPlayerMagicLevel(heroId);
 }
 
 function setupStatistics()

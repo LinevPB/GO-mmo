@@ -44,7 +44,8 @@ function initEnemies()
 
 function onPlayerJoin(pid)
 {
-    foreach(v in enemy_list) {
+    foreach(v in enemy_list)
+    {
         sendPlayerPacket(pid, PacketType.SPAWN_ENEMIES, v.nickname, v.pos.x, v.pos.y, v.pos.z, v.angle, v.instance);
     }
 }
@@ -60,6 +61,7 @@ addEventHandler("onInit", onInit);
 function onDisconnect(pid, reason)
 {
     local player = findPlayer(pid);
+    if (player == -1) return;
     if (!player.logged) return;
     if (player.gameState != GameState.PLAY) return;
 
@@ -68,5 +70,4 @@ function onDisconnect(pid, reason)
 
     removePlayer(player);
 }
-
 addEventHandler("onPlayerDisconnect", onDisconnect);

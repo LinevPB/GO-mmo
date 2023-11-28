@@ -298,10 +298,8 @@ function check_dialog(id)
     BOT.holder[id].event();
 }
 
-function playButtonHandler(id)
+function npcButtonHandler(id)
 {
-    if (Inventory.IsEnabled()) return INVplayButtonHandler(id);
-
     switch(id) {
         case dialogOpt[0].id:
             check_dialog(0);
@@ -477,13 +475,15 @@ function initInteraction()
 
 local function onplayerkey(key)
 {
-    if (key == KEY_LCONTROL) {
+    if (key == KEY_LCONTROL)
+    {
         if (BOT == -1) return;
         if (interacting) return;
         BOT.interact();
     }
 
-    if (key == KEY_SPACE && interacting && !exiting && BOT != -1 && in_dial) {
+    if (key == KEY_SPACE && interacting && !exiting && BOT != -1 && in_dial)
+    {
         skip();
     }
 }
