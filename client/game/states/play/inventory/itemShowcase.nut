@@ -12,7 +12,7 @@ function showcaseHover(el)
 {
     if (el.elementType != ElementType.BUTTON) return;
     if (el.more == null) return;
-    if (el.more.instance == null || el.more.instance == "") return;
+    if (el.more.instance == null || el.more.instance == "" || el.more.instance == "-1" || el.more.instance == "0") return;
 
     showcase.render.instance = el.more.render.instance;
     showcase.texture.visible = true;

@@ -1,6 +1,7 @@
 function ResetState()
 {
-    switch(Player.gameState) {
+    switch(Player.gameState)
+    {
         case GameState.LOGIN: deinitLoginState(); break;
         case GameState.CHARACTER_SELECTION: deinitCharacterSelection(); break;
         case GameState.CHARACTER_CREATION: deinitCharacterCreation(); break;
@@ -207,9 +208,9 @@ local function onPacket(packet) {
             setupPlayer(data[2], data[3], data[4], data[5], data[6]);
             for(local i = 0; i < 4; i++)
             {
-                Player.qa[i] = data[i+10];
+                Player.qa[i] = "";
             }
-            ChangeGameState(GameState.PLAY);
+            ChangeGameState(GameState.CHARACTER_SELECTION);
         break;
 
         case PacketType.CHARACTER_CREATION_BACK:

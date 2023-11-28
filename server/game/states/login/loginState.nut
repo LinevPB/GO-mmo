@@ -24,6 +24,7 @@ function signUp(username, password, cpassword)
         username + "', '" +
         hashedPass + "');"
     );
+
     local login = logIn(username, password);
     if (result && login) return login;
 

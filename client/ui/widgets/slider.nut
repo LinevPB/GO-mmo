@@ -111,7 +111,7 @@ class Slider extends Element {
             hasLabel = false;
         }
 
-        mask = SliderMask(x, y, sliderSize * 1.25, sliderTex, scope, width);
+        mask = SliderMask(x, y, sliderSize, sliderTex, scope, width);
         mask.parent = this;
 
         UI_Elements.append(this);
@@ -160,7 +160,7 @@ class Slider extends Element {
             labelu.setPosition(x, mask.pos.y - draw.height - 50);
             textuboxu.setPosition(labelu.pos.x + 50 + labelu.draw.width, labelu.pos.y + draw.height / 2 - textuboxu.size.height / 2);
 
-            mask.setPosition(x + mask.maskX, y - mask.size.height / 2);
+            mask.setPosition(x + mask.maskX, pos.y + size.height / 2 - mask.size.height / 2);
         } else {
             mask.setPosition(pos.x + size.width / 2 - mask.size.width / 2, y + mask.maskY);
         }

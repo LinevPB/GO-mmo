@@ -88,7 +88,6 @@ function initCharacterSelection()
 
     charMenu.window.enable(true);
 
-    spawnNpc(Player.helper, "PC_HERO");
     setPlayerPosition(Player.helper, 37730, 4680, 44830);
     setPlayerAngle(Player.helper, 230);
     sendPacket(PacketType.CHARACTERS_QUERY, 0);
@@ -128,7 +127,8 @@ function deinitNpc()
 function loadCharacter(charSlot, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId, eqWeapon2h)
 {
     local link = null;
-    foreach (i, v in charMenu.characterList.options) {
+    foreach (i, v in charMenu.characterList.options)
+    {
         if (i == slotId) link = v;
     }
     link.changeText(charName);
@@ -139,24 +139,33 @@ function loadCharacter(charSlot, charId, ownerId, charName, bodyModel, bodyTex, 
 
 function characterListHandler(el)
 {
-    if (characters[el.getSlot()] == 0) {
-        charMenu.ok.changeText(lang["BUTTON_CHAR_SELECTION_MENU_CREATE"][Player.lang]);
-        setPlayerVisualAlpha(Player.helper, 0.0);
-    }
-    else {
-        charMenu.ok.changeText(lang["BUTTON_CHAR_SELECTION_MENU_SELECT"][Player.lang]);
-        setPlayerVisualAlpha(Player.helper, 1.0);
-    }
-
     foreach(i, v in characters) {
-        if (v == 0) continue;
-        if (el.getSlot() == v.charSlot) {
+        if (v == 0)
+        {
+            Player.cBodyModel = 0;
+            Player.cBodyModel = 0;
+            Player.cBodyTexture = 0;
+            Player.cHeadModel = 0;
+            Player.cHeadTexture = 0;
+            Player.updateVisual(Player.helper);
+            Player.updateEquipped("", "", "");
+
+            setPlayerVisualAlpha(Player.helper, 0.0);
+            charMenu.ok.changeText(lang["BUTTON_CHAR_SELECTION_MENU_CREATE"][Player.lang]);
+            continue;
+        }
+
+        if (el.getSlot() == v.charSlot)
+        {
             Player.cBodyModel = v.bodyModel;
             Player.cBodyTexture = v.bodyTex;
             Player.cHeadModel = v.headModel;
             Player.cHeadTexture = v.headTex;
             Player.updateVisual(Player.helper);
             Player.updateEquipped(v.eqArmor, v.eqWeapon, v.eqWeapon2h);
+
+            setPlayerVisualAlpha(Player.helper, 1.0);
+            charMenu.ok.changeText(lang["BUTTON_CHAR_SELECTION_MENU_SELECT"][Player.lang]);
             return;
         }
     }

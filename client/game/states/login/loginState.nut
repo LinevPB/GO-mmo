@@ -104,6 +104,9 @@ function RunDebug()
 
 function initLoginState()
 {
+    spawnNpc(Player.helper, "PC_HERO");
+    setPlayerPosition(Player.helper, 37730, 4680, 44830);
+
     clearMultiplayerMessages();
     setCursorVisible(true);
     setCursorTxt("LO.TGA");
