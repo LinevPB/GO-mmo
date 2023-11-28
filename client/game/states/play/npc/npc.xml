@@ -1,4 +1,5 @@
 <server>
+    <script src="npcInteraction.nut" type="client" />
 
     <script src="ziobro.nut" type="client" />
     <script src="milko.nut" type="client" />

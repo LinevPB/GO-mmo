@@ -1,4 +1,4 @@
-DEBUG <- false;
+DEBUG <- true;
 
 lang <- {
     ["SERVER_NAME"] = {

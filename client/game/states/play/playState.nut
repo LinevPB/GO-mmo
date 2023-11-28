@@ -4,6 +4,12 @@ local QA_Renders = [];
 local QAF_Draws = [];
 local QAA_Draws = [];
 
+local map = Texture(0, 0, 8192, 8192, "MAP_WORLD_ORC.TGA");
+local meOnMap = Draw(0, 0, "+ Hero");
+local line1 = null;
+local line2 = null;
+local line3 = null;
+local line4 = null;
 function initPlayState()
 {
     enable_NicknameId(false);
@@ -51,6 +57,11 @@ function initPlayState()
     }
 
     enableQA(true);
+
+    map.visible = true;
+    map.alpha = 0;
+    meOnMap.visible = true;
+    meOnMap.alpha = 0;
 }
 
 function enableQA(val)
@@ -67,12 +78,14 @@ function enableQA(val)
 
 function onMessage(data)
 {
-
     Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
 }
 
 function handleQARender()
 {
+    local pos = getPlayerPosition(heroId);
+    meOnMap.setPosition(4096 + pos.x / 24.75, 4096 - pos.z / 13.25);
+
     for(local i = 0; i < 4; i++)
     {
         if (Player.qa[i] != QA_Renders[i].instance)

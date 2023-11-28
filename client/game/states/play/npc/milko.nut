@@ -16,6 +16,7 @@ function DIALOG_MILKO_1()
 
 function DIALOG_MILKO_1_2()
 {
+    OPT_1_01.stop();
     play_gest(BOT);
     update_dialog("I shall give you two portions. It is up to you, in your wisdom, to do with them whatever you want");
     OPT_1_02.play();
@@ -25,6 +26,7 @@ function DIALOG_MILKO_1_2()
 
 function DIALOG_MILKO_1_3()
 {
+    OPT_1_02.stop();
     play_gest(BOT);
     update_dialog("If you crave more then direct your steps to Zuris - the master of portions. He produces this tobbaco and he sells it too.");
     OPT_1_03.play();
@@ -34,6 +36,7 @@ function DIALOG_MILKO_1_3()
 
 function DIALOG_MILKO_1_4()
 {
+    OPT_1_03.stop();
     finish_dial();
 }
 
@@ -49,6 +52,7 @@ function DIALOG_MILKO_5()
 
 function DIALOG_MILKO_5_2()
 {
+    OPT_5_01.stop();
     start_exiting();
 }
 
