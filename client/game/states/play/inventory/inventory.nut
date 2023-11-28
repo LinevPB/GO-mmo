@@ -1,15 +1,15 @@
 Inventory <- {};
-MAX_COLUMN <- 3;
-MAX_ROW <- 7;
-SIZE <- 600;
-MAX_ITEMS <- 90;
-wW <- 8192 / 2;
-wH <- 8192;
+Inventory.MAX_COLUMN <- 3;
+Inventory.MAX_ROW <- 7;
+Inventory.SIZE <- 600;
+Inventory.MAX_ITEMS <- 90;
+Inventory.width <- 8192 / 2;
+Inventory.height <- 8192;
+Inventory.invEnabled <- false;
 
-local invEnabled = false;
 local isClicked = false;
-
 local mainMenu = null;
+
 function getMainMenu()
 {
     return mainMenu;
@@ -31,7 +31,7 @@ Inventory.Init <- function()
 }
 
 function setupInventoryMenu() {
-    mainMenu = Window(0, 0, wW, wH, "SR_BLANK.TGA");
+    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "SR_BLANK.TGA");
     mainMenu.background.texture.setColor(10, 10, 10);
 
     setupInventorySlots();
@@ -49,7 +49,7 @@ Inventory.Enable <- function(val)
     setCursorVisible(val);
     mainMenu.enable(val);
     setCoverTexturesVisibility(val);
-    invEnabled = val;
+    Inventory.invEnabled = val;
 
     enableStatistics(val);
 
@@ -76,7 +76,7 @@ Inventory.Enable <- function(val)
     }
     else
     {
-        for (local i = 0; i < MAX_ITEMS; i++)
+        for (local i = 0; i < Inventory.MAX_ITEMS; i++)
         {
             getItemSlots()[i].setRender("", 0);
         }
@@ -95,7 +95,7 @@ Inventory.Enable <- function(val)
 
 Inventory.IsEnabled <- function()
 {
-    return invEnabled;
+    return Inventory.invEnabled;
 }
 
 function invHover(el)
@@ -121,7 +121,7 @@ local slotPointer = false;
 
 function playClickButtonHandler(id) // click
 {
-    if (!invEnabled) return;
+    if (!Inventory.invEnabled) return;
     local temp = null;
 
     foreach(i, v in getItemSlots())
@@ -165,7 +165,7 @@ local itemChoiceTex = Texture(5000, 5000, 1000, 500, "SR_BLANK.TGA");
 
 function handleSlotMenu(id, pointer)
 {
-    if (clickTick < 400)
+    if (clickTick < 400 && !itemChoiceTex.visible)
     {
         getItemMenu().frozen = true;
         itemChoiceTex.visible = true;
@@ -173,13 +173,14 @@ function handleSlotMenu(id, pointer)
     }
     else
     {
+        itemChoiceTex.visible = false;
         getItemMenu().frozen = false;
     }
 }
 
 function INVplayButtonHandler(id) // release
 {
-    if (!invEnabled) return;
+    if (!Inventory.invEnabled) return;
     if (!isClicked) return;
 
     holdedRender.visible = false;
@@ -263,7 +264,7 @@ function onElementRender(el)
 {
     handleItemMenuRender();
 
-    if (!invEnabled) return;
+    if (!Inventory.invEnabled) return;
 
     showcaseRender();
 

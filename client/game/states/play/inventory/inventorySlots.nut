@@ -119,7 +119,7 @@ function handleSlideSlots(el)
     itemMenu.setPosition(itemMenu.baseX, itemMenu.baseY - el.getValue());
 
     foreach(v in itemSlots) {
-        if ((v.btn.pos.y + v.btn.size.height < v.btn.parent.baseY) || (v.btn.pos.y > v.btn.parent.baseY + MAX_ROW * SIZE))
+        if ((v.btn.pos.y + v.btn.size.height < v.btn.parent.baseY) || (v.btn.pos.y > v.btn.parent.baseY + Inventory.MAX_ROW * Inventory.SIZE))
             v.enable(false);
         else
             v.enable(true);
@@ -135,7 +135,7 @@ function handleSlotsRelease()
 
 function setupInventorySlots()
 {
-    itemMenu = Window(200, SIZE, MAX_COLUMN * SIZE, MAX_ITEMS / MAX_COLUMN * SIZE, "SR_BLANK.TGA");
+    itemMenu = Window(200, Inventory.SIZE, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
     itemMenu.setBackgroundColor(100, 100, 100);
     getMainMenu().attach(itemMenu);
 }
@@ -158,14 +158,14 @@ function getInvSlots()
 
 function setupItemSlider()
 {
-    itemSlider = Slider(MAX_COLUMN * SIZE + 300, SIZE + 50, MAX_ROW * SIZE - 100, "LOG_PAPER.TGA", SIZE * (MAX_ITEMS / MAX_COLUMN - MAX_ROW), false, "MENU_MASKE.TGA", true);
+    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), false, "MENU_MASKE.TGA", true);
     itemSlider.setBackgroundColor(255, 255, 0);
     getMainMenu().attach(itemSlider);
 }
 
 function initializeItemRenders()
 {
-    for (local i = 0; i < MAX_ITEMS; i++)
+    for (local i = 0; i < Inventory.MAX_ITEMS; i++)
     {
         itemSlots[i].setRender("", 0);
     }
@@ -176,8 +176,8 @@ function initializeInventorySlots()
     local column = 0;
     local row = 0;
     itemSlots = [];
-    for (local i = 0; i < MAX_ITEMS; i++) {
-        local temp = InventorySlot(SIZE * column, SIZE * row, SIZE, SIZE, "INV_SLOT.TGA", "INV_SLOT_HIGHLIGHTED.TGA");
+    for (local i = 0; i < Inventory.MAX_ITEMS; i++) {
+        local temp = InventorySlot(Inventory.SIZE * column, Inventory.SIZE * row, Inventory.SIZE, Inventory.SIZE, "INV_SLOT.TGA", "INV_SLOT_HIGHLIGHTED.TGA");
         temp.btn.rehover();
         temp.row = row;
         temp.column = column;
@@ -188,7 +188,7 @@ function initializeInventorySlots()
         itemMenu.attach(temp.btn);
         itemSlots.append(temp);
 
-        if (column == MAX_COLUMN - 1) {
+        if (column == Inventory.MAX_COLUMN - 1) {
             column = 0;
             row += 1;
             continue;

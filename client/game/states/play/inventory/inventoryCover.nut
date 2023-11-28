@@ -60,15 +60,15 @@ function setupCoverTextures()
 {
     gold_cover_tex = Texture(0, 0, 0, 0, "MENU_CHOICE_BACK.TGA");
 
-    coverTex1 = createCoverTexture(0, 0, wW, SIZE - 25);
+    coverTex1 = createCoverTexture(0, 0, Inventory.width, Inventory.SIZE - 25);
     coverTex11 = createCoverTexture(coverTex1.getPosition().x, coverTex1.getPosition().y, coverTex1.getSize().width, coverTex1.getSize().height);
     coverTex11.setColor(0, 0, 0);
 
-    coverTex2 = createCoverTexture(0, SIZE + MAX_ROW * SIZE, wW, 100 + getStatisticsMenu().pos.y - ((MAX_ROW + 1) * SIZE));
+    coverTex2 = createCoverTexture(0, Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE, Inventory.width, 100 + getStatisticsMenu().pos.y - ((Inventory.MAX_ROW + 1) * Inventory.SIZE));
     coverTex22 = createCoverTexture(coverTex2.getPosition().x, coverTex2.getPosition().y, coverTex2.getSize().width, coverTex2.getSize().height);
     coverTex22.setColor(0, 0, 0);
 
-    coverTex3 = createCoverTexture(0, getStatisticsMenu().pos.y + getStatisticsMenu().size.height - 150, wW, 8192 - getStatisticsMenu().pos.y - getStatisticsMenu().size.height + 150);
+    coverTex3 = createCoverTexture(0, getStatisticsMenu().pos.y + getStatisticsMenu().size.height - 150, Inventory.width, 8192 - getStatisticsMenu().pos.y - getStatisticsMenu().size.height + 150);
     coverTex33 = createCoverTexture(coverTex3.getPosition().x, coverTex3.getPosition().y, coverTex3.getSize().width, coverTex3.getSize().height);
     coverTex33.setColor(0, 0, 0);
 

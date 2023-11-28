@@ -38,7 +38,7 @@ function updateDraws()
 
 function setupStatistics()
 {
-    statisticsMenu = Window(100, SIZE + SIZE + MAX_ROW * SIZE - 200, 4192 - 292, 4192 - 3 * SIZE + 300, "LOG_PAPER.TGA");
+    statisticsMenu = Window(100, Inventory.SIZE + Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE - 200, 4192 - 292, 4192 - 3 * Inventory.SIZE + 300, "LOG_PAPER.TGA");
     statisticsMenu.setBackgroundColor(255, 255, 0);
     getMainMenu().attach(statisticsMenu);
 }
