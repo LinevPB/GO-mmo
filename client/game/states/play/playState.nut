@@ -42,7 +42,7 @@ function initPlayState()
     Player.refreshEq(4);
     Player.refreshEq(16);
 
-    coverTex = Texture(8192/2 - 1000, 8192-750, 2000, 500, "SR_BLANK.TGA");
+    coverTex = Texture(8192/2 - 1000, 8192-1000, 2000, 500, "SR_BLANK.TGA");
     coverTex.setColor(10, 10, 40);
     QA_Slot1 = Texture(coverTex.getPosition().x, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
     QA_Slot2 = Texture(coverTex.getPosition().x + 500, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
