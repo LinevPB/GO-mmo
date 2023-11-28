@@ -120,7 +120,7 @@ class Slider extends Element {
     function update()
     {
         if (hasLabel) {
-            local calc = (textuboxu.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
+            local calc = (mask.range * (mask.maskX.tofloat() / (size.width - mask.size.width).tofloat())).tointeger();
             textuboxu.updateRaw(calc);
         }
     }
@@ -129,10 +129,10 @@ class Slider extends Element {
     {
         if (hasLabel)
         {
-            return (mask.range * (mask.maskX / (size.width - mask.size.width))).tointeger();
+            return (mask.range * (mask.maskX.tofloat() / (size.width - mask.size.width).tofloat())).tointeger();
         }
 
-        return (mask.range * (mask.maskY / (size.height - mask.size.height))).tointeger();
+        return (mask.range * (mask.maskY.tofloat() / (size.height - mask.size.height).tofloat())).tointeger();
     }
 
     function enable(val)
