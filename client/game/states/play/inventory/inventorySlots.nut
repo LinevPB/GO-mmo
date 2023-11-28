@@ -136,7 +136,7 @@ function handleSlotsRelease()
 function setupInventorySlots()
 {
     itemMenu = Window(200, Inventory.SIZE, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
-    itemMenu.setBackgroundColor(100, 100, 100);
+    itemMenu.setBackgroundColor(80, 80, 100);
     getMainMenu().attach(itemMenu);
 }
 
@@ -271,19 +271,23 @@ function invEquip(slot, instance)
         case 3:
             break;
         case 4:
-            Player.qa1 = instance;
+            Player.qa[0] = instance;
+            Player.refreshQA(1);
             return true;
             break;
         case 5:
-            Player.qa2 = instance;
+            Player.qa[1] = instance;
+            Player.refreshQA(2);
             return true;
             break;
         case 6:
-            Player.qa3 = instance;
+            Player.qa[2] = instance;
+            Player.refreshQA(3);
             return true;
             break;
         case 7:
-            Player.qa4 = instance;
+            Player.qa[3] = instance;
+            Player.refreshQA(4);
             return true;
             break;
     }
@@ -310,6 +314,29 @@ function invUnequip(slot, instance)
             unequipItem(Player.helper, Items.id(instance));
             Player.refreshEq(16);
             updateInvEqColor();
+            break;
+
+        case 3:
+            break;
+        case 4:
+            Player.qa[0] = "";
+            Player.refreshQA(1);
+            return true;
+            break;
+        case 5:
+            Player.qa[1] = "";
+            Player.refreshQA(2);
+            return true;
+            break;
+        case 6:
+            Player.qa[2] = "";
+            Player.refreshQA(3);
+            return true;
+            break;
+        case 7:
+            Player.qa[3] = "";
+            Player.refreshQA(4);
+            return true;
             break;
     }
 }

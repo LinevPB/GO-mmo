@@ -33,6 +33,7 @@ function showcaseHover(el)
     showcase.render.rotX = -30;
     showcase.render.rotZ = 0;
     showcase.render.rotY = 0;
+    showcase.render.top();
 
     //gold, mainflag: 1
     //bolt, mainflag: 8

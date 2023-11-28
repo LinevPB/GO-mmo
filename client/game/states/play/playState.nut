@@ -1,16 +1,8 @@
 local coverTex = null;
-local QA_Slot1 = null;
-local QA_Slot2 = null;
-local QA_Slot3 = null;
-local QA_Slot4 = null;
-local QA_Render1 = null;
-local QA_Render2 = null;
-local QA_Render3 = null;
-local QA_Render4 = null;
-local QA_Draw1 = null;
-local QA_Draw2 = null;
-local QA_Draw3 = null;
-local QA_Draw4 = null;
+local QA_Slots = [];
+local QA_Renders = [];
+local QAF_Draws = [];
+local QAA_Draws = [];
 
 function initPlayState()
 {
@@ -42,55 +34,79 @@ function initPlayState()
     Player.refreshEq(4);
     Player.refreshEq(16);
 
-    coverTex = Texture(8192/2 - 1000, 8192-1000, 2000, 500, "SR_BLANK.TGA");
+    coverTex = Texture(8192/2 - 1400, 8192-1000, 2800, 500, "SR_BLANK.TGA");
     coverTex.setColor(10, 10, 40);
-    QA_Slot1 = Texture(coverTex.getPosition().x, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
-    QA_Slot2 = Texture(coverTex.getPosition().x + 500, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
-    QA_Slot3 = Texture(coverTex.getPosition().x + 1000, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
-    QA_Slot4 = Texture(coverTex.getPosition().x + 1500, coverTex.getPosition().y, 500, 500, "MENU_INGAME.TGA");
-    QA_Render1 = ItemRender(QA_Slot1.getPosition().x, QA_Slot1.getPosition().y, QA_Slot1.getSize().width, QA_Slot1.getSize().height, "ITFO_APPLE");
-    QA_Render2 = ItemRender(QA_Slot2.getPosition().x, QA_Slot2.getPosition().y, QA_Slot2.getSize().width, QA_Slot2.getSize().height, "ITFO_APPLE");
-    QA_Render3 = ItemRender(QA_Slot3.getPosition().x, QA_Slot3.getPosition().y, QA_Slot3.getSize().width, QA_Slot3.getSize().height, "ITFO_APPLE");
-    QA_Render4 = ItemRender(QA_Slot4.getPosition().x, QA_Slot4.getPosition().y, QA_Slot4.getSize().width, QA_Slot4.getSize().height, "ITFO_APPLE");
-    QA_Draw1 = Draw(QA_Slot1.getPosition().x, QA_Slot1.getPosition().y, "F1");
-    QA_Draw2 = Draw(QA_Slot2.getPosition().x, QA_Slot2.getPosition().y, "F2");
-    QA_Draw3 = Draw(QA_Slot3.getPosition().x, QA_Slot3.getPosition().y, "F3");
-    QA_Draw4 = Draw(QA_Slot4.getPosition().x, QA_Slot4.getPosition().y, "F4");
-    QA_Draw1.setPosition(QA_Slot1.getPosition().x + QA_Slot1.getSize().width - QA_Draw1.width -20, QA_Slot1.getPosition().y + QA_Slot1.getSize().height - QA_Draw1.height -20);
-    QA_Draw2.setPosition(QA_Slot2.getPosition().x + QA_Slot2.getSize().width - QA_Draw1.width -20, QA_Slot2.getPosition().y + QA_Slot2.getSize().height - QA_Draw2.height -20);
-    QA_Draw3.setPosition(QA_Slot3.getPosition().x + QA_Slot3.getSize().width - QA_Draw1.width -20, QA_Slot3.getPosition().y + QA_Slot3.getSize().height - QA_Draw3.height -20);
-    QA_Draw4.setPosition(QA_Slot4.getPosition().x + QA_Slot4.getSize().width - QA_Draw1.width -20, QA_Slot4.getPosition().y + QA_Slot4.getSize().height - QA_Draw4.height -20);
-    QA_Draw1.setColor(240, 220, 180);
-    QA_Draw2.setColor(240, 220, 180);
-    QA_Draw3.setColor(240, 220, 180);
-    QA_Draw4.setColor(240, 220, 180);
+    for(local i = 0;  i < 4; i++)
+    {
+        QA_Slots.append(Texture(coverTex.getPosition().x + 700 * i, coverTex.getPosition().y, 700, 500, "MENU_INGAME.TGA"));
+        QA_Renders.append(ItemRender(QA_Slots[i].getPosition().x + 100, QA_Slots[i].getPosition().y, QA_Slots[i].getSize().width - 200, QA_Slots[i].getSize().height, Player.qa[i]));
+        QAF_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, "F" + (i + 1)));
+        QAA_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, "x1"));
 
-    coverTex.visible = true;
+        QAF_Draws[i].setPosition(QA_Slots[i].getPosition().x + 20, QA_Slots[i].getPosition().y + QA_Slots[i].getSize().height - QAF_Draws[i].height - 5);
+        QAF_Draws[i].setColor(240, 180, 50);
 
-    QA_Slot1.visible = true;
-    QA_Render1.visible = true;
-    QA_Draw1.visible = true;
+        QAA_Draws[i].setPosition(QA_Slots[i].getPosition().x + QA_Slots[i].getSize().width - QAA_Draws[i].width - 20, QA_Slots[i].getPosition().y + QA_Slots[i].getSize().height - QAA_Draws[i].height - 20)
+        QAA_Draws[i].setColor(240, 220, 180);
+    }
 
-    QA_Slot2.visible = true;
-    QA_Render2.visible = true;
-    QA_Draw2.visible = true;
+    enableQA(true);
+}
 
-    QA_Slot3.visible = true;
-    QA_Render3.visible = true;
-    QA_Draw3.visible = true;
-
-    QA_Slot4.visible = true;
-    QA_Render4.visible = true;
-    QA_Draw4.visible = true;
+function enableQA(val)
+{
+    coverTex.visible = val;
+    for(local i = 0; i < 4; i++)
+    {
+        QA_Slots[i].visible = val;
+        QA_Renders[i].visible = val;
+        QAF_Draws[i].visible = val;
+        QAA_Draws[i].visible = val;
+    }
 }
 
 function onMessage(data)
 {
+
     Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
+}
+
+function handleQARender()
+{
+    for(local i = 0; i < 4; i++)
+    {
+        if (Player.qa[i] != QA_Renders[i].instance)
+        {
+            QA_Renders[i].instance = Player.qa[i];
+        }
+
+        foreach(v in Player.items)
+        {
+            if (v.instance.toupper() != QA_Renders[i].instance.toupper())
+            {
+                if (QA_Renders[i].instance == "")
+                {
+                    QAA_Draws[i].text = "";
+                }
+                continue;
+            }
+
+            if (v.amount <= 1)
+            {
+                QAA_Draws[i].text = "";
+            }
+            else
+            {
+                QAA_Draws[i].text = "x" + v.amount;
+                QAA_Draws[i].setPosition(QA_Slots[i].getPosition().x + QA_Slots[i].getSize().width - QAA_Draws[i].width - 20, QA_Slots[i].getPosition().y + QA_Slots[i].getSize().height - QAA_Draws[i].height - 20)
+            }
+        }
+    }
 }
 
 function onRenderP(currentTime, lastTime)
 {
+    handleQARender();
     npcInteractionHandler();
     enemyRender();
 }
@@ -121,10 +137,12 @@ local function onplaykey(key)
 
         if (Inventory.IsEnabled())
         {
+            enableQA(true);
             Inventory.Enable(false);
         }
         else
         {
+            enableQA(false);
             Inventory.Enable(true);
         }
     }
@@ -132,6 +150,7 @@ local function onplaykey(key)
     if (key == KEY_ESCAPE && Inventory.IsEnabled())
     {
         Inventory.Enable(false);
+        enableQA(true);
     }
 
     if (key == KEY_Z)
@@ -148,6 +167,32 @@ local function onplaykey(key)
     {
         local pos = getPlayerAngle(heroId);
         print(pos);
+    }
+
+
+    if (Inventory.IsEnabled() || Chat.IsEnabled())
+    {
+        return;
+    }
+
+    if (key == KEY_F1 && Player.qa[0] != "")
+    {
+        handleUseItem({instance = Player.qa[0]});
+    }
+
+    if (key == KEY_F2 && Player.qa[1] != "")
+    {
+        handleUseItem({instance = Player.qa[1]});
+    }
+
+    if (key == KEY_F3 && Player.qa[2] != "")
+    {
+        handleUseItem({instance = Player.qa[2]});
+    }
+
+    if (key == KEY_F4 && Player.qa[3] != "")
+    {
+        handleUseItem({instance = Player.qa[3]});
     }
 }
 addEventHandler("onKey", onplaykey);

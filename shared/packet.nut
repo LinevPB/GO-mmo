@@ -21,7 +21,8 @@ enum PacketType {
     UPDATE_EXPERIENCE = 19,
     UPDATE_GOLD = 20,
     USE_ITEM = 21,
-    DROP_ITEM = 22
+    DROP_ITEM = 22,
+    UPDATE_QA = 23
 }
 
 function encode(args) {

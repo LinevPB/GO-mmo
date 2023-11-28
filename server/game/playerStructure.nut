@@ -67,7 +67,7 @@ class PlayerStructure
     {
         if (amount <= 0) return;
         foreach(v in items) {
-            if (v.instance == instance) {
+            if (v.instance.toupper() == instance.toupper()) {
                 v.amount += amount;
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount, v.slot);
                 return {val = false, instance = v.instance, amount = v.amount, slot = v.slot};
@@ -102,10 +102,13 @@ class PlayerStructure
 
     function removeItem(instance, amount)
     {
-        foreach(i, v in items) {
-            if (v.instance == instance) {
+        foreach(i, v in items)
+        {
+            if (v.instance.toupper() == instance.toupper())
+            {
                 v.amount -= amount;
-                if (v.amount <= 0) {
+                if (v.amount <= 0)
+                {
                     v.amount = 0;
                     sendPlayerPacket(id, PacketType.UPDATE_ITEM, 3, v.instance, v.amount, v.slot);
                     return {removed = true, more = items.remove(i)};
@@ -114,6 +117,8 @@ class PlayerStructure
                 return {removed = false, more = v};
             }
         }
+
+        return {removed = 2137};
     }
 
     function getItems()
@@ -330,6 +335,11 @@ function RemoveItem(pid, instance, amount)
     local player = findPlayer(pid);
     local item = player.removeItem(instance, amount);
 
+    if (item.removed == 2137)
+    {
+        return console.error("Error " + pid + " " + instance + " " + amount);
+    }
+
     if (!item.removed)
         mysql.squery("UPDATE `items` SET `amount` = '" + item.more.amount + "' WHERE `owner`='" + findPlayer(pid).charId + "' AND `instance`='" + item.more.instance + "'");
     else
@@ -443,4 +453,10 @@ function DropItem(pid, instance, amount)
 {
     local player = findPlayer(pid);
     print("Trying to drop " + instance + " with amount of " + amount);
+}
+
+function ManageQA(pid, id, instance)
+{
+    local player = findPlayer(pid);
+    mysql.squery("UPDATE `characters` SET `qa" + id + "` = '" + instance + "' WHERE `id`=" + player.charId);
 }

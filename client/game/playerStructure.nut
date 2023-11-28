@@ -183,10 +183,7 @@ Player <- {
     gold = 3000000,
     level = 0,
     experience = 0,
-    qa1 = "",
-    qa2 = "",
-    qa3 = "",
-    qa4 = ""
+    qa = ["", "", "", ""]
 };
 
 ITEM_CHANGE <- false;
@@ -282,6 +279,18 @@ Player.refreshEq <- function(id)
 
         case 16:
             sendPacket(PacketType.EQUIP_ARMOR, Player.eqArmor);
+        break;
+    }
+}
+
+Player.refreshQA <- function(id)
+{
+    switch(id) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            sendPacket(PacketType.UPDATE_QA, id, Player.qa[id-1]);
         break;
     }
 }

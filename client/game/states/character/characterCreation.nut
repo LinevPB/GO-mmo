@@ -93,6 +93,7 @@ function initCharacterCreation()
     Player.cHeadTexture = 0;
     Player.updateVisual(Player.helper);
     setPlayerVisualAlpha(Player.helper, 1.0);
+    Player.updateEquipped("", "", "", Player.helper)
 
     tex1 = Texture(7192/2 - 200, 7200, 150, 200, "L.TGA");
     tex2 = Texture(7192/2 + 1400, 7200, 150, 200, "R.TGA");

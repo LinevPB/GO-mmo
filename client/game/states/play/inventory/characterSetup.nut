@@ -33,10 +33,10 @@ function enableCharacterSetup()
         if (i == 1) v.setRender(Player.eqWeapon2h, 0);
         if (i == 2) v.setRender(Player.eqArmor, 0);
         if (i == 3) {}
-        if (i == 4) v.setRender(Player.qa1, 0);
-        if (i == 5) v.setRender(Player.qa2, 0);
-        if (i == 6) v.setRender(Player.qa3, 0);
-        if (i == 7) v.setRender(Player.qa4, 0);
+        if (i == 4) v.setRender(Player.qa[0], 0);
+        if (i == 5) v.setRender(Player.qa[1], 0);
+        if (i == 6) v.setRender(Player.qa[2], 0);
+        if (i == 7) v.setRender(Player.qa[3], 0);
 
         v.enable(true);
 

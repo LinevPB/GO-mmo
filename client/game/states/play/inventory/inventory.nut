@@ -53,7 +53,7 @@ Inventory.Init <- function()
 function setupInventoryMenu()
 {
     mainMenu = Window(0, 0, Inventory.width, Inventory.height, "SR_BLANK.TGA");
-    mainMenu.background.texture.setColor(10, 10, 10);
+    mainMenu.background.texture.setColor(10, 10, 20);
 
     slotMenu = Window(0, 0, 1000, 500, "SR_BLANK.TGA");
     slotMenu.background.texture.setColor(10, 10, 60);
@@ -199,6 +199,28 @@ function handleSlotMenu(id, pointer)
         getItemMenu().frozen = true;
         slotMenu.enable(true);
         slotMenu.setPosition(curs.x, curs.y);
+        local item = Daedalus.instance(slotHolder.render.instance);
+        if (item.mainflag == 32 || item.mainflag == 128)
+        {
+            slotMenuButtons.useButton.changeText("Use");
+        }
+        else if (item.mainflag == 2 || item.mainflag == 4 || item.mainflag == 16)
+        {
+            if (slotHolder.render.instance.toupper() == Player.eqWeapon || slotHolder.render.instance.toupper() == Player.eqWeapon2h || slotHolder.render.instance.toupper() == Player.eqArmor)
+            {
+                slotMenuButtons.useButton.changeText("Unequip");
+            }
+            else
+            {
+                slotMenuButtons.useButton.changeText("Equip");
+            }
+        }
+        else
+        {
+            slotMenuButtons.useButton.changeText("Non usable");
+        }
+
+        slotMenuButtons
         pointer.btn.unhover();
     }
     else
@@ -227,7 +249,68 @@ function rawOnClick(key)
 
 function handleUseItem(slot)
 {
-    sendPacket(PacketType.USE_ITEM, slot.instance, 1);
+    local item = Daedalus.instance(slot.instance);
+    if (item.mainflag == 32 || item.mainflag == 128)
+    {
+        sendPacket(PacketType.USE_ITEM, slot.instance, 1);
+    }
+    else if (item.mainflag == 2 || item.mainflag == 4 || item.mainflag == 16)
+    {
+        if (slot.instance.toupper() == Player.eqWeapon || slot.instance.toupper() == Player.eqWeapon2h || slot.instance.toupper() == Player.eqArmor)
+        {
+            foreach(i, v in getCharacterLabs())
+            {
+                if (v.render.instance == slot.instance)
+                {
+                    v.render.instance = "";
+                    return invUnequip(i, slot.instance);
+                }
+            }
+        }
+        else
+        {
+            local found = 0;
+            switch (item.mainflag)
+            {
+                case 2:
+                    found = 0;
+                break;
+
+                case 4:
+                    found = 1;
+                break;
+
+                case 16:
+                    found = 2;
+                break;
+            }
+            if (invEquip(found, slot.instance))
+            {
+                getCharacterLabs()[found].render.instance = slot.instance;
+            }
+        }
+    }
+    else
+    {
+        //slotMenuButtons.useButton.changeText("Non usable");
+    }
+}
+
+function findSlot(instance)
+{
+    foreach(v in getItemSlots())
+    {
+        if (!v.render)
+        {
+            continue;
+        }
+
+        if (v.render.instance == instance)
+        {
+            return v;
+        }
+    }
+    return null;
 }
 
 function handleDropItem(slot)
