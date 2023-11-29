@@ -149,6 +149,7 @@ local numerdraw = [
 ];
 
 local intWindow = Window(0, 6500, 8192, 8192 - 6500, "SR_BLANK.TGA");
+intWindow.setCover("MENU_INGAME.TGA");
 local dialogOpt = [
     Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "Pokaz mi swoje towary", "NONE"),
     Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "Co tam", "NONE"),

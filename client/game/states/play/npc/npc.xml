@@ -1,6 +1,8 @@
 <server>
     <script src="npcInteraction.nut" type="client" />
 
+    <import src="trade/trade.xml" type="client" />
+
     <script src="ziobro.nut" type="client" />
     <script src="milko.nut" type="client" />
 

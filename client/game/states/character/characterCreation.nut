@@ -71,13 +71,13 @@ function initCharacterCreation()
     makeupMenu.characterList.center();
     makeupMenu.characterList.selectFirstAsDefault();
 
-    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "MENU_CHOICE_BACK.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_CHOICE_BACK.TGA");
+    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "MENU_CHOICE_BACK.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
     makeupMenu.window.attach(makeupMenu.bodySlider);
 
-    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "MENU_CHOICE_BACK.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_CHOICE_BACK.TGA");
+    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "MENU_CHOICE_BACK.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
     makeupMenu.window.attach(makeupMenu.headSlider);
 
-    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "MENU_CHOICE_BACK.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_CHOICE_BACK.TGA");
+    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "MENU_CHOICE_BACK.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
     makeupMenu.window.attach(makeupMenu.headTexSlider);
 
     makeupMenu.ok = Button(300, 5400, 600, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "INV_TITEL.TGA");

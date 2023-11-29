@@ -4,12 +4,6 @@ local QA_Renders = [];
 local QAF_Draws = [];
 local QAA_Draws = [];
 
-local map = Texture(0, 0, 8192, 8192, "MAP_WORLD_ORC.TGA");
-local meOnMap = Draw(0, 0, "+ Hero");
-local line1 = null;
-local line2 = null;
-local line3 = null;
-local line4 = null;
 function initPlayState()
 {
     enable_NicknameId(false);
@@ -57,11 +51,10 @@ function initPlayState()
     }
 
     enableQA(true);
+    initMap();
 
-    map.visible = true;
-    map.alpha = 0;
-    meOnMap.visible = true;
-    meOnMap.alpha = 0;
+    initNpcTrade();
+    enableNpcTrade(true);
 }
 
 function enableQA(val)
@@ -81,11 +74,14 @@ function onMessage(data)
     Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
 }
 
+function onSlidePlay(el)
+{
+    onInvSlide(el);
+    onTradeSlide(el);
+}
+
 function handleQARender()
 {
-    local pos = getPlayerPosition(heroId);
-    meOnMap.setPosition(4096 + pos.x / 24.75, 4096 - pos.z / 13.25);
-
     for(local i = 0; i < 4; i++)
     {
         if (Player.qa[i] != QA_Renders[i].instance)
@@ -110,6 +106,13 @@ function handleQARender()
             }
             else
             {
+                local item = Daedalus.instance(v.instance)
+                if (item.mainflag == 2 || item.mainflag == 4)
+                {
+                    QAA_Draws[i].text = "";
+                    continue;
+                }
+
                 QAA_Draws[i].text = "x" + v.amount;
                 QAA_Draws[i].setPosition(QA_Slots[i].getPosition().x + QA_Slots[i].getSize().width - QAA_Draws[i].width - 20, QA_Slots[i].getPosition().y + QA_Slots[i].getSize().height - QAA_Draws[i].height - 20)
             }
@@ -122,10 +125,14 @@ function onRenderP(currentTime, lastTime)
     handleQARender();
     npcInteractionHandler();
     enemyRender();
+    mapRender();
+    tradeRender();
 }
 
 local function onplaykey(key)
 {
+    mapKey(key);
+
     if (!Inventory.IsEnabled())
     {
         if (key == KEY_T)
