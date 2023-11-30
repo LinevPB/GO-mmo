@@ -1,5 +1,7 @@
 local mainWindow = null;
 local tradeEnabled = false;
+local tradeButton = null;
+local exitButton = null;
 
 function isTradeEnabled()
 {
@@ -18,6 +20,12 @@ function initNpcTrade()
     mainWindow.attach(playerInv);
     mainWindow.attach(npcInv);
 
+    tradeButton = Button(2800 + 296, 6500 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", "Trade", "INV_TITEL.TGA");
+    exitButton = Button(2800 + 296, 7100 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", "Exit", "INV_TITEL.TGA");
+
+    mainWindow.attach(tradeButton);
+    mainWindow.attach(exitButton);
+
     initPlayerSlots();
     initNpcSlots();
 }
@@ -35,12 +43,12 @@ function enableNpcTrade(val)
 
     if (val == true)
     {
-        tradeEnabled = true;
         setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
-
-        return;
+    }
+    else
+    {
+        setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
     }
 
-    setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
-    tradeEnabled = false;
+    tradeEnabled = val;
 }

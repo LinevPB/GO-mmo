@@ -334,6 +334,15 @@ function getItemAmount(instance)
     }
 }
 
+function getItemPrice(instance)
+{
+    if (instance == "") return 0;
+
+    local item = Daedalus.instance(instance);
+
+    return item.value;
+}
+
 function findItemBySlot(slot)
 {
     foreach (item in Player.items) {

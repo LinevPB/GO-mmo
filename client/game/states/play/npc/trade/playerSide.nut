@@ -13,13 +13,37 @@ local myGoldDraw = null;
 local myGoldAmountDraw = null;
 local oreRender = null;
 
+local itemsToTradeTex = null;
+local itemsToTradeTexCover = null;
+
 local slots = [];
+local trade_slots = [];
+local tradeSlotsCover = null;
+
+local basketValueDraw = null;
+local basketValueAmountDraw = null;
 
 function initPlayerWindow()
 {
     myInventory = Window(300, 300, 2500, 6000, "SR_BLANK.TGA");
     myInventory.setBackgroundColor(10, 10, 40);
     myInventory.setCover("MENU_INGAME.TGA");
+
+    itemsToTradeTex = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
+    itemsToTradeTexCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "MENU_INGAME.TGA");
+    itemsToTradeTex.setColor(10, 10, 40);
+
+    tradeSlotsCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
+    tradeSlotsCover.setColor(75, 75, 100);
+
+    basketValueDraw = Draw(0, 0, "Value: ");
+    basketValueAmountDraw = Draw(0, 0, "0");
+
+    basketValueDraw.setPosition(450, 7700);
+    basketValueAmountDraw.setPosition(450 + basketValueDraw.width, 7700);
+    basketValueAmountDraw.setColor(0, 150, 255);
+
+    initPlayerTradeSlots();
 
     return myInventory;
 }
@@ -39,7 +63,19 @@ function enablePlayerWindow(val)
     myGoldAmountDraw.visible = val;
     oreRender.visible = val;
 
+    itemsToTradeTex.visible = val;
+    itemsToTradeTexCover.visible = val;
+    tradeSlotsCover.visible = val;
+
+    basketValueDraw.visible = val;
+    basketValueAmountDraw.visible = val;
+
     foreach(v in slots)
+    {
+        v.enable(val);
+    }
+
+    foreach(v in trade_slots)
     {
         v.enable(val);
     }
@@ -100,6 +136,21 @@ function initPlayerSlots()
     myInvDraw.setPosition(myInventory.pos.x + myInventory.size.width / 2 - myInvDraw.width / 2, myInventory.pos.y + 300 - myInvDraw.height / 2);
 
     myInvDrawCover = Texture(myInventory.pos.x, myInventory.pos.y, myInventory.size.width, 600, "MENU_CHOICE_BACK.TGA");
+}
+
+function initPlayerTradeSlots()
+{
+    for(local j = 0; j < 4; j++)
+    {
+        for(local i = 0; i < 2; i++)
+        {
+            local slot = TradeSlot(itemsToTradeTex.getPosition().x + 575 * j + 100, itemsToTradeTex.getPosition().y + 575 * i + 100, 575, 575);
+            trade_slots.append(slot);
+        }
+    }
+
+    tradeSlotsCover.setPosition(itemsToTradeTex.getPosition().x + 100, itemsToTradeTex.getPosition().y + 100);
+    tradeSlotsCover.setSize(575 * 4, 575 * 2);
 }
 
 function setVisiblity(val)
@@ -163,7 +214,7 @@ local function calcGoldAmount()
     return res;
 }
 
-function tradeRender()
+function tradePlayerRender()
 {
     if (!isTradeEnabled()) return;
 
@@ -171,4 +222,9 @@ function tradeRender()
     {
         myGoldAmountDraw.text = calcGoldAmount();
     }
+}
+
+function updatePlayerBasketValue(value)
+{
+    basketValueAmountDraw.text = value;
 }

@@ -226,3 +226,13 @@ function playButtonHandler(id)
 
     npcButtonHandler(id);
 }
+
+function onClickPlay(key)
+{
+    tradeClick(key);
+}
+
+function onReleasePlay(key)
+{
+    tradeRelease(key);
+}

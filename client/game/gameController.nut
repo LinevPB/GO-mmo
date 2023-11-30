@@ -94,7 +94,10 @@ local function onClickH(key)
 {
     switch(Player.gameState) {
         case GameState.CHARACTER_CREATION: onClickC(key); break;
-        case GameState.PLAY: rawOnClick(key); break;
+        case GameState.PLAY:
+            rawOnClick(key);
+            onClickPlay(key);
+        break;
     }
 }
 addEventHandler("onMouseClick", onClickH);
@@ -103,6 +106,7 @@ local function onReleaseH(key)
 {
     switch(Player.gameState) {
         case GameState.CHARACTER_CREATION: onReleaseC(key); break;
+        case GameState.PLAY: onReleasePlay(key);
     }
 }
 addEventHandler("onMouseRelease", onReleaseH);
