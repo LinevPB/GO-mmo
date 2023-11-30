@@ -72,7 +72,7 @@ function initNpcSlots()
             local slot = TradeSlot(npcInventory.pos.x + 250 + 600 * i, npcInventory.pos.y + 800 + 600 * j, 600, 600);
             if (j % 2 == 0)
             {
-                slot.updateSlot("ITAR_VLK_M", 4);
+                slot.updateSlot("ITAR_VLK_M", j%2+1);
             }
             npc_slots.append(slot);
         }
@@ -106,5 +106,5 @@ function initNpcTradeSlots()
 
 function updateNpcBasketValue(value)
 {
-    NPC_basketValueAmountDraw.text = value;
+    NPC_basketValueAmountDraw.text = calcGoldAmount(value);
 }

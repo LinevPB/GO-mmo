@@ -28,6 +28,7 @@ function initNpcTrade()
 
     initPlayerSlots();
     initNpcSlots();
+    initTradeShowcase();
 }
 
 function enableNpcTrade(val)
@@ -51,4 +52,18 @@ function enableNpcTrade(val)
     }
 
     tradeEnabled = val;
+}
+
+function calcGoldAmount(val = false)
+{
+    if (val == false) val = Player.gold;
+    local res = "";
+    local temp = val + "";
+    while(temp.len() > 3) {
+        res = "," + temp.slice(temp.len() - 3, temp.len()) + res;
+        temp = temp.slice(0, temp.len() - 3);
+    }
+    res = temp + res;
+
+    return res;
 }

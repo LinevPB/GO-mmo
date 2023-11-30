@@ -6,6 +6,9 @@ local slotPointer = null;
 local cursorOffX = 0;
 local cursorOffY = 0;
 
+local playerItemsInBasket = [];
+local npcItemsInBasket = [];
+
 class TradeSlot
 {
     id = null;
@@ -249,6 +252,8 @@ function tradeRelease(key)
 
 function tradeRender()
 {
+    if (!isTradeEnabled()) return;
+
     if (holding)
     {
         local curs = getCursorPosition();
@@ -256,8 +261,9 @@ function tradeRender()
     }
 
     local basketValue = 0;
+    local hovered = false;
 
-    foreach(v in slots)
+    foreach(i, v in slots)
     {
         if (!v.enabled) continue;
 
@@ -291,6 +297,20 @@ function tradeRender()
         if (inSquare(getCursorPosition(), v.pos, v.size))
         {
             v.hover();
+
+            if (v.render.instance != "")
+            {
+                updateTradeShowcase(v.render.instance)
+                hovered = true;
+
+                if (!isTradeShowcaseVisible())
+                {
+                    if (v.id < 18)
+                        enableTradeShowcase(true, 1);
+                    else
+                    enableTradeShowcase(true, 0);
+                }
+            }
         }
         else
         {
@@ -298,6 +318,12 @@ function tradeRender()
         }
     }
 
+    if (isTradeShowcaseVisible() && !hovered)
+    {
+        enableTradeShowcase(false);
+    }
+
+    updateTradeShowcasePosition(holding);
     tradePlayerRender();
 }
 

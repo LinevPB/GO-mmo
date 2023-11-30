@@ -201,19 +201,6 @@ function onTradeSlide(el)
     setVisiblity(el.getValue());
 }
 
-local function calcGoldAmount()
-{
-    local res = "";
-    local temp = Player.gold + "";
-    while(temp.len() > 3) {
-        res = "," + temp.slice(temp.len() - 3, temp.len()) + res;
-        temp = temp.slice(0, temp.len() - 3);
-    }
-    res = temp + res;
-
-    return res;
-}
-
 function tradePlayerRender()
 {
     if (!isTradeEnabled()) return;
@@ -226,5 +213,5 @@ function tradePlayerRender()
 
 function updatePlayerBasketValue(value)
 {
-    basketValueAmountDraw.text = value;
+    basketValueAmountDraw.text = calcGoldAmount(value);
 }
