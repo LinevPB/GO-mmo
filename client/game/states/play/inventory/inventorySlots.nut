@@ -136,7 +136,7 @@ function handleSlotsRelease()
 function setupInventorySlots()
 {
     itemMenu = Window(200, Inventory.SIZE, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
-    itemMenu.setBackgroundColor(80, 80, 100);
+    itemMenu.setBackgroundColor(75, 75, 100);
     getMainMenu().attach(itemMenu);
 }
 
@@ -159,7 +159,6 @@ function getInvSlots()
 function setupItemSlider()
 {
     itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), "", "MENU_CHOICE_BACK_NT.TGA", true);
-    itemSlider.setBackgroundColor(255, 255, 0);
     getMainMenu().attach(itemSlider);
 }
 

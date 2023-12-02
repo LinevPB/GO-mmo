@@ -49,12 +49,12 @@ function clearPlayerBasket()
 function initPlayerWindow()
 {
     myInventory = Window(300, 300, 2500, 6000, "SR_BLANK.TGA");
-    myInventory.setBackgroundColor(10, 10, 40);
+    myInventory.setBackgroundColor(10, 10, 30);
     myInventory.setCover("MENU_INGAME.TGA");
 
     itemsToTradeTex = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
     itemsToTradeTexCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "MENU_INGAME.TGA");
-    itemsToTradeTex.setColor(10, 10, 40);
+    itemsToTradeTex.setColor(10, 10, 30);
 
     tradeSlotsCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
     tradeSlotsCover.setColor(75, 75, 100);

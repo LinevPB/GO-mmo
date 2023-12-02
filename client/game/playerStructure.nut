@@ -348,9 +348,9 @@ function getItemPrice(instance)
 {
     if (instance == "") return 0;
 
-    local item = Daedalus.instance(instance);
+    local item = ServerItems.find(instance);
 
-    return item.value;
+    return item.price;
 }
 
 function findItemBySlot(slot)

@@ -108,7 +108,9 @@ function setupCharacterSetup()
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
         ///
-    characterMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, Inventory.SIZE + 250, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, Inventory.MAX_ROW * Inventory.SIZE - 250, "LOG_PAPER.TGA");
+    characterMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, Inventory.SIZE + 250, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, Inventory.MAX_ROW * Inventory.SIZE - 250, "SR_BLANK.TGA");
+    characterMenu.setBackgroundColor(10, 10, 30);
+    characterMenu.setCover("MENU_INGAME.TGA");
     getMainMenu().attach(characterMenu);
 
     for(local i = 1; i < 5; i++)

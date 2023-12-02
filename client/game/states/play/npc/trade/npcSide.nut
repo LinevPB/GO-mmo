@@ -40,12 +40,12 @@ function clearNpcBasket()
 function initNpcWindow()
 {
     npcInventory = Window(8192/2 + 300, 300, 8192/2-600, 6000, "SR_BLANK.TGA");
-    npcInventory.setBackgroundColor(10, 10, 40);
+    npcInventory.setBackgroundColor(10, 10, 30);
     npcInventory.setCover("MENU_INGAME.TGA");
 
     NPC_itemsToTradeTex = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "SR_BLANK.TGA");
     NPC_itemsToTradeTexCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "MENU_INGAME.TGA");
-    NPC_itemsToTradeTex.setColor(10, 10, 40);
+    NPC_itemsToTradeTex.setColor(10, 10, 30);
 
     NPC_tradeSlotsCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "SR_BLANK.TGA");
     NPC_tradeSlotsCover.setColor(75, 75, 100);

@@ -56,7 +56,7 @@ function setupInventoryMenu()
     mainMenu.background.texture.setColor(10, 10, 20);
 
     slotMenu = Window(0, 0, 1000, 500, "SR_BLANK.TGA");
-    slotMenu.background.texture.setColor(10, 10, 60);
+    slotMenu.background.texture.setColor(210, 10, 60);
     slotMenu.setCover("MENU_CHOICE_BACK.TGA");
 
     slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", "Use", "MENU_CHOICE_BACK.TGA");

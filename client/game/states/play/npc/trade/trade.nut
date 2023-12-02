@@ -11,7 +11,7 @@ function isTradeEnabled()
 function initNpcTrade()
 {
     mainWindow = Window(0, 0, 8192, 8192, "SR_BLANK.TGA");
-    mainWindow.setBackgroundColor(10, 10, 25);
+    mainWindow.setBackgroundColor(10, 10, 20);
     mainWindow.setCover("MENU_INGAME.TGA");
 
     local playerInv = initPlayerWindow();

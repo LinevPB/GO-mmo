@@ -6,12 +6,8 @@ local ore_render = ItemRender(0, 0, 0, 0, "ItMi_Nugget");
 local big_inv_title = Draw(0, 0, "Inventory");
 local big_stat_title = Draw(0, 0, "Statistics");
 local coverTex1 = null;
-local coverTex11 = null;
 local coverTex2 = null;
-local coverTex22 = null;
 local coverTex3 = null;
-local coverTex33 = null;
-local coverTex4 = null;
 
 local inv = {
     itemSlots = null
@@ -23,14 +19,10 @@ function onInvSlide(el)
 
     handleSlideSlots(el);
 
-    coverTex4.top();
-    getStatisticsMenu().background.texture.top();
+    statisticsSlide();
 
-    coverTex11.top();
     coverTex1.top();
-    coverTex22.top();
     coverTex2.top();
-    coverTex33.top();
     coverTex3.top();
 
     gold_cover_tex.top();
@@ -40,8 +32,6 @@ function onInvSlide(el)
     sec_gold_lab.top();
     big_inv_title.top();
     big_stat_title.top();
-
-    statisticsSlide();
 }
 
 function updateGoldDraws()
@@ -60,38 +50,28 @@ function updateGoldDraws()
 
 function setupCoverTextures()
 {
-    gold_cover_tex = Texture(0, 0, 0, 0, "MENU_CHOICE_BACK.TGA");
+    gold_cover_tex = createCoverTexture(0, 0, 0, 0);
 
+    // inventory top title cover
     coverTex1 = createCoverTexture(0, 0, Inventory.width, Inventory.SIZE - 25);
-    coverTex11 = createCoverTexture(coverTex1.getPosition().x, coverTex1.getPosition().y, coverTex1.getSize().width, coverTex1.getSize().height);
-    coverTex11.setColor(0, 0, 0);
 
+    // statistics title cover
     coverTex2 = createCoverTexture(0, Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE, Inventory.width, 100 + getStatisticsMenu().pos.y - ((Inventory.MAX_ROW + 1) * Inventory.SIZE));
-    coverTex22 = createCoverTexture(coverTex2.getPosition().x, coverTex2.getPosition().y, coverTex2.getSize().width, coverTex2.getSize().height);
-    coverTex22.setColor(0, 0, 0);
 
+    // esc draw cover
     coverTex3 = createCoverTexture(0, getStatisticsMenu().pos.y + getStatisticsMenu().size.height - 150, Inventory.width, 8192 - getStatisticsMenu().pos.y - getStatisticsMenu().size.height + 150);
-    coverTex33 = createCoverTexture(coverTex3.getPosition().x, coverTex3.getPosition().y, coverTex3.getSize().width, coverTex3.getSize().height);
-    coverTex33.setColor(0, 0, 0);
-
-    coverTex4 = createCoverTexture(getStatisticsMenu().pos.x, getStatisticsMenu().pos.y, getStatisticsMenu().size.width, getStatisticsMenu().size.height);
-    coverTex4.setColor(0, 0, 0);
 }
 
 function createCoverTexture(x, y, width, height)
 {
-    return Texture(x, y, width, height, "MENU_CHOICE_BACK.TGA");
+    return Texture(x, y, width, height, "MENU_CHOICE_BACK_NT.TGA");
 }
 
 function setCoverTexturesVisibility(val)
 {
     coverTex1.visible = val;
-    coverTex11.visible = val;
     coverTex2.visible = val;
-    coverTex22.visible = val;
     coverTex3.visible = val;
-    coverTex33.visible = val;
-    coverTex4.visible = val;
 }
 
 function enableCover()
