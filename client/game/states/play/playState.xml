@@ -3,6 +3,7 @@
     <script src="interface/chat.nut" type="client" />
     <script src="interface/notification.nut" type="client" />
     <script src="interface/map.nut" type="client" />
+    <script src="interface/showcase.nut" type="client" />
 
     <import src="inventory/inventory.xml" type="client" />
     <import src="npc/npc.xml" type="client" />

@@ -308,10 +308,8 @@ function tradeRelease(key)
     }
 }
 
-function tradeRender()
+function tradeSlotRender()
 {
-    if (!isTradeEnabled()) return;
-
     if (holding)
     {
         local curs = getCursorPosition();
@@ -364,12 +362,12 @@ function tradeRender()
                 updateTradeShowcase(v.render.instance)
                 hovered = true;
 
-                if (!isTradeShowcaseVisible())
+                if (!Showcase.IsEnabled())
                 {
                     if (v.id < 18)
                         enableTradeShowcase(true, 1);
                     else
-                    enableTradeShowcase(true, 0);
+                        enableTradeShowcase(true, 0);
                 }
             }
         }
@@ -379,7 +377,7 @@ function tradeRender()
         }
     }
 
-    if (isTradeShowcaseVisible() && !hovered)
+    if (Showcase.IsEnabled() && !hovered)
     {
         enableTradeShowcase(false);
     }

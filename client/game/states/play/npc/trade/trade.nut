@@ -111,6 +111,14 @@ function calcGoldAmount(val = false)
     return res;
 }
 
+function tradeRender()
+{
+    if (!isTradeEnabled()) return;
+
+    tradeSlotRender();
+    Showcase.Render();
+}
+
 local function xdkey(key)
 {
     if (key == KEY_X)

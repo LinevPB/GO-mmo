@@ -55,6 +55,8 @@ function initPlayState()
 
     initNpcTrade();
     //
+    Showcase.Init();
+    //Showcase.Enable(true);
 }
 
 function enableQA(val)
