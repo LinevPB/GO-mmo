@@ -37,9 +37,9 @@ function initTradeShowcase()
 
     TShowcase.render = ItemRender(200, 1200, 1000, 1000, "ITMI_NUGGET");
     TShowcase.render.lightingswell = true;
-    TShowcase.render.rotX = -30;
-    TShowcase.render.rotZ = 150;
+    TShowcase.render.rotX = 0;
     TShowcase.render.rotY = 0;
+    TShowcase.render.rotZ = 0;
     TShowcase.render.visible = false;
 
     TShowcase2.draws[0].setPosition(3000, 4400);
@@ -99,86 +99,58 @@ function enableTradeShowcase(val, arg = 0)
     TShowcaseVisible = val;
 }
 
+function handleTradeShowcase(info)
+{
+    for(local i = 0; i < 4; i++)
+    {
+        TShowcase2.draws[i].text = info[i];
+    }
+}
+
 function updateTradeShowcase(instance)
 {
+    local item = ServerItems.find(instance);
+
     TShowcase.render.instance = instance;
-    TShowcase.nameDraw.text = getItemName(TShowcase.render.instance);
+    TShowcase.nameDraw.text = item.name;
     TShowcase2.render.instance = instance;
 
-    local item = Daedalus.instance(TShowcase2.render.instance);
+    TShowcase.priceAmountDraw.text = calcGoldAmount(item.price);
+    TShowcase2.valueDraw.text = calcGoldAmount(item.price);
 
-    TShowcase.priceAmountDraw.text = calcGoldAmount(item.value);
-    TShowcase2.valueDraw.text = calcGoldAmount(item.value);
-
-    switch(item.mainflag) {
-        case 1:
-            for(local i = 1; i < 4; i++) {
-                TShowcase2.draws[i].text = "";
-            }
-            TShowcase2.draws[0].text = item.text[5] + " " + item.count[5];
+    switch(item.type)
+    {
+        case ItemType.WEAPON:
+            handleTradeShowcase(handleWeaponInfo(item));
         break;
 
-        case 2:
-        case 4:
-            TShowcase2.draws[0].text = item.text[2] + ": " + item.count[2];
-            TShowcase2.draws[1].text = item.text[3] + " " + item.count[3];
-            for(local i = 2; i < 4; i++) {
-                TShowcase2.draws[i].text = "";
-            }
+        case ItemType.ARMOR:
+            handleTradeShowcase(handleArmorInfo(item));
         break;
 
-        case 8:
-            for(local i = 0; i < 4; i++) {
-                TShowcase2.draws[i].text = item.text[i];
-            }
-            TShowcase2.draws[0].text = "Ranged weapon ammunition";
+        case ItemType.AMMO:
+            handleTradeShowcase(handleAmmoInfo(item));
         break;
 
-        case 16:
-            for(local i = 0; i < 4; i++) {
-                TShowcase2.draws[i].text = item.text[i + 1] + " " + item.count[i + 1];
-            }
+        case ItemType.MAGIC:
+            handleTradeShowcase(handleMagicInfo(item));
         break;
 
-        case 32:
-            for(local i = 1; i < 4; i++) {
-                TShowcase2.draws[i].text = "";
-            }
-            TShowcase2.draws[0].text = item.text[1] + " " + item.count[1];
+        case ItemType.FOOD:
+            handleTradeShowcase(handleFoodInfo(item));
         break;
 
-        case 128:
-            for(local i = 1; i < 4; i++) {
-                TShowcase2.draws[i].text = "";
-            }
-            TShowcase2.draws[0].text = item.text[2] + ": " + item.count[2];
+        case ItemType.POTION:
+            handleTradeShowcase(handlePotionInfo(item));
         break;
 
-        case 512:
-            if (item.text[0] != "Scroll") {
-                TShowcase2.draws[0].text = item.text[0] + " " + item.count[0];
-                TShowcase2.draws[1].text = item.text[1] + " " + item.count[1];
-                TShowcase2.draws[2].text = item.text[2] + ": " + item.count[2];
-            }
-            else {
-                TShowcase2.draws[0].text = item.text[1] + " " + item.count[1];
-                TShowcase2.draws[1].text = item.text[2] + ": " + item.count[2];
-                TShowcase2.draws[2].text = "";
-            }
-
-            TShowcase2.draws[3].text = "";
-        break;
-
-        default:
-            TShowcase2.draws[0].text = item.text[3];
-            TShowcase2.draws[1].text = item.text[4];
-            for(local i = 2; i < 4; i++) {
-                TShowcase2.draws[i].text = "";
-            }
+        case ItemType.OTHER:
+            handleTradeShowcase(handleOtherInfo(item));
         break;
     }
 
-    for(local i = 0; i < 4; i++) {
+    for(local i = 0; i < 4; i++)
+    {
         TShowcase2.draws[i].setColor(190, 190, 190);
         TShowcase2.draws[i].visible = true;
     }

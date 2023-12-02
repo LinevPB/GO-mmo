@@ -225,6 +225,6 @@ addEventHandler("onKey", onplayerkey1);
 
 function onHit(killerid, playerid, description)
 {
-    addEffect(killerid, "Spellfx_Deathball");
+    //addEffect(killerid, "Spellfx_Deathball");
 }
 addEventHandler("onPlayerHit", onHit);

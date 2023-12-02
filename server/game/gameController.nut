@@ -150,10 +150,106 @@ function creationConfirmHandler(pid, data)
     setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0]);
 }
 
+local function transformTradeBasket(data)
+{
+    if (data == 0) return data;
+
+    local transform = [];
+    local holdInst = "";
+
+    foreach(i, v in data)
+    {
+        if ((i % 2) == 0)
+        {
+            holdInst = v;
+            continue;
+        }
+        transform.append({instance = holdInst, amount = v});
+    }
+
+    return transform;
+}
+
+function finalizeTrade(pid)
+{
+    local player = findPlayer(pid);
+
+    if (player.tradePrice > player.gold)
+    {
+        sendPlayerPacket(pid, PacketType.TRADE_RESULT, 0);
+        return;
+    }
+
+    foreach(v in player.tradeNpcItems)
+    {
+        GiveItem(pid, v.instance, (v.amount).tointeger());
+    }
+
+    foreach(v in player.tradePlayerItems)
+    {
+        RemoveItem(pid, v.instance, (v.amount).tointeger());
+    }
+
+    local calcGold = player.gold - player.tradePrice;
+    player.setGold(calcGold);
+
+    player.tradePrice = 0;
+    player.tradeNpcItems = [];
+    player.tradePlayerItems = [];
+    player.tradeReady = false;
+
+    sendPlayerPacket(pid, PacketType.TRADE_RESULT, 1);
+}
+
+function handleTrade(pid, item_list, target)
+{
+    local player = findPlayer(pid);
+    local totalPrice = 0;
+
+    if (item_list[0] != 0)
+    {
+        foreach(v in item_list)
+        {
+            local item = ServerItems.find(v.instance);
+            if (item == null)
+            {
+                print("ERROR ITEM NULL + " + v.instance + " : " + v.amount);
+                continue;
+            }
+            local price = item.price * v.amount;
+            totalPrice += price;
+        }
+    }
+    else
+    {
+        item_list = [];
+    }
+
+    if (target == 0) // player items
+    {
+        player.tradePrice -= totalPrice;
+        player.tradePlayerItems = item_list;
+    }
+    else if (target == 1) // what player wants to buy
+    {
+        player.tradePrice += totalPrice;
+        player.tradeNpcItems = item_list;
+    }
+
+    if (!player.tradeReady)
+    {
+        player.tradeReady = true;
+        return;
+    }
+
+    finalizeTrade(pid);
+}
+
 local function onPacket(pid, packet)
 {
     local packetType = packet.readInt8();
-    local data = decode(packet.readString());
+    local readPacket = packet.readString();
+    local data = decode(readPacket);
 
     switch(packetType) {
         case PacketType.LOGIN:
@@ -238,6 +334,16 @@ local function onPacket(pid, packet)
             res += "\n" + xd;
             myfile.write(res);
             myfile.close();
+        break;
+
+        case PacketType.TRADE_PLAYER_BASKET:
+            local transform = (data[0] == 0) ? data : transformTradeBasket(data);
+            handleTrade(pid, transform, 0);
+        break;
+
+        case PacketType.TRADE_NPC_BASKET:
+            local transform = (data[0] == 0) ? data : transformTradeBasket(data);
+            handleTrade(pid, transform, 1);
         break;
     }
 }

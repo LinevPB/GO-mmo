@@ -31,6 +31,9 @@ class TradeSlot
     hovered = null;
 
     amount = null;
+    instance = null;
+    originalAmount = null;
+    originalId = null;
 
     constructor(x, y, width, height)
     {
@@ -57,8 +60,11 @@ class TradeSlot
         hovered = false;
 
         amount = 0;
+        originalAmount = 0;
+        instance = "";
 
         id = slot_id;
+        originalId = slot_id;
         slot_id++;
         slots.append(this);
         rehover();
@@ -89,9 +95,20 @@ class TradeSlot
         render.setPosition(pos.x, pos.y);
     }
 
-    function updateSlot(instance, aMount)
+    function updateSlot(inst, aMount)
     {
-        render.instance = instance;
+        if (inst != "")
+        {
+            instance = inst;
+        }
+
+        render.instance = inst;
+
+        if (amount > originalAmount)
+        {
+            originalAmount = amount;
+        }
+
         amount = aMount;
 
         if (amount > 1)
@@ -189,10 +206,25 @@ function handleSlotRelease(slot)
 
     if (slot.id < 8) // jesli przeniesiemy na sloty wymiany gracza
     {
-        if (slotPointer.id < 8) // jesli przeniesiemy ze slotu wymiany gracza na slot wymiany gracza
+        if (slotPointer.id < 8) // jesli przeniesiemy ze slotu wymiany gracza
         {
-            slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
-            slotPointer.updateSlot("", 0);
+            if (slot.render.instance == "")
+            {
+                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                slotPointer.updateSlot("", 0);
+            }
+            else
+            {
+                local tempInst = slot.render.instance;
+                local tempAmount = slot.amount;
+                local tempId = slot.originalId;
+
+                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                slot.originalId = slotPointer.originalId;
+
+                slotPointer.updateSlot(tempInst, tempAmount);
+                slotPointer.originalId = tempId;
+            }
         }
         else if (slotPointer.id < 18) // jesli przeniesiemy ze slotu wymiany npc
         {
@@ -201,6 +233,8 @@ function handleSlotRelease(slot)
         else if (slotPointer.id <= 107) // jesli przeniesiemy z ekwipunku gracza
         {
             slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+            slotPointer.updateSlot("", 0);
+            slot.originalId = slotPointer.id;
         }
     }
     else if (slot.id < 18) // jesli przeniesiemy na sloty wymiany npc
@@ -209,20 +243,44 @@ function handleSlotRelease(slot)
         {
             slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
         }
-        else if (slotPointer.id < 18 && slotPointer.id > 7) // jesli przeniesiemy ze slotu wymiany npc na slot wymiany npc
+        else if (slotPointer.id < 18 && slotPointer.id > 7) // jesli przeniesiemy ze slotu wymiany npc
         {
-            slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
-            slotPointer.updateSlot("", 0);
+            if (slot.render.instance == "")
+            {
+                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                slotPointer.updateSlot("", 0);
+            }
+            else
+            {
+                local tempInst = slot.render.instance;
+                local tempAmount = slot.amount;
+                local tempId = slot.originalId;
+
+                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                slot.originalId = slotPointer.originalId;
+
+                slotPointer.updateSlot(tempInst, tempAmount);
+                slotPointer.originalId = tempId;
+            }
         }
         else if (slotPointer.id < 8) // jesli przeniesiemy ze slotu wymiany gracza
         {
-            slotPointer.updateSlot("", 0);
+            //slotPointer.updateSlot("", 0);
         }
     }
     else // jesli nie przeniesiemy na zadne ze slotow wymiany
     {
         if (slotPointer.id < 8) // jesli przenosimy ze slotu wymiany gracza
         {
+            foreach(v in slots)
+            {
+                if (v.id == slotPointer.originalId)
+                {
+                    v.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                    break;
+                }
+            }
+            print(slotPointer.originalId);
             slotPointer.updateSlot("", 0);
         }
         else if (slotPointer.id < 18) // jesli prenosimy ze slot wymiany npc
@@ -288,9 +346,12 @@ function tradeRender()
 
         if (v.render.instance == Player.eqArmor || v.render.instance == Player.eqWeapon || v.render.instance == Player.eqWeapon2h)
         {
-            if (v.background.file != v.equippedTex && !v.hovered)
+            if (v.id <= 107 && v.id >= 18)
             {
-                v.rehover();
+                if (v.background.file != v.equippedTex && !v.hovered)
+                {
+                    v.rehover();
+                }
             }
         }
 

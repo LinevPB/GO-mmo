@@ -246,6 +246,10 @@ local function onPacket(packet) {
         case PacketType.UPDATE_GOLD:
             Player.gold = data[0];
         break;
+
+        case PacketType.TRADE_RESULT:
+            handleTradeResult(data);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

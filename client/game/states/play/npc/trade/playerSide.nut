@@ -23,6 +23,29 @@ local tradeSlotsCover = null;
 local basketValueDraw = null;
 local basketValueAmountDraw = null;
 
+function getPlayerBasketItems()
+{
+    local temp = [];
+
+    foreach(v in trade_slots)
+    {
+        if (v.render.instance != "")
+        {
+            temp.append({instance = v.render.instance, amount = v.amount});
+        }
+    }
+
+    return temp;
+}
+
+function clearPlayerBasket()
+{
+    foreach(v in trade_slots)
+    {
+        v.updateSlot("", 0);
+    }
+}
+
 function initPlayerWindow()
 {
     myInventory = Window(300, 300, 2500, 6000, "SR_BLANK.TGA");
@@ -82,18 +105,40 @@ function enablePlayerWindow(val)
 
     if (val == true)
     {
-        foreach(i, v in Player.items)
+        foreach(i, v in slots)
         {
-            for(local j = 0; j < 90; j++)
+            foreach(k in Player.items)
             {
-                if (j != v.slot) continue;
+                if (i == k.slot)
+                {
+                    v.updateSlot(k.instance, k.amount);
+                    break;
+                }
 
-                slots[j].updateSlot(v.instance, v.amount);
+                if (v.instance != "")
+                {
+                    v.updateSlot("", 0);
+                }
             }
         }
 
         setVisiblity(itemSlider.getValue());
     }
+}
+
+function refreshPlayerSlots()
+{
+    foreach(i, v in Player.items)
+    {
+        for(local j = 0; j < 90; j++)
+        {
+            if (j != v.slot) continue;
+
+            slots[j].updateSlot(v.instance, v.amount);
+        }
+    }
+
+    setVisiblity(itemSlider.getValue());
 }
 
 function initPlayerSlots()

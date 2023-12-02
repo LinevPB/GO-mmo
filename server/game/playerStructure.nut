@@ -31,6 +31,10 @@ class PlayerStructure
     skill_cbow = null;
     magic_circle = null;
     gold = null;
+    tradeReady = null;
+    tradePrice = null;
+    tradePlayerItems = null;
+    tradeNpcItems = null;
 
     constructor(playerid)
     {
@@ -46,6 +50,7 @@ class PlayerStructure
         eqArmor = null;
         eqWeapon = null;
         eqWeapon2h = null;
+        tradeReady = false;
 
         level = null;
         experience = null;
@@ -61,37 +66,56 @@ class PlayerStructure
         skill_cbow = null;
         magic_circle = null;
         gold = null;
+
+        tradePrice = 0;
+        tradePlayerItems = [];
+        tradeNpcItems = [];
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
     {
         if (amount <= 0) return;
-        foreach(v in items) {
-            if (v.instance.toupper() == instance.toupper()) {
+
+        foreach(v in items)
+        {
+            if (v.instance.toupper() == instance.toupper())
+            {
                 v.amount += amount;
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 0, instance, v.amount, v.slot);
                 return {val = false, instance = v.instance, amount = v.amount, slot = v.slot};
             }
         }
 
-        if (slot == -1) {
+        if (slot == -1)
+        {
             local marked = false;
-            for(local i = 0; i < 90; i++) {
-                foreach(v in items) {
-                    if (v.slot == i) marked = true;
+            for(local i = 0; i < 90; i++)
+            {
+                foreach(v in items)
+                {
+                    if (v.slot == i)
+                    {
+                        marked = true;
+                    }
                 }
-                if (!marked) {
+
+                if (!marked)
+                {
                     items.append({instance = instance, amount = amount, slot = i});
                     slot = i;
                     marked = false;
                     sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
                     return {val = true, instance = instance, amount = amount, slot = slot}
                 }
-                if (marked && i < 90) {
+
+                if (marked && i < 90)
+                {
                     marked = false;
                 }
             }
-        } else {
+        }
+        else
+        {
             items.append({instance = instance, amount = amount, slot = slot});
             sendPlayerPacket(id, PacketType.UPDATE_ITEM, 1, instance, amount, slot);
             return {val = true, instance = instance, amount = amount, slot = slot};
@@ -427,17 +451,64 @@ function MoveItems(pid, fid1, fid2)
     local id1 = mysql.gquery("SELECT id FROM items WHERE owner=" + player.charId + " AND slot=" + fid1);
     local id2 = mysql.gquery("SELECT id FROM items WHERE owner=" + player.charId + " AND slot=" + fid2);
 
-    if (id1[0] == null && id2[0] != null) {
+    if (id1[0] == null && id2[0] != null)
+    {
+        foreach(v in player.items)
+        {
+            if (v.slot == fid2)
+            {
+                v.slot = fid1;
+                break;
+            }
+        }
+
         mysql.squery("UPDATE `items` SET `slot` = '" + fid1 + "' WHERE `id`=" + id2[0][0]);
     }
-    if (id1[0] != null && id2[0] == null) {
+
+    if (id1[0] != null && id2[0] == null)
+    {
+        foreach(v in player.items)
+        {
+            if (v.slot == fid1)
+            {
+                v.slot = fid2;
+                break;
+            }
+        }
         mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
     }
-    if (id1[0] != null && id2[0] != null) {
+
+    if (id1[0] != null && id2[0] != null)
+    {
+        local holderId = -1;
+
+        foreach(v in player.items)
+        {
+            if (v.slot == fid1 && holderId == -1)
+            {
+                holderId = v.slot;
+                v.slot = fid2;
+            }
+
+            if (v.slot == fid2 && holderId == -1)
+            {
+                holderId = v.slot;
+                v.slot = fid1;
+            }
+
+            if (holderId != -1 && (v.slot == fid1 || v.slot == fid2))
+            {
+                v.slot = holderId;
+                return;
+            }
+        }
+
         mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
         mysql.squery("UPDATE `items` SET `slot` = '" + fid1 + "' WHERE `id`=" + id2[0][0]);
     }
-    if (id1[0] == null && id2[0] == null) {
+
+    if (id1[0] == null && id2[0] == null)
+    {
         print("???");
     }
 }

@@ -198,13 +198,14 @@ Player.manageItem <- function(act, instance, amount, slot)
 {
     if (act == 0 || act == 1)
     {
-        if (act == 1)
+        if (act == 0)
         {
             foreach(v in Player.items)
             {
-                if (v.instance == instance)
+                if (v.instance.toupper() == instance.toupper())
                 {
-                    return v.amount += amount;
+                    v.amount = amount;
+                    return;
                 }
             }
         }
@@ -214,22 +215,23 @@ Player.manageItem <- function(act, instance, amount, slot)
     {
         foreach(i, v in Player.items)
         {
-            if (v.instance != instance)
+            if (v.instance.toupper() != instance.toupper())
             {
                 continue;
             }
 
             if (act == 2)
             {
-                ITEM_CHANGE = true;
                 v.amount = amount;
+                ITEM_CHANGE = true;
                 break;
             }
 
             if (act == 3)
             {
+                Player.items.remove(i);
                 ITEM_CHANGE = true;
-                return Player.items.remove(i);
+                return;
             }
         }
     }
@@ -299,25 +301,33 @@ Player.moveItems <- function(id1, id2)
 {
     sendPacket(PacketType.MOVE_ITEMS, id1, id2);
 
-    local fur = false;
-    foreach(v in Player.items) {
-        if (v.slot == id1 && !fur) {
-            v.slot = id2;
-            fur = true;
-            continue;
+    local holder = -1;
+
+    foreach (v in Player.items)
+    {
+        if (v.slot == id1)
+        {
+            if (holder == -1)
+            {
+                holder = v.slot;
+                v.slot = id2;
+            }
+            else
+            {
+                v.slot = holder;
+            }
         }
-        if (v.slot == id1 && fur) {
-            v.slot = id2;
-            continue;
-        }
-        if (v.slot == id2 && fur) {
-            v.slot = id1;
-            break;
-        }
-        if (v.slot == id2 && !fur) {
-            v.slot = id1;
-            fur = true;
-            continue;
+        else if (v.slot == id2)
+        {
+            if (holder == -1)
+            {
+                holder = v.slot;
+                v.slot = id1;
+            }
+            else
+            {
+                v.slot = holder;
+            }
         }
     }
 

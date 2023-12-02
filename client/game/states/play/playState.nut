@@ -54,7 +54,7 @@ function initPlayState()
     initMap();
 
     initNpcTrade();
-    enableNpcTrade(true);
+    //
 }
 
 function enableQA(val)
@@ -69,9 +69,43 @@ function enableQA(val)
     }
 }
 
+function loopedStorm()
+{
+    addEffect(heroId, "Spellfx_Thunderstorm");
+    addEffect(heroId, "Spellfx_Thunderstorm");
+    addEffect(heroId, "Spellfx_Thunderstorm");
+}
+
+function endBuffs()
+{
+    setFreeze(false);
+    addEffect(heroId, "Spellfx_Fireswordblack");
+    addEffect(heroId, "Spellfx_Lightstar_Orange");
+    setTimer(loopedStorm, 4000, 3);
+}
+
+function BuffTimer()
+{
+    playAni(heroId, "T_SUMSHOOT_2_STAND");
+    addEffect(heroId, "Spellfx_Thunderstorm");
+    setTimer(endBuffs, 500, 1);
+}
+
+function startBuffs()
+{
+    addEffect(heroId, "Spellfx_Thunderstorm_Flash");
+    addEffect(heroId, "Spellfx_Summonguardian");
+    addEffect(heroId, "Spellfx_Innoseye");
+    addEffect(heroId, "Spellfx_Weakglimmer_Yellow");
+    setFreeze(true);
+    playAni(heroId, "T_MAGRUN_2_SUMSHOOT");
+    setTimer(BuffTimer, 1000, 1);
+}
+
 function onMessage(data)
 {
     Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
+    startBuffs();
 }
 
 function onSlidePlay(el)
@@ -131,7 +165,6 @@ function onRenderP(currentTime, lastTime)
 
 local function onplaykey(key)
 {
-    mapKey(key);
 
     if (!Inventory.IsEnabled())
     {
@@ -194,6 +227,9 @@ local function onplaykey(key)
     {
         return;
     }
+    else {
+        mapKey(key);
+    }
 
     if (key == KEY_F1 && Player.qa[0] != "")
     {
@@ -222,6 +258,11 @@ function playButtonHandler(id)
     if (Inventory.IsEnabled())
     {
         return INVplayButtonHandler(id);
+    }
+
+    if (isTradeEnabled())
+    {
+        return tradeButtonHandler(id);
     }
 
     npcButtonHandler(id);

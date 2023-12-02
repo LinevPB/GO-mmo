@@ -1,0 +1,12 @@
+<server>
+    <script src="items.nut" type="shared" />
+
+	<script src="ammo.nut" type="shared" />
+	<script src="armors.nut" type="shared" />
+	<script src="food.nut" type="shared" />
+	<script src="magic.nut" type="shared" />
+	<script src="meleeWeapons.nut" type="shared" />
+	<script src="other.nut" type="shared" />
+	<script src="potions.nut" type="shared" />
+	<script src="rangedWeapons.nut" type="shared" />
+</server>

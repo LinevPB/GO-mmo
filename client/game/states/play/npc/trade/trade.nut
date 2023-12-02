@@ -54,6 +54,49 @@ function enableNpcTrade(val)
     tradeEnabled = val;
 }
 
+function tradeButtonHandler(id)
+{
+    if (id == tradeButton.id)
+    {
+        // handle player basket
+        local playerBasket = getPlayerBasketItems();
+        local npcBasket = getNpcBasketItems();
+
+        local transformPlayer = [];
+        foreach(v in playerBasket)
+        {
+            transformPlayer.append(v.instance);
+            transformPlayer.append(v.amount);
+        }
+
+        if (transformPlayer.len() == 0)
+        {
+            transformPlayer = [0];
+        }
+
+        sendArray(PacketType.TRADE_PLAYER_BASKET, transformPlayer);
+
+        // handle npc basket
+        local transformNpc = [];
+        foreach(v in npcBasket)
+        {
+            transformNpc.append(v.instance);
+            transformNpc.append(v.amount);
+        }
+
+        if (transformNpc.len() == 0)
+        {
+            transformNpc = [0];
+        }
+
+        sendArray(PacketType.TRADE_NPC_BASKET, transformNpc);
+    }
+    else if (id == exitButton.id)
+    {
+        enableNpcTrade(false);
+    }
+}
+
 function calcGoldAmount(val = false)
 {
     if (val == false) val = Player.gold;
@@ -66,4 +109,31 @@ function calcGoldAmount(val = false)
     res = temp + res;
 
     return res;
+}
+
+local function xdkey(key)
+{
+    if (key == KEY_X)
+    {
+        enableNpcTrade(!isTradeEnabled());
+        foreach(v in Player.items)
+        {
+            print(v.instance + " " + v.slot);
+        }
+    }
+}
+addEventHandler("onKey", xdkey);
+
+function handleTradeResult(data)
+{
+    if (data[0] == 0)
+    {
+        notify("Not enough ores!");
+        return;
+    }
+
+    clearPlayerBasket();
+    clearNpcBasket();
+    refreshPlayerSlots();
+    notify("Trade successful!");
 }

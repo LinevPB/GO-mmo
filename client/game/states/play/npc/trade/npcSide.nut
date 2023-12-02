@@ -14,6 +14,29 @@ local NPC_tradeSlotsCover = null;
 local NPC_basketValueDraw = null;
 local NPC_basketValueAmountDraw = null;
 
+function getNpcBasketItems()
+{
+    local temp = [];
+
+    foreach(v in NPC_trade_slots)
+    {
+        if (v.render.instance != "")
+        {
+            temp.append({instance = v.render.instance, amount = v.amount});
+        }
+    }
+
+    return temp;
+}
+
+function clearNpcBasket()
+{
+    foreach(v in NPC_trade_slots)
+    {
+        v.updateSlot("", 0);
+    }
+}
+
 function initNpcWindow()
 {
     npcInventory = Window(8192/2 + 300, 300, 8192/2-600, 6000, "SR_BLANK.TGA");

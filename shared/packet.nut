@@ -22,24 +22,30 @@ enum PacketType {
     UPDATE_GOLD = 20,
     USE_ITEM = 21,
     DROP_ITEM = 22,
-    UPDATE_QA = 23
-}
+    UPDATE_QA = 23,
+    TRADE_PLAYER_BASKET = 24,
+    TRADE_NPC_BASKET = 25,
+    TRADE_RESULT = 26
+};
 
-function encode(args) {
+function encode(args)
+{
     local result = "";
 
     foreach (val in args) {
         local typeIdentifier = "";
         local valueStr = val.tostring();
 
-        switch (typeof val) {
+        switch (typeof val)
+        {
             case "string": typeIdentifier = "s"; break;
             case "integer": typeIdentifier = "i"; break;
             case "float": typeIdentifier = "f"; break;
             case "bool": typeIdentifier = "b"; break;
             default: break;
         }
-        if (typeIdentifier == "s" && valueStr.len() == 0) {
+        if (typeIdentifier == "s" && valueStr.len() == 0)
+        {
             valueStr = "e";
             typeIdentifier = "e";
         }
@@ -48,14 +54,16 @@ function encode(args) {
     }
 
     // Remove the trailing colon
-    if (result.len() > 0) {
+    if (result.len() > 0)
+    {
         result = result.slice(0, result.len() - 1);
     }
 
     return result;
 }
 
-function decode(encodedString) {
+function decode(encodedString)
+{
     local result = [];
     local currentIndex = 0;
 
@@ -64,13 +72,15 @@ function decode(encodedString) {
         currentIndex += 1; // Skip the type and the following ':'
 
         local colonIndex = encodedString.find(":", currentIndex);
-        if (colonIndex != null) {
+        if (colonIndex != null)
+        {
             local varlength = encodedString.slice(currentIndex, colonIndex).tointeger();
             currentIndex = colonIndex + 1;
             local varvalue = encodedString.slice(currentIndex, currentIndex + varlength);
             currentIndex += varlength + 1;
 
-            switch (vartype) {
+            switch (vartype)
+            {
                 case "i": varvalue = varvalue.tointeger(); break;
                 case "f": varvalue = varvalue.tofloat(); break;
                 case "b": "true" ? varvalue = true : varvalue = false; break;
@@ -97,6 +107,12 @@ local function createPacket(packetType, arg)
 function sendPacket(packetType, ...)
 {
     local packet = createPacket(packetType, encode(vargv));
+    packet.send(RELIABLE_ORDERED);
+}
+
+function sendArray(packetType, arr)
+{
+    local packet = createPacket(packetType, encode(arr));
     packet.send(RELIABLE_ORDERED);
 }
 

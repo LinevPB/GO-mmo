@@ -89,7 +89,7 @@ class InventorySlot
         if (amount == 0 || amount == 1)
             btn.draw.text = "";
         else
-            btn.draw.text = amount;
+            btn.draw.text = "x" + amount;
 
         btn.setDrawPosition(btn.size.width - btn.draw.width - 25, btn.size.height - btn.draw.height - 25);
 

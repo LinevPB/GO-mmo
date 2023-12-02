@@ -8,6 +8,14 @@ local showcase = {
     id = -1
 }
 
+function handleShowcaseInfo(itemInfo)
+{
+    for(local i = 0; i < 4; i++)
+    {
+        showcase.draws[i].text = itemInfo[i];
+    }
+}
+
 function showcaseHover(el)
 {
     if (el.elementType != ElementType.BUTTON) return;
@@ -20,7 +28,13 @@ function showcaseHover(el)
     showcase.nameCover.visible = true;
     showcase.id = el.id;
     showcase.nameDraw.visible = true;
-    showcase.nameDraw.text = getItemName(showcase.render.instance);
+
+    local item = ServerItems.find(showcase.render.instance);
+    if (item == null)
+    {
+        print("Couldnt find `" + showcase.render.instance + "`")
+    }
+    showcase.nameDraw.text = item.name;
 
     local amount = getItemAmount(showcase.render.instance);
     if (amount > 1)
@@ -35,90 +49,39 @@ function showcaseHover(el)
     showcase.render.rotY = 0;
     showcase.render.top();
 
-    //gold, mainflag: 1
-    //bolt, mainflag: 8
-    //apple, mainflag: 32
-    //potion, mainflag: 128
-    //rune, mainflag: 512
-
-    // foreach(i, v in item) {
-    //     if (typeof v == "array") {
-    //         foreach(l, k in v) {
-    //            if (k != 0) print(i + " : " + k + " : " + l);
-    //         }
-    //     }
-    // }
-
-    local item = Daedalus.instance(showcase.render.instance);
-    switch(item.mainflag) {
-        case 1:
-            for(local i = 1; i < 4; i++) {
-                showcase.draws[i].text = "";
-            }
-            showcase.draws[0].text = item.text[5] + " " + item.count[5];
+    switch(item.type)
+    {
+        case ItemType.WEAPON:
+            handleShowcaseInfo(handleWeaponInfo(item));
         break;
 
-        case 2:
-        case 4:
-            showcase.draws[0].text = item.text[2] + ": " + item.count[2];
-            showcase.draws[1].text = item.text[3] + " " + item.count[3];
-            for(local i = 2; i < 4; i++) {
-                showcase.draws[i].text = "";
-            }
+        case ItemType.ARMOR:
+            handleShowcaseInfo(handleArmorInfo(item));
         break;
 
-        case 8:
-            for(local i = 0; i < 4; i++) {
-                showcase.draws[i].text = item.text[i];
-            }
-            showcase.draws[0].text = "Ranged weapon ammunition";
+        case ItemType.AMMO:
+            handleShowcaseInfo(handleAmmoInfo(item));
         break;
 
-        case 16:
-            for(local i = 0; i < 4; i++) {
-                showcase.draws[i].text = item.text[i + 1] + " " + item.count[i + 1];
-            }
+        case ItemType.MAGIC:
+            handleShowcaseInfo(handleMagicInfo(item));
         break;
 
-        case 32:
-            for(local i = 1; i < 4; i++) {
-                showcase.draws[i].text = "";
-            }
-            showcase.draws[0].text = item.text[1] + " " + item.count[1];
+        case ItemType.FOOD:
+            handleShowcaseInfo(handleFoodInfo(item));
         break;
 
-        case 128:
-            for(local i = 1; i < 4; i++) {
-                showcase.draws[i].text = "";
-            }
-            showcase.draws[0].text = item.text[2] + ": " + item.count[2];
+        case ItemType.POTION:
+            handleShowcaseInfo(handlePotionInfo(item));
         break;
 
-        case 512:
-            if (item.text[0] != "Scroll") {
-                showcase.draws[0].text = item.text[0] + " " + item.count[0];
-                showcase.draws[1].text = item.text[1] + " " + item.count[1];
-                showcase.draws[2].text = item.text[2] + ": " + item.count[2];
-            }
-            else {
-                showcase.draws[0].text = item.text[1] + " " + item.count[1];
-                showcase.draws[1].text = item.text[2] + ": " + item.count[2];
-                showcase.draws[2].text = "";
-            }
-
-            showcase.draws[3].text = "";
-        break;
-
-        default:
-            showcase.draws[0].text = item.text[3];
-            showcase.draws[1].text = item.text[4];
-            for(local i = 2; i < 4; i++) {
-                showcase.draws[i].text = "";
-            }
+        case ItemType.OTHER:
+            handleShowcaseInfo(handleOtherInfo(item));
         break;
     }
 
-    for(local i = 0; i < 4; i++) {
+    for(local i = 0; i < 4; i++)
+    {
         showcase.draws[i].setColor(190, 190, 190);
         showcase.draws[i].visible = true;
     }
