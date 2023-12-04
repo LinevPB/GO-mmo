@@ -15,7 +15,7 @@ enum PacketType {
     EQUIP_MELEE = 13,
     EQUIP_RANGED = 14,
     TEST = 15,
-    SPAWN_ENEMIES = 16,
+    TEST_PACKET = 16,
     QUEST = 17,
     UPDATE_LEVEL = 18,
     UPDATE_EXPERIENCE = 19,
@@ -25,7 +25,12 @@ enum PacketType {
     UPDATE_QA = 23,
     TRADE_PLAYER_BASKET = 24,
     TRADE_NPC_BASKET = 25,
-    TRADE_RESULT = 26
+    TRADE_RESULT = 26,
+    ENEMY_SPAWN = 27,
+    NPC_SPAWN = 28,
+    NPC_PLAY_ANI = 29,
+    NPC_COORDS = 30,
+    NPC_SET_COORDS = 31
 };
 
 function encode(args)

@@ -149,7 +149,8 @@ local function onPacket(packet) {
 
     switch(packetType) {
         case PacketType.LOGIN:
-            switch(data[0]) {
+            switch(data[0])
+            {
                 case 1:
                     authResult(1);
                     ChangeGameState(GameState.CHARACTER_SELECTION);
@@ -159,7 +160,8 @@ local function onPacket(packet) {
         break;
 
         case PacketType.REGISTER:
-            switch(data[0]) {
+            switch(data[0])
+            {
                 case 1:
                     authResult(3);
                     ChangeGameState(GameState.CHARACTER_SELECTION);
@@ -176,7 +178,8 @@ local function onPacket(packet) {
         break;
 
         case PacketType.CHARACTERS_FINISHED:
-            if(data[0] == 1) {
+            if(data[0] == 1)
+            {
                 moveCameraToNPC();
 
 
@@ -222,17 +225,14 @@ local function onPacket(packet) {
         break;
 
         case PacketType.CHAT_MESSAGE:
-            if (Player.gameState == GameState.PLAY) {
+            if (Player.gameState == GameState.PLAY)
+            {
                 onMessage(data);
             }
         break;
 
         case PacketType.UPDATE_ITEM:
             Player.manageItem(data[0], data[1], data[2], data[3]);
-        break;
-
-        case PacketType.SPAWN_ENEMIES:
-            spawnEnemy(data[0], data[1], data[2], data[3], data[4], data[5]);
         break;
 
         case PacketType.UPDATE_LEVEL:
@@ -249,6 +249,26 @@ local function onPacket(packet) {
 
         case PacketType.TRADE_RESULT:
             handleTradeResult(data);
+        break;
+
+        case PacketType.ENEMY_SPAWN:
+            EnemyPacket(data, PacketType.ENEMY_SPAWN);
+        break;
+
+        case PacketType.NPC_SPAWN:
+            handleNpcSpawn(data);
+        break;
+
+        case PacketType.NPC_PLAY_ANI:
+            handleNpcAnimation(data);
+        break;
+
+        case PacketType.NPC_COORDS:
+            handleNpcCoords(data);
+        break;
+
+        case PacketType.NPC_SET_COORDS:
+            setNpcCoords(data);
         break;
     }
 }

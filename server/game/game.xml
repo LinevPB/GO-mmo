@@ -4,5 +4,8 @@
     <script src="states/login/loginState.nut" type="server" />
     <script src="states/play/playState.nut" type="server" />
 
+    <script src="npc/npc.nut" type="server" />
+    <script src="npc/npcRender.nut" type="server" />
+
     <script src="gameController.nut" type="server" />
 </server>

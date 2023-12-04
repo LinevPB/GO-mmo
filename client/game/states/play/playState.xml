@@ -10,6 +10,7 @@
     <import src="npc/npc.xml" type="client" />
 
     <script src="enemy.nut" type="client" />
+    <script src="globalNpc.nut" type="client" />
 
     <script src="quickAccess.nut" type="client" />
     <script src="playState.nut" type="client" />

@@ -345,6 +345,10 @@ local function onPacket(pid, packet)
             local transform = (data[0] == 0) ? data : transformTradeBasket(data);
             handleTrade(pid, transform, 1);
         break;
+
+        case PacketType.NPC_COORDS:
+            NPC_updateCoords(data);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);
