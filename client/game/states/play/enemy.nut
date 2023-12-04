@@ -129,16 +129,23 @@ local anyId = -1;
 
 local function eventfocus1(focusid, previd)
 {
-    foreach(v in enemy_list) {
-        if (v.npc == focusid) {
-            if (isPlayerDead(focusid)) {
-                if (!info_draw.visible) {
+    foreach(v in enemy_list)
+    {
+        if (v.npc == focusid)
+        {
+            if (isPlayerDead(focusid))
+            {
+                if (!info_draw.visible)
+                {
                     info_draw.visible = true;
                 }
                 anyId = v;
             }
-        } else if (focusid == -1) {
-            if (info_draw.visible) {
+        }
+        else if (focusid == -1)
+        {
+            if (info_draw.visible)
+            {
                 info_draw.visible = false;
             }
             anyId = -1;
@@ -150,7 +157,8 @@ addEventHandler("onFocus", eventfocus1);
 function enemyRender()
 {
     local pos = getPlayerPosition(heroId);
-    foreach(v in enemy_list) {
+    foreach(v in enemy_list)
+    {
         if (isPlayerDead(v.npc))
         {
             if (v.dyingTimer == -1)
@@ -212,8 +220,10 @@ function enemyRender()
 
 local function onplayerkey1(key)
 {
-    if (key == KEY_LCONTROL) {
-        if (anyId != -1) {
+    if (key == KEY_LCONTROL)
+    {
+        if (anyId != -1)
+        {
             if (!isPlayerDead(anyId.npc)) return;
             playAni(heroId, "T_PLUNDER");
             sendPacket(PacketType.QUEST, 1);
@@ -228,3 +238,15 @@ function onHit(killerid, playerid, description)
     //addEffect(killerid, "Spellfx_Deathball");
 }
 addEventHandler("onPlayerHit", onHit);
+
+function onPlayerDead(id)
+{
+    foreach(v in enemy_list)
+    {
+        if (v.npc == id)
+        {
+            Player.addExperience(40);
+        }
+    }
+}
+addEventHandler("onPlayerDead", onPlayerDead);

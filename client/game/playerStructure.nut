@@ -378,3 +378,16 @@ function findPositionBySlot(item)
 
     return -1;
 }
+
+Player.addExperience <- function(val)
+{
+    Player.experience += val;
+    notify("Experience +" + val, false, 400, 5000);
+}
+
+Player.addLevel <- function(val)
+{
+    Player.level += val;
+    addEffect(heroId, "Spellfx_Palheal");
+    notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
+}
