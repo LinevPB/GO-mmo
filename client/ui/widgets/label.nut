@@ -1,4 +1,6 @@
-class Label extends Element {
+class Label extends Element
+{
+    isCentered = false;
     constructor(x, y, text) {
         base.constructor(x, y, 0, 0, false, text);
         elementType = ElementType.LABEL;
@@ -34,6 +36,8 @@ class Label extends Element {
 
     function center()
     {
+        isCentered = true;
+
         local parent = hasParent();
         if (parent) {
             setPosition(parent.pos.x + parent.size.width / 2 - draw.width / 2, pos.y);
@@ -50,5 +54,15 @@ class Label extends Element {
     function height()
     {
         return draw.height;
+    }
+
+    function setText(val)
+    {
+        draw.text = val;
+
+        if (isCentered)
+        {
+            center();
+        }
     }
 }

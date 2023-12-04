@@ -204,6 +204,12 @@ class Element {
     {
         hoverColor = { r = r, g = g, b = b };
     }
+
+    function top()
+    {
+        background.texture.top();
+        draw.top();
+    }
 }
 
 function destroy(el)

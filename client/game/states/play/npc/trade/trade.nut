@@ -29,12 +29,21 @@ function initNpcTrade()
     initPlayerSlots();
     initNpcSlots();
     initTradeShowcase();
+    TradeBox.Init();
 }
 
-function enableNpcTrade(val)
+function enableNpcTrade(val, soft = false)
 {
-    setFreeze(val);
-    disableControls(val);
+    if (!soft)
+    {
+        setFreeze(val);
+        disableControls(val);
+
+        if (val == true)
+            setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
+        else
+            setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
+    }
     ///////
 
     setCursorVisible(val);
@@ -42,13 +51,9 @@ function enableNpcTrade(val)
     enablePlayerWindow(val);
     enableNpcWindow(val);
 
-    if (val == true)
+    if (TradeBox.IsEnabled() && val == false)
     {
-        setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
-    }
-    else
-    {
-        setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
+        TradeBox.Enable(false);
     }
 
     tradeEnabled = val;
@@ -56,6 +61,16 @@ function enableNpcTrade(val)
 
 function tradeButtonHandler(id)
 {
+    if (id == TradeBox.GetCancelBtn())
+    {
+        TradeBox.Enable(false);
+    }
+
+    if (id == TradeBox.GetOkBtn())
+    {
+        return tradeConfirmBox();
+    }
+
     if (id == tradeButton.id)
     {
         // handle player basket
@@ -124,10 +139,6 @@ local function xdkey(key)
     if (key == KEY_X)
     {
         enableNpcTrade(!isTradeEnabled());
-        foreach(v in Player.items)
-        {
-            print(v.instance + " " + v.slot);
-        }
     }
 }
 addEventHandler("onKey", xdkey);

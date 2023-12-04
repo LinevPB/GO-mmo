@@ -36,6 +36,18 @@ ServerItems.find <- function(inst)
     return null;
 }
 
+ServerItems.getName <- function(inst)
+{
+    local temp = ServerItems.find(inst);
+
+    if (temp != null)
+    {
+        return temp.name;
+    }
+
+    return null;
+}
+
 function handleWeaponInfo(item)
 {
     local result = [];

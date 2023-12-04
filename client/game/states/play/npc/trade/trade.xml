@@ -4,6 +4,9 @@
     <script src="tradeSlot.nut" type="client" />
     <script src="npcSide.nut" type="client" />
     <script src="playerSide.nut" type="client" />
+
+    <script src="tradeBox.nut" type="client" />
+
     <script src="trade.nut" type="client" />
 
 </server>

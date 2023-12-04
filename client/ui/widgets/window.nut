@@ -77,6 +77,17 @@ class Window extends Element {
 
         base.setPosition(x, y);
     }
+
+    function top()
+    {
+        base.top();
+        coverTex.top();
+
+        foreach(v in elements)
+        {
+            v.top();
+        }
+    }
 }
 
 function switchWindows(window1, window2) {

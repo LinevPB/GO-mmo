@@ -4,6 +4,7 @@ class Textbox extends Element {
     active = false;
     placeholder = "";
     span = 100;
+    numericOnly = null;
 
     constructor(x, y, width, height, texture, placeholderTitle = "", hoverTexture = "DLG_CONVERSATION.TGA", hash = false) {
         if (hoverTexture == null) {
@@ -15,6 +16,7 @@ class Textbox extends Element {
         UI_Elements.append(this);
         hashed = hash;
         placeholder = placeholderTitle;
+        numericOnly = false;
     }
 
     function reset()
@@ -27,8 +29,23 @@ class Textbox extends Element {
         span = 100;
     }
 
+    function setDefaultValue(val)
+    {
+        if ((typeof val) != "string")
+        {
+            val = val.tostring();
+        }
+
+        value = val;
+    }
+
     function getValue()
     {
+        if (numericOnly)
+        {
+            return value.tointeger();
+        }
+
         return value;
     }
 
@@ -50,26 +67,67 @@ class Textbox extends Element {
         draw.alpha = (draw.text == placeholder) ? 150 : 255;
     }
 
-    function updateValue(slash = "|") {
-        if (chatInputIsOpen()) {
-            if (value == chatInputGetText() && slash) {
-                if (value == "") draw.text = slash;
-                return;
-            };
+    function setNumericOnly(val)
+    {
+        numericOnly = val;
+    }
 
+    function transformNumericValue(slash)
+    {
+        local temp = chatInputGetText();
+        if (temp == value) return;
+
+        local numbers = "";
+
+        foreach (ch in temp)
+        {
+            if (ch >= 48 && ch <= 57)
+            {
+                numbers += (ch - 48);
+            }
+        }
+
+        value = numbers;
+        chatInputSetText(value);
+    }
+
+    function updateValue(slash = "|")
+    {
+        if (!chatInputIsOpen()) return;
+
+        if (value == chatInputGetText() && slash)
+        {
+            if (value == "")
+            {
+                draw.text = slash;
+            }
+
+            return;
+        };
+
+        if (numericOnly)
+        {
+            transformNumericValue(slash);
+        }
+        else
+        {
             value = chatInputGetText();
-            local tempText = hashed ? repeatString("#", value.len()) : value;
+        }
 
-            if (slash) {
-                tempText += slash;
-            }
+        local tempText = hashed ? repeatString("#", value.len()) : value;
 
-            draw.text = tempText;
-            local i = 0;
-            while (draw.width + span * 2 > size.width) {
-                i++;
-                draw.text = tempText.slice(i, tempText.len());
-            }
+        if (slash)
+        {
+            tempText += slash;
+        }
+
+        draw.text = tempText;
+
+        local i = 0;
+        while (draw.width + span * 2 > size.width)
+        {
+            i++;
+            draw.text = tempText.slice(i, tempText.len());
         }
     }
 
