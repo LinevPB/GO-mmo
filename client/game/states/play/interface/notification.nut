@@ -11,6 +11,7 @@ function initNotifications()
     draw.setColor(250, 200, 0);
     draw.alpha = 0;
     draw.visible = true;
+    draw.top();
 }
 
 function notify(text)

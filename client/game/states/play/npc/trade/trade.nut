@@ -30,6 +30,7 @@ function initNpcTrade()
     initNpcSlots();
     initTradeShowcase();
     TradeBox.Init();
+    initTradeNotify();
 }
 
 function enableNpcTrade(val, soft = false)
@@ -138,10 +139,11 @@ function calcGoldAmount(val = false)
 
 function tradeRender()
 {
+    tradeNotifyRender();
+
     if (!isTradeEnabled()) return;
 
     tradeSlotRender();
-    //Showcase.Render();
 }
 
 function tradeKey(key)
@@ -162,12 +164,12 @@ function handleTradeResult(data)
 {
     if (data[0] == 0)
     {
-        notify("Not enough ores!");
+        tradeNotify("Not enough ores!");
         return;
     }
 
     clearPlayerBasket();
     clearNpcBasket();
     refreshPlayerSlots();
-    notify("Trade successful!");
+    tradeNotify("Trade successful!");
 }

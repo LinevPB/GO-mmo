@@ -86,10 +86,14 @@ TradeBox.Enable <- function(val)
     if (val == false && isBEnabled)
     {
         holdVal = null;
-        box.setDefaultValue(1);
     }
 
     isBEnabled = val;
+
+    if (val == true)
+    {
+        box.setInputText("1");
+    }
 }
 
 TradeBox.IsEnabled <- function()

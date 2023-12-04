@@ -441,7 +441,15 @@ function tradeSlotRender()
 
             if (v.render.instance != "")
             {
-                updateTradeShowcase(v.render.instance)
+                if ((v.id < 108 && v.id >= 18) || v.id < 8)
+                {
+                    updateTradeShowcase(v.render.instance, v.amount);
+                }
+                else
+                {
+                    updateTradeShowcase(v.render.instance, 1);
+                }
+
                 hovered = true;
 
                 if (!Showcase.IsEnabled())
@@ -499,7 +507,14 @@ function getNpcBasket()
 function tradeConfirmBox()
 {
     local temp = TradeBox.GetHold();
-    local val = TradeBox.GetValue().tointeger();
+    local val = TradeBox.GetValue();
+
+    if (val == "")
+    {
+        return TradeBox.Enable(false);
+    }
+
+    val = val.tointeger();
     if (val < 1)
     {
         val = 1;
@@ -550,9 +565,10 @@ function tradeConfirmBox()
     if (slot.amount > 0)
     {
         val += slot.amount;
-        if (val > slot.originalAmount)
+
+        if (val > pointer.originalAmount && pointer.id < 108)
         {
-            val = slot.originalAmount;
+            val = pointer.originalAmount;
         }
     }
 

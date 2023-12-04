@@ -140,6 +140,7 @@ class Textbox extends Element {
         active = true;
         draw.alpha = 255;
         activeElements.append(this);
+        hover();
     }
 
     function close() {
@@ -158,5 +159,12 @@ class Textbox extends Element {
     function unhover() {
         if (!active)
             base.unhover();
+    }
+
+    function setInputText(val)
+    {
+        value = val;
+        draw.text = value + "|";
+        chatInputSetText(val);
     }
 }

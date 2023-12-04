@@ -96,6 +96,9 @@ Showcase.Enable <- function(val, reverseY = false)
         v.visible = val;
     }
 
+    SH_draws[0].setPosition(SH_draws[0].getPosition().x, SH_render.getPosition().y + SH_render.getSize().height);
+    SH_priceDraw.setPosition(SH_draws[0].getPosition().x + SH_draws[0].width, SH_draws[0].getPosition().y);
+
     SH_enabled = val;
     SH_reverseY = reverseY;
     SH_priceDraw.visible = false;
@@ -125,17 +128,19 @@ function updateShowcaseName(name, amount)
         SH_name.text = SH_name.text + " x" + amount;
 }
 
-Showcase.UpdateOnlyPrice <- function(instance)
+Showcase.UpdateOnlyPrice <- function(instance, amount)
 {
     SH_clearInfo();
     local item = ServerItems.find(instance);
-    updateShowcaseName(item.name, getItemAmount(instance));
+    updateShowcaseName(item.name, amount);
     SH_render.instance = instance;
     SH_resetRenderSettings();
 
     SH_draws[0].text = "Price: ";
     SH_priceDraw.text = calcGoldAmount(item.price);
+    SH_draws[0].setPosition(SH_draws[0].getPosition().x, SH_render.getPosition().y + 100);
     SH_priceDraw.setPosition(SH_draws[0].getPosition().x + SH_draws[0].width, SH_draws[0].getPosition().y);
+    SH_render.visible = false;
     SH_priceDraw.visible = true;
 
     SH_wasPriceOnly = true;
@@ -222,12 +227,16 @@ local function SH_calcTexWidth()
 local function SH_calcTexHeight()
 {
     local totalHeight = SH_nameCover.getSize().height;
-    totalHeight += SH_render.getSize().height;
+
+    if (SH_render.visible == true)
+    {
+        totalHeight += SH_render.getSize().height;
+    }
 
     local temp = 0;
     foreach(i, v in SH_draws)
     {
-        if (v.text != "")
+        if (v.text != "" && v.visible)
         {
             temp = i;
         }
@@ -243,6 +252,11 @@ local function SH_updatePosition()
     local curs = getCursorPosition();
     local texWidth = SH_calcTexWidth();
     local texHeight = SH_calcTexHeight();
+
+    if (curs.x + texWidth > 8192)
+    {
+        curs.x = 8192 - texWidth;
+    }
 
     if (SH_offsetX != 0)
     {

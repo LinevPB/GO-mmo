@@ -1,5 +1,6 @@
 <server>
 
+    <script src="notify.nut" type="client" />
     <script src="itemShowcase.nut" type="client" />
     <script src="tradeSlot.nut" type="client" />
     <script src="npcSide.nut" type="client" />
