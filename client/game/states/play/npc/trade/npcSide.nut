@@ -104,7 +104,7 @@ function initNpcSlots()
     npcItemsCover = Texture(npcInventory.pos.x + 250, npcInventory.pos.y + 800, 600 * 5, 600*8, "SR_BLANK.TGA");
     npcItemsCover.setColor(75, 75, 100);
 
-    npcInvDraw = Draw(0, 0, "Npc inventory");
+    npcInvDraw = Draw(0, 0, "Shop");
     npcInvDraw.setColor(240, 220, 180);
     npcInvDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
     npcInvDraw.setPosition(npcInventory.pos.x + npcInventory.size.width / 2 - npcInvDraw.width / 2, npcInventory.pos.y + 300 - npcInvDraw.height / 2);

@@ -37,7 +37,15 @@ function isTradeShowcaseVisible()
 function enableTradeShowcase(val, reverseY = false)
 {
     Showcase.Enable(val, reverseY);
-    Showcase.SetOffsetX(-700);
+
+    if (val == true)
+    {
+        Showcase.SetOffsetX(-700);
+    }
+    else
+    {
+        Showcase.SetOffsetX(0);
+    }
 
     TShowcase2.texture.visible = val;
     TShowcase2.cover.visible = val;

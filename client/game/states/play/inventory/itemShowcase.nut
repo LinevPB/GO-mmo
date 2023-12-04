@@ -29,5 +29,5 @@ function handleShowcaseClick(id)
 
 function showcaseRender()
 {
-    Showcase.Render();
+    //Showcase.Render();
 }

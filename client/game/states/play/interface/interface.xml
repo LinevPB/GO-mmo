@@ -1,0 +1,13 @@
+<server>
+
+    <script src="showcase.nut" type="client" />
+
+    <script src="map.nut" type="client" />
+
+    <script src="notification.nut" type="client" />
+
+    <script src="chat.nut" type="client" />
+
+    <script src="interface.nut" type="client" />
+
+</server>

@@ -1,7 +1,6 @@
 local queue = null;
 local draw = null;
 local NotificationTime = 3000;
-local UpdateSpeed = 20;
 
 function initNotifications()
 {
@@ -23,13 +22,9 @@ function notify(text)
     queue.append({ TimeLeft = NotificationTime, Message = text});
 }
 
-local lastTime = getTickCount();
-local function renderHandler()
-{
-    local currentTime = getTickCount();
-    if (currentTime - lastTime < UpdateSpeed) return;
-    lastTime = currentTime;
 
+function notificationRender()
+{
     if (queue.len() > 0) {
         if (draw.text != queue[0].Message) {
             draw.text = queue[0].Message;
@@ -50,4 +45,3 @@ local function renderHandler()
         else if (draw.alpha != 255) draw.alpha = 255;
     }
 }
-addEventHandler("onRender", renderHandler);

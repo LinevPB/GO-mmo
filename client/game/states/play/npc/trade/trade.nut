@@ -57,6 +57,16 @@ function enableNpcTrade(val, soft = false)
     }
 
     tradeEnabled = val;
+
+    if (val == false)
+    {
+        if (Showcase.IsEnabled())
+        {
+            Showcase.Enable(false);
+        }
+
+        enableTradeShowcase(false);
+    }
 }
 
 function tradeButtonHandler(id)
@@ -131,17 +141,22 @@ function tradeRender()
     if (!isTradeEnabled()) return;
 
     tradeSlotRender();
-    Showcase.Render();
+    //Showcase.Render();
 }
 
-local function xdkey(key)
+function tradeKey(key)
 {
     if (key == KEY_X)
     {
         enableNpcTrade(!isTradeEnabled());
     }
+
+    if (!tradeEnabled) return;
+    if (key != KEY_RETURN) return;
+    if (!TradeBox.IsEnabled()) return;
+
+    tradeConfirmBox();
 }
-addEventHandler("onKey", xdkey);
 
 function handleTradeResult(data)
 {

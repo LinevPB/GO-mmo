@@ -82,12 +82,14 @@ TradeBox.Enable <- function(val)
 {
     window.enable(val);
     nr_reposition();
-    isBEnabled = val;
 
-    if (val == false)
+    if (val == false && isBEnabled)
     {
         holdVal = null;
+        box.setDefaultValue(1);
     }
+
+    isBEnabled = val;
 }
 
 TradeBox.IsEnabled <- function()

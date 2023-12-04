@@ -442,22 +442,26 @@ function tradeConfirmBox()
         if (slot != null && pointer != null) break;
     }
 
+    if (pointer.amount < val)
+    {
+        val = pointer.amount;
+    }
+
     if (pointer.id >= 18 && pointer.id <= 107)
     {
         local calcVal = pointer.amount - val;
+        local tempInst = temp.instance;
+
         if (val <= 0)
         {
-            pointer.updateSlot("", 0);
+            tempInst = "";
+            calcVal = 0;
         }
-        else
-        {
-            pointer.updateSlot(temp.instance, calcVal);
-        }
+
+        pointer.updateSlot(tempInst, calcVal);
     }
 
-    slotPointer = pointer;
     slot.updateSlot(temp.instance, val);
-    handleSlotRelease(slot);
 
     TradeBox.Enable(false);
 }

@@ -34,6 +34,8 @@ function mapKey(key)
 
 function mapRender()
 {
+    if (!mapEnabled) return;
+
     local pos = getPlayerPosition(heroId);
     meOnMap.setPosition(4096 + pos.x / 24.75, 4096 - pos.z / 13.25);
 }

@@ -16,6 +16,7 @@ function initPlayState()
     Camera.movementEnabled = true;
     Chat.Init();
     Chat.Enable(true);
+    Showcase.Init();
     Inventory.Init();
     disableLogicalKey(GAME_INVENTORY, true);
     setPlayerPosition(Player.helper, 38086, 4681, 44551);
@@ -54,9 +55,6 @@ function initPlayState()
     initMap();
 
     initNpcTrade();
-    //
-    Showcase.Init();
-    //Showcase.Enable(true);
 }
 
 function enableQA(val)
@@ -167,7 +165,7 @@ function onRenderP(currentTime, lastTime)
 
 local function onplaykey(key)
 {
-
+    tradeKey(key);
     if (!Inventory.IsEnabled())
     {
         if (key == KEY_T)

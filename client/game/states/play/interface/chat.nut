@@ -9,6 +9,7 @@ local Span = 25;
 local ifY = Span;
 local drawHeight = 0;
 local totalSpace = 0;
+local inputOpened = false;
 
 class ChatLineDraw
 {
@@ -111,14 +112,8 @@ local function addChatLine(...)
         v.desiredY -= totalSpace;
 }
 
-local lastTime = getTickCount();
-local function onRenderChat() {
-    local currentTime = getTickCount();
-    if (currentTime - lastTime < 20) return;
-    if(!Chat.Visible) return;
-
-    lastTime = currentTime;
-
+function chatRender()
+{
     foreach(i, v in Chat.Lines) {
         if (v.position.y == v.desiredY)
             continue;
@@ -143,7 +138,6 @@ local function onRenderChat() {
         }
     }
 }
-addEventHandler("onRender", onRenderChat);
 
 Chat.Init <- function()
 {
@@ -169,6 +163,8 @@ Chat.Enable <- function(val)
 
 Chat.EnableInput <- function(val)
 {
+    inputOpened = val;
+
     if (val && !chatInputIsOpen()) {
         chatInputSetPosition(Span, ifY + Span);
         chatInputOpen();
@@ -181,6 +177,7 @@ Chat.EnableInput <- function(val)
 
 Chat.Send <- function()
 {
+    if (!inputOpened) return;
     if (!chatInputIsOpen()) return;
     local text = chatInputGetText();
     sendPacket(PacketType.CHAT_MESSAGE, heroId, text);
