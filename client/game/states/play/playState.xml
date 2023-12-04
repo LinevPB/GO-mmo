@@ -11,6 +11,7 @@
 
     <script src="enemy.nut" type="client" />
 
+    <script src="quickAccess.nut" type="client" />
     <script src="playState.nut" type="client" />
 
 </server>

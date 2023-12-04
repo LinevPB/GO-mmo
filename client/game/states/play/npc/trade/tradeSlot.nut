@@ -102,13 +102,12 @@ class TradeSlot
             instance = inst;
         }
 
-        render.instance = inst;
-
-        if (amount > originalAmount)
+        if (aMount > originalAmount)
         {
-            originalAmount = amount;
+            originalAmount = aMount;
         }
 
+        render.instance = inst;
         amount = aMount;
 
         if (amount > 1)
@@ -125,7 +124,10 @@ class TradeSlot
 
         if (render.instance == Player.eqWeapon || render.instance == Player.eqWeapon2h || render.instance == Player.eqArmor)
         {
-            background.file = equippedHoverTex;
+            if (id < 108 && id >= 18)
+                background.file = equippedHoverTex;
+            else
+                background.file = hoverTex;
         }
         else
         {
@@ -141,7 +143,10 @@ class TradeSlot
 
         if (render.instance == Player.eqWeapon || render.instance == Player.eqWeapon2h || render.instance == Player.eqArmor)
         {
-            background.file = equippedTex;
+            if (id < 108 && id >= 18)
+                background.file = equippedTex;
+            else
+                background.file = regularTex;
         }
         else
         {
@@ -157,6 +162,10 @@ class TradeSlot
         unhover();
     }
 }
+
+local doubleClick = false;
+local clickTime = 0;
+local clickId = -1;
 
 function handleSlotClick(slot)
 {
@@ -185,6 +194,67 @@ function tradeClick(key)
     }
 }
 
+function enableBoxHelper(slotId, pointerId, instance)
+{
+    TradeBox.Enable(true);
+    TradeBox.SetHold({ id = slotId, pointerId = pointerId, instance = instance });
+    TradeBox.SetItemName(ServerItems.getName(instance));
+    TradeBox.Select();
+}
+
+function findFirstFree(id)
+{
+    foreach(i, v in slots)
+    {
+        if (i > 18) return -1;
+
+        if (v.amount == 0)
+        {
+            if ((v.id < 8 && id > 18 && id < 108))
+            {
+                return v.id;
+            }
+            else if (v.id >= 8 && v.id < 18 && id >= 108)
+            {
+                return v.id;
+            }
+        }
+    }
+}
+
+function handleDoubleClick(pId)
+{
+    if (!doubleClick)
+    {
+        doubleClick = true;
+        clickTime = getTickCount();
+        clickId = pId;
+    }
+    else
+    {
+        doubleClick = false;
+        clickTime = getTickCount();
+
+        if (getTickCount() - clickTime < 300)
+        {
+            if (clickId == pId)
+            {
+                local firstFind = findFirstFree(pId);
+                if (firstFind == -1) return;
+
+                enableBoxHelper(firstFind, pId, slotPointer.render.instance);
+                clickId = -1;
+                return;
+            }
+        }
+        else
+        {
+            clickId = -1;
+            return handleDoubleClick(pId);
+        }
+    }
+}
+
 function handleSlotRelease(slot)
 {
     holdedRender.visible = false;
@@ -200,7 +270,12 @@ function handleSlotRelease(slot)
         }
     }
 
-    if (holdedRender.instance == Player.eqWeapon || holdedRender.instance == Player.eqWeapon2h || holdedRender.instance == Player.eqArmor) return;
+    handleDoubleClick(slotPointer.id);
+
+    if (holdedRender.instance == Player.eqWeapon || holdedRender.instance == Player.eqWeapon2h || holdedRender.instance == Player.eqArmor)
+    {
+        if (slotPointer.id < 108) return;
+    }
 
     if (slot.id == slotPointer.id || slotPointer.render.instance == "") return;
 
@@ -208,23 +283,16 @@ function handleSlotRelease(slot)
     {
         if (slotPointer.id < 8) // jesli przeniesiemy ze slotu wymiany gracza
         {
-            if (slot.render.instance == "")
-            {
-                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
-                slotPointer.updateSlot("", 0);
-            }
-            else
-            {
-                local tempInst = slot.render.instance;
-                local tempAmount = slot.amount;
-                local tempId = slot.originalId;
+            //if pointer inst == ""
+            local tempInst = slot.render.instance;
+            local tempAmount = slot.amount;
+            local tempId = slot.originalId;
 
-                slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
-                slot.originalId = slotPointer.originalId;
+            slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
+            slot.originalId = slotPointer.originalId;
 
-                slotPointer.updateSlot(tempInst, tempAmount);
-                slotPointer.originalId = tempId;
-            }
+            slotPointer.updateSlot(tempInst, tempAmount);
+            slotPointer.originalId = tempId;
         }
         else if (slotPointer.id < 18) // jesli przeniesiemy ze slotu wymiany npc
         {
@@ -232,20 +300,23 @@ function handleSlotRelease(slot)
         }
         else if (slotPointer.id <= 107) // jesli przeniesiemy z ekwipunku gracza
         {
-            TradeBox.Enable(true);
-            TradeBox.SetHold({ id = slot.id, pointerId = slotPointer.id, instance = slotPointer.render.instance });
-            TradeBox.SetItemName(ServerItems.getName(slotPointer.render.instance));
-            TradeBox.Select();
+            if (slotPointer.amount == 1)
+            {
+                slot.updateSlot(slotPointer.render.instance, 1);
+                slot.originalId = slotPointer.id;
+                slotPointer.updateSlot("", 0);
+            }
+            else
+            {
+                enableBoxHelper(slot.id, slotPointer.id, slotPointer.render.instance);
+            }
         }
     }
     else if (slot.id < 18) // jesli przeniesiemy na sloty wymiany npc
     {
         if (slotPointer.id > 107) // jesli przeniesiemy z ekwipunku npc
         {
-            TradeBox.Enable(true);
-            TradeBox.SetHold({ id = slot.id, pointerId = slotPointer.id, instance = slotPointer.render.instance });
-            TradeBox.SetItemName(ServerItems.getName(slotPointer.render.instance));
-            TradeBox.Select();
+            enableBoxHelper(slot.id, slotPointer.id, slotPointer.render.instance);
             //slot.updateSlot(slotPointer.render.instance, slotPointer.amount);
         }
         else if (slotPointer.id < 18 && slotPointer.id > 7) // jesli przeniesiemy ze slotu wymiany npc
@@ -281,7 +352,13 @@ function handleSlotRelease(slot)
             {
                 if (v.id == slotPointer.originalId)
                 {
-                    v.updateSlot(slotPointer.render.instance, slotPointer.amount);
+                    local tempAmount = slotPointer.amount + v.amount;
+                    if (tempAmount > v.originalAmount)
+                    {
+                        tempAmount = v.originalAmount;
+                    }
+
+                    v.updateSlot(slotPointer.render.instance, tempAmount);
                     break;
                 }
             }
@@ -382,7 +459,7 @@ function tradeSlotRender()
         }
     }
 
-    if (Showcase.IsEnabled() && ((holding || TradeBox.IsEnabled()) || !hovered))
+    if ((Showcase.IsEnabled() && ((holding || TradeBox.IsEnabled()) || !hovered)) || (doubleClick && (getTickCount() - clickTime < 300)))
     {
         enableTradeShowcase(false);
     }
@@ -423,6 +500,14 @@ function tradeConfirmBox()
 {
     local temp = TradeBox.GetHold();
     local val = TradeBox.GetValue().tointeger();
+    if (val < 1)
+    {
+        val = 1;
+    }
+    if (val > 999)
+    {
+        val = 999;
+    }
 
     local slot = null;
     local pointer = null;
@@ -442,17 +527,18 @@ function tradeConfirmBox()
         if (slot != null && pointer != null) break;
     }
 
-    if (pointer.amount < val)
-    {
-        val = pointer.amount;
-    }
 
     if (pointer.id >= 18 && pointer.id <= 107)
     {
+        if (pointer.amount < val)
+        {
+            val = pointer.amount;
+        }
+
         local calcVal = pointer.amount - val;
         local tempInst = temp.instance;
 
-        if (val <= 0)
+        if (calcVal <= 0)
         {
             tempInst = "";
             calcVal = 0;
@@ -461,7 +547,17 @@ function tradeConfirmBox()
         pointer.updateSlot(tempInst, calcVal);
     }
 
+    if (slot.amount > 0)
+    {
+        val += slot.amount;
+        if (val > slot.originalAmount)
+        {
+            val = slot.originalAmount;
+        }
+    }
+
     slot.updateSlot(temp.instance, val);
+    slot.originalId = pointer.id;
 
     TradeBox.Enable(false);
 }

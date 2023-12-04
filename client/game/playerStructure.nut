@@ -242,29 +242,35 @@ Player.updateEquipped <- function(weapon, armor, ranged, helpers = Player.helper
     if (armor != Player.eqArmor) {
         if (armor == "-1") {
             unequipItem(helpers, Items.id(Player.eqArmor));
+            unequipItem(heroId, Items.id(Player.eqArmor));
         }
         Player.eqArmor = armor;
         equipItem(helpers, Items.id(armor));
+        equipItem(heroId, Items.id(armor));
     }
 
     if (weapon != Player.eqWeapon) {
         if (weapon == "-1") {
             unequipItem(helpers, Items.id(Player.eqWeapon));
+            unequipItem(heroId, Items.id(Player.eqWeapon));
         }
         Player.eqWeapon = weapon;
         setPlayerDexterity(helpers, 300);
         setPlayerStrength(helpers, 300);
         equipItem(helpers, Items.id(weapon));
+        equipItem(heroId, Items.id(weapon));
     }
 
     if (ranged != Player.eqWeapon2h) {
         if (ranged == "-1") {
             unequipItem(helpers, Items.id(Player.eqWeapon2h));
+            unequipItem(heroId, Items.id(Player.eqWeapon2h));
         }
         Player.eqWeapon2h = ranged;
         setPlayerDexterity(helpers, 300);
         setPlayerStrength(helpers, 300);
         equipItem(helpers, Items.id(ranged));
+        equipItem(heroId, Items.id(ranged));
     }
 }
 

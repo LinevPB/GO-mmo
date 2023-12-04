@@ -93,9 +93,9 @@ function initNpcSlots()
         for (local j = 0; j < 8; j++)
         {
             local slot = TradeSlot(npcInventory.pos.x + 250 + 600 * i, npcInventory.pos.y + 800 + 600 * j, 600, 600);
-            if (j % 2 == 0)
+            if (j < 2)
             {
-                slot.updateSlot("ITAR_VLK_M", j%2+1);
+                slot.updateSlot("ITAR_VLK_M", 1);
             }
             npc_slots.append(slot);
         }

@@ -344,8 +344,10 @@ function GiveItem(pid, instance, amount, loading = false, slot = -1)
 {
     local player = findPlayer(pid);
     local item = player.addItem(instance, amount, loading, slot);
-    if (loading == true)
-        return giveItem(pid, Items.id(instance), amount);
+
+    giveItem(pid, Items.id(instance), amount);
+
+    if (loading == true) return;
 
     if (item.val == true)
         mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `slot`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + item.slot + "', '" + player.charId + "')");
@@ -363,6 +365,8 @@ function RemoveItem(pid, instance, amount)
     {
         return console.error("Error " + pid + " " + instance + " " + amount);
     }
+
+    removeItem(pid, Items.id(instance), amount);
 
     if (!item.removed)
         mysql.squery("UPDATE `items` SET `amount` = '" + item.more.amount + "' WHERE `owner`='" + findPlayer(pid).charId + "' AND `instance`='" + item.more.instance + "'");

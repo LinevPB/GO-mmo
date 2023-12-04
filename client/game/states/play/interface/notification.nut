@@ -1,6 +1,7 @@
 local queue = null;
 local draw = null;
 local NotificationTime = 3000;
+local UpdateSpeed = 20;
 
 function initNotifications()
 {
@@ -43,5 +44,7 @@ function notificationRender()
         else if (queue[0].TimeLeft > NotificationTime - 255) draw.alpha = NotificationTime - queue[0].TimeLeft;
         else if (queue[0].TimeLeft < 255) draw.alpha = queue[0].TimeLeft;
         else if (draw.alpha != 255) draw.alpha = 255;
+
+
     }
 }
