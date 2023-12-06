@@ -85,7 +85,6 @@ function onRenderP(currentTime, lastTime)
 {
     handleQARender();
     npcInteractionHandler();
-    enemyRender();
     mapRender();
     tradeRender();
 }

@@ -8,6 +8,9 @@ class GlobalNpc
     pos = null;
     angle = null;
     instance = null;
+    oneTime = null;
+    currentAnim = "S_RUN";
+    previousAnim = "S_RUN";
 
     constructor(npcId, npcName, posX, posY, posZ, npcAngle, npcInst)
     {
@@ -30,6 +33,13 @@ class GlobalNpc
 
     function playAnim(aniId)
     {
+        if (aniId != currentAnim)
+        {
+            stopAni(npc, previousAnim);
+            previousAnim = currentAnim;
+        }
+
+        currentAnim = aniId;
         playAni(npc, aniId);
     }
 
@@ -94,7 +104,14 @@ function handleNpcCoords(data)
     local npc = findNpc(id);
     if (npc == null) return;
 
-    sendPacket(PacketType.NPC_COORDS, npc.pos.x, npc.pos.y, npc.pos.z, npc.angle);
+    local pos = getPlayerPosition(npc.npc);
+    local angle = getPlayerAngle(npc.npc);
+    npc.pos.x = pos.x;
+    npc.pos.y = pos.y;
+    npc.pos.z = pos.z;
+    npc.angle = angle;
+
+    sendPacket(PacketType.NPC_COORDS, id, npc.pos.x, npc.pos.y, npc.pos.z, npc.angle, getTime().min);
 }
 
 function handleNpcAnimation(data)

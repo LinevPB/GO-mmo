@@ -147,7 +147,8 @@ local function onPacket(packet) {
     local packetType = packet.readInt8();
     local data = decode(packet.readString());
 
-    switch(packetType) {
+    switch(packetType)
+    {
         case PacketType.LOGIN:
             switch(data[0])
             {
@@ -249,10 +250,6 @@ local function onPacket(packet) {
 
         case PacketType.TRADE_RESULT:
             handleTradeResult(data);
-        break;
-
-        case PacketType.ENEMY_SPAWN:
-            EnemyPacket(data, PacketType.ENEMY_SPAWN);
         break;
 
         case PacketType.NPC_SPAWN:

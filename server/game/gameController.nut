@@ -251,7 +251,8 @@ local function onPacket(pid, packet)
     local readPacket = packet.readString();
     local data = decode(readPacket);
 
-    switch(packetType) {
+    switch(packetType)
+    {
         case PacketType.LOGIN:
             loginHandler(pid, data);
         break;
@@ -347,7 +348,7 @@ local function onPacket(pid, packet)
         break;
 
         case PacketType.NPC_COORDS:
-            NPC_updateCoords(data);
+            NPC_updateCoords(pid, data);
         break;
     }
 }

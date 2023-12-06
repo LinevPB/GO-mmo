@@ -1,6 +1,7 @@
 <server>
     <script src="packet.nut" type="shared" />
 	<script src="gameState.nut" type="shared" />
+	<script src="animations.nut" type="shared" />
 
 	<import src="items/items.xml" type="shared" />
 </server>

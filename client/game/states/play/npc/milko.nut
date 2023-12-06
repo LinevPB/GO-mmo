@@ -58,7 +58,7 @@ function DIALOG_MILKO_5_2()
 
 function initMilko()
 {
-    local npc = NPC("Zbysiu", 100, 300, 100, 0);
+    local npc = NPC("Zbysiu", 887.266, 247.734, 1057.5, 180.003);
     npc.spawn();
 
     equipItem(npc.npc, Items.id("ItAr_Vlk_H"));

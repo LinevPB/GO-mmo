@@ -26,13 +26,15 @@ function onDisconnect(pid, reason)
 }
 addEventHandler("onPlayerDisconnect", onDisconnect);
 
-local lastTime = getTickCount();
+local lastTime = 0;
 function onTick()
 {
-    local currentTime = getTickCount();
-    if (currentTime - lastTime < 16) return;
-    lastTime = currentTime;
+    lastTime++;
+
+    if (lastTime < 8) return;
 
     onTickNpc();
+
+    lastTime = 0;
 }
 addEventHandler("onTick", onTick);

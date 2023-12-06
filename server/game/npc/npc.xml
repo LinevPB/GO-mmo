@@ -1,0 +1,6 @@
+<server>
+    <script src="ai/monster.nut" type="server" />
+
+    <script src="npc.nut" type="server" />
+    <script src="npcRender.nut" type="server" />
+</server>

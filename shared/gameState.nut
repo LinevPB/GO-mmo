@@ -14,3 +14,9 @@ function calcNextLevelExperience(level)
 {
     return 500 * (level + 1);
 }
+
+function absolute(v)
+{
+    if (v <= 0) return v * (-1);
+    return v;
+}
