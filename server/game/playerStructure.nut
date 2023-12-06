@@ -285,6 +285,22 @@ class PlayerStructure
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `gold` = '" + val + "' WHERE `id`='" + charId + "'");
     }
+
+    function addExperience(val)
+    {
+        setExperience(experience + val);
+        checkLevel();
+        sendPlayerPacket(id, PacketType.ADD_EXPERIENCE, val);
+    }
+
+    function checkLevel()
+    {
+        if (experience >= calcNextLevelExperience(level))
+        {
+            setLevel(level + 1);
+            sendPlayerPacket(id, PacketType.LEVEL_UP);
+        }
+    }
 }
 
 function findPlayer(pid)

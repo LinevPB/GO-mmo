@@ -30,7 +30,14 @@ enum PacketType {
     NPC_SPAWN = 28,
     NPC_PLAY_ANI = 29,
     NPC_COORDS = 30,
-    NPC_SET_COORDS = 31
+    NPC_SET_COORDS = 31,
+    NPC_DAMAGE = 32,
+    NPC_UPDATE_HEALTH = 33,
+    NPC_UPDATE_MAX_HEALTH = 34,
+    NPC_DIE = 35,
+    ADD_EXPERIENCE = 36,
+    LEVEL_UP = 37,
+    NPC_RESPAWN = 38
 };
 
 function encode(args)

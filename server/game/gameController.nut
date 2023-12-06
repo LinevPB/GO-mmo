@@ -350,6 +350,10 @@ local function onPacket(pid, packet)
         case PacketType.NPC_COORDS:
             NPC_updateCoords(pid, data);
         break;
+
+        case PacketType.NPC_DAMAGE:
+            handleNpcDamage(pid, data[0]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

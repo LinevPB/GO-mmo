@@ -68,7 +68,7 @@ function initCharacterSelection()
     local wH = 3300;
     charMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
     charMenu.window.setBackgroundColor(10, 10, 40);
-    charMenu.window.setCover("MENU_INGAME.TGA");
+    charMenu.window.setCover("MENU_COVER.TGA");
 
     local temp = Label(0, 100, lang["LABEL_CHAR_SELECTION_MENU_CHARACTERS"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");

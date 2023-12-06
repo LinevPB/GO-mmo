@@ -267,6 +267,30 @@ local function onPacket(packet) {
         case PacketType.NPC_SET_COORDS:
             setNpcCoords(data);
         break;
+
+        case PacketType.NPC_UPDATE_HEALTH:
+            handleNpcSetHealth(data[0], data[1]);
+        break;
+
+        case PacketType.NPC_UPDATE_MAX_HEALTH:
+            handleNpcSetMaxHealth(data[0], data[1]);
+        break;
+
+        case PacketType.NPC_DIE:
+            handleNpcDeath(data[0]);
+        break;
+
+        case PacketType.ADD_EXPERIENCE:
+            Player.addExperience(data[0]);
+        break;
+
+        case PacketType.LEVEL_UP:
+            Player.addLevel(1);
+        break;
+
+        case PacketType.NPC_RESPAWN:
+            handleNpcRespawn(data[0], Vec3(data[1], data[2], data[3]), data[4]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

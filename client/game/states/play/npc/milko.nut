@@ -65,9 +65,10 @@ function initMilko()
     setPlayerVisual(npc.npc, Player.bodyModel[0], 3, Player.headModel[1], 12);
     npc.playAni("S_HGUARD")
 
-    npc.draw.insertText("Trader");
-    npc.draw.insertText("Milko");
-    npc.draw.setLineColor(0, 100, 255, 100);
+    npc.draw.setLineText(2, "Trader");
+    npc.draw.setLineText(3, "Milko");
+    npc.draw.setLineColor(2, 100, 255, 100);
+    npc.draw.setLineColor(3, 255, 255, 255);
 
     npc.holder = [
         {

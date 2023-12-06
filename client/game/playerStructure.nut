@@ -387,7 +387,6 @@ Player.addExperience <- function(val)
 
 Player.addLevel <- function(val)
 {
-    Player.level += val;
     addEffect(heroId, "Spellfx_Palheal");
     notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
 }

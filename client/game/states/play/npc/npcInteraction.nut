@@ -1,5 +1,5 @@
 local npc_list = [];
-info_draw <- Draw(0, 0, "Press (CTRL) to interact");
+info_draw <- Draw(0, 0, "");
 local dialog_draw = Draw(0, 0, "");
 local turning = false;
 local turned = false;
@@ -51,12 +51,17 @@ class NPC
     constructor(name, x, y, z, ang)
     {
         npc = createNpc(name);
-        draw = Draw3d(x, y + 75, z);
-        ambient_draw = Draw3d(x, y+100, z);
+        draw = Draw3d(x, y + 150, z);
+        ambient_draw = Draw3d(x, y+170, z);
         pos = { x = x, y = y, z = z };
         instance = "PC_HERO";
         nickname = name;
         angle = ang;
+
+        for (local i = 0; i < 4; i++)
+        {
+            draw.insertText("");
+        }
 
         npc_list.append(this);
     }
@@ -66,8 +71,8 @@ class NPC
         spawnNpc(npc, instance);
         setPlayerPosition(npc, pos.x, pos.y, pos.z);
         setPlayerAngle(npc, angle);
-        draw.setWorldPosition(pos.x, pos.y + 100, pos.z);
-        ambient_draw.setWorldPosition(pos.x, pos.y + 140, pos.z)
+        draw.setWorldPosition(pos.x, pos.y + 150, pos.z);
+        ambient_draw.setWorldPosition(pos.x, pos.y + 180, pos.z)
     }
 
     function interact()
@@ -122,22 +127,33 @@ class NPC
 
 function eventfocus(focusid, previd)
 {
-    foreach(v in npc_list) {
-        if (v.npc == focusid) {
-            if (!info_draw.visible)
-                info_draw.visible = true;
-                BOT = v;
-                HERO = heroId;
-        } else if (focusid == -1) {
-            if (info_draw.visible) {
-                info_draw.visible = false;
-                BOT = -1;
-                HERO = -1;
-            }
+    foreach(v in npc_list)
+    {
+        if (v.npc == focusid)
+        {
+            info_draw.visible = true;
+            BOT = v;
+            HERO = heroId;
+
+            v.draw.setLineText(0, "(CTRL)");
+            v.draw.setLineText(1, "Porozmawiaj");
+        }
+        else if (focusid == -1)
+        {
+            info_draw.visible = false;
+            BOT = -1;
+            HERO = -1;
+
+            v.draw.setLineText(0, "");
+            v.draw.setLineText(1, "");
         }
     }
 }
 addEventHandler("onFocus", eventfocus);
+
+
+///////////
+// interaction mechanic
 
 local con = 8192-6300-500;
 local numerdraw = [
@@ -151,11 +167,11 @@ local numerdraw = [
 local intWindow = Window(0, 6500, 8192, 8192 - 6500, "SR_BLANK.TGA");
 intWindow.setCover("MENU_INGAME.TGA");
 local dialogOpt = [
-    Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "Pokaz mi swoje towary", "NONE"),
-    Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "Co tam", "NONE"),
-    Button(8192/2 - 1000, 700, 8000/2, 300, "NONE", "Poboczne", "NONE"),
-    Button(8192/2 - 1000, 1000, 8000/2, 300, "NONE", "Zagrajmy", "NONE"),
-    Button(8192/2 - 1000, 1300, 8000/2, 300, "NONE", "Bywaj", "NONE")
+    Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "", "NONE"),
+    Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "", "NONE"),
+    Button(8192/2 - 1000, 700, 8000/2, 300, "NONE", "", "NONE"),
+    Button(8192/2 - 1000, 1000, 8000/2, 300, "NONE", "", "NONE"),
+    Button(8192/2 - 1000, 1300, 8000/2, 300, "NONE", "", "NONE")
 ];
 intWindow.attach(dialogOpt[0]);
 intWindow.attach(dialogOpt[1]);

@@ -3,6 +3,7 @@ function initPlayState()
     enable_NicknameId(false);
     enableEvent_RenderFocus(true);
     setHudMode(HUD_FOCUS_NAME, HUD_MODE_HIDDEN);
+    setHudMode(HUD_FOCUS_BAR, HUD_MODE_HIDDEN);
     Player.music.stop();
     disableControls(false);
     setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
@@ -87,11 +88,13 @@ function onRenderP(currentTime, lastTime)
     npcInteractionHandler();
     mapRender();
     tradeRender();
+    globalNpcRender();
 }
 
 local function onplaykey(key)
 {
     tradeKey(key);
+
     if (!Inventory.IsEnabled())
     {
         if (key == KEY_T)

@@ -70,6 +70,4 @@ function monster_attack(npc)
     {
         npc.pause = -1;
     }
-
-    print(npc.pause);
 }

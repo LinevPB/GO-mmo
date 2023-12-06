@@ -11,6 +11,15 @@ class GlobalNpc
     oneTime = null;
     currentAnim = "S_RUN";
     previousAnim = "S_RUN";
+    draw = null;
+    texture = null;
+    coverTexture = null;
+    dead = null;
+    dying = null;
+    level = null;
+
+    levelTex = null;
+    levelDraw = null;
 
     constructor(npcId, npcName, posX, posY, posZ, npcAngle, npcInst)
     {
@@ -21,7 +30,61 @@ class GlobalNpc
         instance = npcInst;
 
         npc = createNpc(name);
+
+        draw = Draw3d(posX, posY + 100, posZ);
+        draw.insertText(name);
+        draw.setLineColor(0, 250, 80, 10);
+
+        texture = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");
+        texture.setColor(250, 80, 80);
+        coverTexture = Texture(0, 0, 1000, 100, "MENU_COVER.TGA");
+
+        dead = false;
+        dying = false;
+
+        level = 0;
+        levelDraw = Draw(0, 0, level);
+        levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
+        levelTex = Texture(0, 0, 100, 100, "MENU_CHOICE_BACK.TGA");
+
         npc_list.append(this);
+    }
+
+    function die()
+    {
+        draw.visible = false;
+        texture.visible = false;
+        coverTexture.visible = false;
+        dead = true;
+        dying = true;
+        stopCurrentAnim();
+        updateWorld(false);
+    }
+
+    function respawn()
+    {
+        dead = false;
+        dying = false;
+        spawn();
+        playAnim("S_RUN");
+    }
+
+    function setLevel(val)
+    {
+        level = val;
+        levelDraw.text = val;
+        local size = levelDraw.width > levelDraw.height ? levelDraw.width : levelDraw.height;
+        levelTex.setSize(size, size);
+    }
+
+    function setHealth(val)
+    {
+        setPlayerHealth(npc, val);
+    }
+
+    function setMaxHealth(val)
+    {
+        setPlayerMaxHealth(npc, val);
     }
 
     function spawn()
@@ -48,6 +111,11 @@ class GlobalNpc
         playAniId(npc, aniId);
     }
 
+    function stopCurrentAnim()
+    {
+        playAnim("S_RUN");
+    }
+
     function setPosition(x, y, z)
     {
         pos = { x = x, y = y, z = z};
@@ -57,9 +125,63 @@ class GlobalNpc
     function setAngle(ang)
     {
         angle = ang;
+        if (isPlayerDead(npc)) return;
+
         setPlayerAngle(npc, angle);
     }
+
+    function updateWorldPos()
+    {
+        local npos = getPlayerPosition(npc);
+        draw.setWorldPosition(npos.x, npos.y + 100, npos.z);
+
+        local dPos = draw.getPosition();
+        texture.setPosition(dPos.x + draw.width / 2 - 500, dPos.y - draw.height - 150);
+
+        dPos = texture.getPosition();
+        coverTexture.setPosition(dPos.x, dPos.y);
+
+        local healthSize = 1000.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
+        texture.setSize(healthSize, 100);
+
+        levelTex.setPosition(texture.getPosition().x - levelTex.getSize().width, texture.getPosition().y - levelTex.getSize().height / 2);
+        levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2);
+
+        levelTex.rotation = 45;
+    }
+
+    function updateWorld(val)
+    {
+        if (draw.visible != val || texture.visible != val || coverTexture != val || levelTex.visible != val || levelDraw.visible != val)
+        {
+            draw.visible = val;
+            texture.visible = val;
+            coverTexture.visible = val;
+            levelTex.visible = val;
+            levelDraw.visible = val;
+        }
+
+        if (val == true)
+        {
+            updateWorldPos();
+        }
+    }
 }
+
+function onPlayerHit(kid, pid, desc)
+{
+    cancelEvent();
+
+    foreach(v in npc_list)
+    {
+        if (pid == v.npc)
+        {
+            sendPacket(PacketType.NPC_DAMAGE, v.id);
+            return;
+        }
+    }
+}
+addEventHandler("onPlayerHit", onPlayerHit);
 
 function handleNpcSpawn(data)
 {
@@ -70,9 +192,15 @@ function handleNpcSpawn(data)
     local posZ = data[4];
     local angle = data[5];
     local instance = data[6];
+    local hp = data[7];
+    local maxhp = data[8];
+    local lvl = data[9];
 
     local npc = GlobalNpc(id, name, posX, posY, posZ, angle, instance);
     npc.spawn();
+    npc.setMaxHealth(maxhp);
+    npc.setHealth(hp);
+    npc.setLevel(lvl);
 }
 
 function setNpcCoords(data)
@@ -123,7 +251,69 @@ function handleNpcAnimation(data)
     {
         if (id == v.id)
         {
+            if (v.dead) return;
             return v.playAnim(aniId);
         }
     }
+}
+
+function globalNpcRender()
+{
+    local pos = getPlayerPosition(heroId);
+
+    foreach(npc in npc_list)
+    {
+        if (npc.dying)
+        {
+            local alpha = getPlayerVisualAlpha(npc.npc);
+            setPlayerVisualAlpha(npc.npc, alpha - 0.001);
+
+            if (alpha <= 0)
+            {
+                unspawnNpc(npc.npc);
+                npc.dying = false;
+                npc.updateWorld(false);
+                setPlayerVisualAlpha(npc.npc, 0.0);
+            }
+        }
+
+        if (npc.dead) continue;
+
+        local dist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
+
+        if (dist < 1000)
+        {
+            npc.updateWorld(true);
+            continue;
+        }
+
+        npc.updateWorld(false);
+    }
+}
+
+function handleNpcSetHealth(id, val)
+{
+    local npc = findNpc(id);
+    npc.setHealth(val);
+}
+
+function handleNpcSetMaxHealth(id, val)
+{
+    local npc = findNpc(id);
+    npc.setMaxHealth(val);
+}
+
+function handleNpcDeath(id)
+{
+    local npc = findNpc(id);
+    npc.die();
+}
+
+function handleNpcRespawn(id, pos, angle)
+{
+    local npc = findNpc(id);
+    npc.respawn();
+    setPlayerPosition(npc.npc, pos.x, pos.y, pos.z);
+    setPlayerAngle(npc.npc, angle);
+    setPlayerVisualAlpha(npc.npc, 1.0);
 }

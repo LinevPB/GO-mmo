@@ -46,7 +46,7 @@ function initCharacterCreation()
     local wH = 6000;
     makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
     makeupMenu.window.setBackgroundColor(10, 10, 40);
-    makeupMenu.window.setCover("MENU_INGAME.TGA");
+    makeupMenu.window.setCover("MENU_COVER.TGA");
 
     local temp = Label(0, 100, lang["LABEL_CREATION_TITLE"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");
@@ -59,7 +59,7 @@ function initCharacterCreation()
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
-    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", false);
+    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "MENU_COVER.TGA", "", "INV_TITEL.TGA", false);
     makeupMenu.window.attach(makeupMenu.nickTextbox);
 
     temp = Label(wW / 2 - 850, 1500, lang["LABEL_CREATION_SEX"][Player.lang]);

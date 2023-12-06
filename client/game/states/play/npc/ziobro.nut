@@ -32,7 +32,8 @@ function initZiobro()
         { x = -1818.98, y = 180.703, z = -774.375, angle = 7.51476 }
     ];
 
-    foreach(v in npcPositions) {
+    foreach(v in npcPositions)
+    {
         local npc = NPC("Zbysiu", v.x, v.y, v.z, v.angle);
         npc.spawn();
 
@@ -40,9 +41,10 @@ function initZiobro()
         setPlayerVisual(npc.npc, Player.bodyModel[0], 3, Player.headModel[1], random(1, 50));
         npc.playAni(npcValues.ani)
 
-        npc.draw.insertText(npcValues.camp);
-        npc.draw.insertText(npcValues.name);
-        npc.draw.setLineColor(0, 100, 255, 100);
+        npc.draw.setLineText(2, npcValues.name);
+        npc.draw.setLineColor(0, 250, 240, 220);
+        npc.draw.setLineColor(1, 250, 240, 220);
+        npc.draw.setLineColor(2, 160, 160, 255);
 
         npc.set_ambient("SVM_1_GETOUTOFHERE.WAV");
     }

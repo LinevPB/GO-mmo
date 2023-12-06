@@ -1,3 +1,5 @@
+local STREAMING_STUPID = false;
+
 function onTickNpc()
 {
     local npcs = getNpcs();
@@ -39,37 +41,43 @@ function NPC_updateCoords(pid, data)
         {
             if (v.streamedPlayers.len() == 0) continue;
 
-            if (v.focusId != -1)
+            if (STREAMING_STUPID)
             {
-                v.setAngleAtFocus();
+                local offsetX = ((posX - v.pos.x) / v.streamedPlayers.len());
+                local offsetY = ((posY - v.pos.y) / v.streamedPlayers.len());
+                local offsetZ = ((posZ - v.pos.z) / v.streamedPlayers.len());
+
+                if (absolute(offsetX) > 10)
+                {
+                    v.pos.x += offsetX * v.movementSpeed;
+                }
+
+                if (absolute(offsetY) > 10)
+                {
+                    v.pos.y += offsetY * v.movementSpeed;
+                }
+
+                if (absolute(offsetZ) > 10)
+                {
+                    v.pos.z += offsetZ * v.movementSpeed;
+                }
             }
             else
             {
-                local offsetAngle = (angle-v.angle) / v.streamedPlayers.len();
-                if (absolute(offsetAngle) > 1)
+                if (pid == v.focusId)
                 {
-                    v.angle += offsetAngle;
+                    v.pos.x = posX;
+                    v.pos.y = posY;
+                    v.pos.z = posZ;
+                    v.setAngleAtFocus();
                 }
-            }
-
-            // update npc position
-            local offsetX = ((posX - v.pos.x) / v.streamedPlayers.len());
-            local offsetY = ((posY - v.pos.y) / v.streamedPlayers.len());
-            local offsetZ = ((posZ - v.pos.z) / v.streamedPlayers.len());
-
-            if (absolute(offsetX) > 10)
-            {
-                v.pos.x += offsetX;
-            }
-
-            if (absolute(offsetY) > 10)
-            {
-                v.pos.y += offsetY;
-            }
-
-            if (absolute(offsetZ) > 10)
-            {
-                v.pos.z += offsetZ;
+                else if (v.focusId == -1)
+                {
+                    v.pos.x = posX;
+                    v.pos.y = posY;
+                    v.pos.z = posZ;
+                    v.angle = angle;
+                }
             }
 
             sendPlayerPacket(pid, PacketType.NPC_SET_COORDS, v.id, v.pos.x, v.pos.y, v.pos.z, v.angle);

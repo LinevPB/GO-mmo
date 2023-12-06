@@ -42,7 +42,7 @@ function setupStatistics()
 {
     statisticsMenu = Window(100, Inventory.SIZE + Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE - 200, 4192 - 292, 4192 - 3 * Inventory.SIZE + 300, "SR_BLANK.TGA");
     statisticsMenu.setBackgroundColor(10, 10, 30);
-    statisticsMenu.setCover("MENU_INGAME.TGA");
+    statisticsMenu.setCover("MENU_COVER.TGA");
     getMainMenu().attach(statisticsMenu);
 }
 

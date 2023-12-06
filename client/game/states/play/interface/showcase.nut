@@ -16,7 +16,7 @@ Showcase.Init <- function()
 {
     SH_tex = Texture(0, 0, 1500, 1000, "SR_BLANK");
     SH_tex.setColor(10, 10, 40);
-    SH_cover = Texture(0, 0, 1500, 1000, "MENU_INGAME.TGA");
+    SH_cover = Texture(0, 0, 1500, 1000, "MENU_COVER.TGA");
 
     SH_name = Draw(0, 0, "Item name");
     SH_name.setColor(100, 255, 100);

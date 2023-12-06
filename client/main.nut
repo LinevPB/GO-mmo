@@ -11,10 +11,11 @@ function onInit()
     // giveItem(heroId, Items.id("ITMW_DARKSAGA_SWORD_2x2_05"), 1);
 
     // return;
-
     initUI();
     initNotifications();
+
     ChangeGameState(GameState.LOGIN);
+
     if (DEBUG) {
         debug_func();
         setTimer(RunDebug, 500, 1);
