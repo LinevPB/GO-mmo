@@ -10,5 +10,4 @@
 
 	<!-- MODULES -->
 	<module src="modules/mysql.dll" type="server" />
-	<module src="modules/xml.dll" type="server" />
 </server>
