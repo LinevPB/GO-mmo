@@ -17,7 +17,7 @@ function initTradeShowcase()
     {
         TShowcase2.draws.append(Draw(0, 0, ""));
     }
-    TShowcase2.draws.append(Draw(0, 0, "Price: "));
+    TShowcase2.draws.append(Draw(0, 0, lang["PRICE"][Player.lang]));
 
     TShowcase2.draws[0].setPosition(3000, 4100);
     TShowcase2.draws[1].setPosition(3000, 4100 + TShowcase2.draws[0].height + 150);

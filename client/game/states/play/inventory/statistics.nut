@@ -23,19 +23,19 @@ local draws = [
 
 function updateDraws()
 {
-    draws[0].text = "Name: " + getPlayerName(heroId);
-    draws[1].text = "Level: " + Player.level;
-    draws[2].text = "Experience: " + Player.experience + "/" + calcNextLevelExperience(Player.level);
+    draws[0].text = lang["NAME"][Player.lang] + getPlayerName(heroId);
+    draws[1].text = lang["LEVEL"][Player.lang] + Player.level;
+    draws[2].text = lang["EXPERIENCE"][Player.lang] + Player.experience + "/" + calcNextLevelExperience(Player.level);
     draws[3].text = ""
-    draws[4].text = "Health: " + getPlayerHealth(heroId) + "/" + getPlayerMaxHealth(heroId);
-    draws[5].text = "Mana: " + getPlayerMana(heroId) + "/" + getPlayerMaxMana(heroId);
-    draws[6].text = "Strength: " + getPlayerStrength(heroId);
-    draws[7].text = "Dexterity: " + getPlayerDexterity(heroId);
-    draws[8].text = "Skill 1h: " + getPlayerSkillWeapon(heroId, WEAPON_1H);
-    draws[9].text = "Skill 2h: " + getPlayerSkillWeapon(heroId, WEAPON_2H);
-    draws[10].text = "Skill Bow: " + getPlayerSkillWeapon(heroId, WEAPON_BOW);
-    draws[11].text = "Skill Crossbow: " + getPlayerSkillWeapon(heroId, WEAPON_CBOW);
-    draws[12].text = "Magic Circle: " + getPlayerMagicLevel(heroId);
+    draws[4].text = lang["HEALTH"][Player.lang] + getPlayerHealth(heroId) + "/" + getPlayerMaxHealth(heroId);
+    draws[5].text = lang["MANA"][Player.lang] + getPlayerMana(heroId) + "/" + getPlayerMaxMana(heroId);
+    draws[6].text = lang["STRENGTH"][Player.lang] + getPlayerStrength(heroId);
+    draws[7].text = lang["DEXTERITY"][Player.lang] + getPlayerDexterity(heroId);
+    draws[8].text = lang["SKILL_1H"][Player.lang] + getPlayerSkillWeapon(heroId, WEAPON_1H);
+    draws[9].text = lang["SKILL_2H"][Player.lang] + getPlayerSkillWeapon(heroId, WEAPON_2H);
+    draws[10].text = lang["SKILL_BOW"][Player.lang] + getPlayerSkillWeapon(heroId, WEAPON_BOW);
+    draws[11].text = lang["SKILL_CBOW"][Player.lang] + getPlayerSkillWeapon(heroId, WEAPON_CBOW);
+    draws[12].text = lang["MAGIC_LEVEL"][Player.lang] + getPlayerMagicLevel(heroId);
 }
 
 function setupStatistics()

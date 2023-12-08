@@ -20,8 +20,8 @@ function initNpcTrade()
     mainWindow.attach(playerInv);
     mainWindow.attach(npcInv);
 
-    tradeButton = Button(2800 + 296, 6500 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", "Trade", "INV_TITEL.TGA");
-    exitButton = Button(2800 + 296, 7100 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", "Exit", "INV_TITEL.TGA");
+    tradeButton = Button(2800 + 296, 6500 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", lang["TRADE"][Player.lang], "INV_TITEL.TGA");
+    exitButton = Button(2800 + 296, 7100 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", lang["EXIT"][Player.lang], "INV_TITEL.TGA");
 
     mainWindow.attach(tradeButton);
     mainWindow.attach(exitButton);
@@ -44,10 +44,15 @@ function enableNpcTrade(val, soft = false)
             setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
         else
             setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
+
+        setCursorVisible(val);
+    }
+    else
+    {
+        setCursorVisible(soft);
     }
     ///////
 
-    setCursorVisible(val);
     mainWindow.enable(val);
     enablePlayerWindow(val);
     enableNpcWindow(val);
@@ -61,6 +66,10 @@ function enableNpcTrade(val, soft = false)
 
     if (val == false)
     {
+        clearNpcBasket();
+        clearPlayerBasket();
+        clearNpcInventory();
+
         if (Showcase.IsEnabled())
         {
             Showcase.Enable(false);
@@ -119,7 +128,7 @@ function tradeButtonHandler(id)
     }
     else if (id == exitButton.id)
     {
-        enableNpcTrade(false);
+        enableNpcTrade(false, true);
     }
 }
 
@@ -164,12 +173,12 @@ function handleTradeResult(data)
 {
     if (data[0] == 0)
     {
-        tradeNotify("Not enough ores!");
+        tradeNotify(lang["TRADE_LITTLE_ORES"][Player.lang]);
         return;
     }
 
     clearPlayerBasket();
     clearNpcBasket();
     refreshPlayerSlots();
-    tradeNotify("Trade successful!");
+    tradeNotify(lang["TRADE_SUCCESS"][Player.lang]);
 }

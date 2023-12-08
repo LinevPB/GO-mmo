@@ -216,6 +216,7 @@ function handleTrade(pid, item_list, target)
                 print("ERROR ITEM NULL + " + v.instance + " : " + v.amount);
                 continue;
             }
+
             local price = item.price * v.amount;
             totalPrice += price;
         }

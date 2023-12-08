@@ -1,10 +1,10 @@
 local gold_cover_tex = null;
-local esc_lab = Draw(200, 8000, "(ESC) Press to resume");
-local gold_lab = Draw(0, 0, "Ore: ");
-local sec_gold_lab = Draw(0, 0, "0");
-local ore_render = ItemRender(0, 0, 0, 0, "ItMi_Nugget");
-local big_inv_title = Draw(0, 0, "Inventory");
-local big_stat_title = Draw(0, 0, "Statistics");
+local esc_lab = null;
+local gold_lab = null;
+local sec_gold_lab = null;
+local ore_render = null;
+local big_inv_title = null;
+local big_stat_title = null;
 local coverTex1 = null;
 local coverTex2 = null;
 local coverTex3 = null;
@@ -44,12 +44,19 @@ function updateGoldDraws()
     }
     res = temp + res;
 
-    gold_lab.text = "Ore: ";
+    gold_lab.text = lang["ORE"][Player.lang];
     sec_gold_lab.text = res;
 }
 
 function setupCoverTextures()
 {
+    esc_lab = Draw(200, 8000, lang["ESC_INFO"][Player.lang]);
+    gold_lab = Draw(0, 0, lang["ORE"][Player.lang]);
+    sec_gold_lab = Draw(0, 0, "0");
+    ore_render = ItemRender(0, 0, 0, 0, "ItMi_Nugget");
+    big_inv_title = Draw(0, 0, lang["MY_INVENTORY"][Player.lang]);
+    big_stat_title = Draw(0, 0, lang["STATISTICS"][Player.lang]);
+
     gold_cover_tex = createCoverTexture(0, 0, 0, 0);
 
     // inventory top title cover

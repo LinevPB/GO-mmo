@@ -51,7 +51,7 @@ TradeBox.SetItemName <- function(name)
 
 TradeBox.Init <- function()
 {
-    info_label = Label(100, 200, "Enter the amount of");
+    info_label = Label(100, 200, lang["ENTER_AMOUNT"][Player.lang]);
     info_label2 = Label(100, 200 + info_label.height() + 50, item_name);
     info_label3 = Label(100, info_label2.pos.y + info_label2.height() + 50, " ");
 
@@ -63,8 +63,8 @@ TradeBox.Init <- function()
     window.setBackgroundColor(10, 10, 40);
     window.setCover("MENU_INGAME.TGA");
 
-    ok_btn = Button(250, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", "Ok", "INV_SLOT_FOCUS.TGA");
-    cancel_btn = Button(850, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", "Cancel", "INV_SLOT_FOCUS.TGA");
+    ok_btn = Button(250, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", lang["TRADEBOX_OK"][Player.lang], "INV_SLOT_FOCUS.TGA");
+    cancel_btn = Button(850, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", lang["TRADEBOX_CANCEL"][Player.lang], "INV_SLOT_FOCUS.TGA");
 
     window.attach(info_label);
     window.attach(info_label2);

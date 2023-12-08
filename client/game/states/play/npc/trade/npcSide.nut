@@ -37,6 +37,40 @@ function clearNpcBasket()
     }
 }
 
+function clearNpcInventory()
+{
+    foreach(v in npc_slots)
+    {
+        v.updateSlot("", 0);
+    }
+}
+
+function updateNpcSlot(id, instance)
+{
+    foreach(i, v in npc_slots)
+    {
+        if (i == id)
+        {
+            v.updateSlot(instance, 999);
+            return;
+        }
+    }
+}
+
+function updateNpcShop(items)
+{
+    foreach(v in items)
+    {
+        foreach(i, k in npc_slots)
+        {
+            if (i == v.slot)
+            {
+                k.updateSlot(v.instance, 999);
+            }
+        }
+    }
+}
+
 function initNpcWindow()
 {
     npcInventory = Window(8192/2 + 300, 300, 8192/2-600, 6000, "SR_BLANK.TGA");
@@ -50,7 +84,7 @@ function initNpcWindow()
     NPC_tradeSlotsCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "SR_BLANK.TGA");
     NPC_tradeSlotsCover.setColor(75, 75, 100);
 
-    NPC_basketValueDraw = Draw(0, 0, "Value: ");
+    NPC_basketValueDraw = Draw(0, 0, lang["VALUE"][Player.lang]);
     NPC_basketValueAmountDraw = Draw(0, 0, "0");
 
     NPC_basketValueDraw.setPosition(4550, 7725);
@@ -88,15 +122,12 @@ function enableNpcWindow(val)
 
 function initNpcSlots()
 {
-    for(local i = 0; i < 5; i++)
+    for(local i = 0; i < 8; i++)
     {
-        for (local j = 0; j < 8; j++)
+        for (local j = 0; j < 5; j++)
         {
-            local slot = TradeSlot(npcInventory.pos.x + 250 + 600 * i, npcInventory.pos.y + 800 + 600 * j, 600, 600);
-            if (j < 2)
-            {
-                slot.updateSlot("ITAR_VLK_M", 1);
-            }
+            local slot = TradeSlot(npcInventory.pos.x + 250 + 600 * j, npcInventory.pos.y + 800 + 600 * i, 600, 600);
+            slot.updateSlot("", 0);
             npc_slots.append(slot);
         }
     }
@@ -104,7 +135,7 @@ function initNpcSlots()
     npcItemsCover = Texture(npcInventory.pos.x + 250, npcInventory.pos.y + 800, 600 * 5, 600*8, "SR_BLANK.TGA");
     npcItemsCover.setColor(75, 75, 100);
 
-    npcInvDraw = Draw(0, 0, "Shop");
+    npcInvDraw = Draw(0, 0, lang["SHOP"][Player.lang]);
     npcInvDraw.setColor(240, 220, 180);
     npcInvDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
     npcInvDraw.setPosition(npcInventory.pos.x + npcInventory.size.width / 2 - npcInvDraw.width / 2, npcInventory.pos.y + 300 - npcInvDraw.height / 2);

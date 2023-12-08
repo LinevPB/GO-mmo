@@ -1,0 +1,6 @@
+<server>
+	<script src="animations.nut" type="shared" />
+
+	<import src="items/items.xml" type="shared" />
+	<import src="shops/shops.xml" type="shared" />
+</server>

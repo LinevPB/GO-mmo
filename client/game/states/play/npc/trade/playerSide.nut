@@ -59,7 +59,7 @@ function initPlayerWindow()
     tradeSlotsCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
     tradeSlotsCover.setColor(75, 75, 100);
 
-    basketValueDraw = Draw(0, 0, "Value: ");
+    basketValueDraw = Draw(0, 0, lang["VALUE"][Player.lang]);
     basketValueAmountDraw = Draw(0, 0, "0");
 
     basketValueDraw.setPosition(450, 7700);
@@ -160,7 +160,7 @@ function initPlayerSlots()
 
     bottomCoverSecond = Texture(myInventory.pos.x, myInventory.pos.y + 6 * 900, myInventory.size.width, 600, "MENU_INGAME.TGA");
 
-    myGoldDraw = Draw(0, 0, "Ore: ");
+    myGoldDraw = Draw(0, 0, lang["ORE"][Player.lang]);
     myGoldDraw.setPosition(myInventory.pos.x + 350, myInventory.pos.y + 6 * 900 + 300 - myGoldDraw.height / 2);
     oreRender = ItemRender(myInventory.pos.x + 250 - myGoldDraw.height, myGoldDraw.getPosition().y - 125, myGoldDraw.height * 2, myGoldDraw.height * 2, "ItMi_Nugget");
 
@@ -175,7 +175,7 @@ function initPlayerSlots()
     myItemsCover = Texture(myInventory.pos.x + 200, myInventory.pos.y + 600, 600 * 3, 600*8, "SR_BLANK.TGA");
     myItemsCover.setColor(75, 75, 100);
 
-    myInvDraw = Draw(0, 0, "My inventory");
+    myInvDraw = Draw(0, 0, lang["MY_INVENTORY"][Player.lang]);
     myInvDraw.setColor(240, 220, 180);
     myInvDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
     myInvDraw.setPosition(myInventory.pos.x + myInventory.size.width / 2 - myInvDraw.width / 2, myInventory.pos.y + 300 - myInvDraw.height / 2);

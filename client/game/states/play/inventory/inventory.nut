@@ -59,15 +59,18 @@ function setupInventoryMenu()
     slotMenu.background.texture.setColor(210, 10, 60);
     slotMenu.setCover("MENU_CHOICE_BACK.TGA");
 
-    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", "Use", "MENU_CHOICE_BACK.TGA");
+    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", lang["INV_USE"][Player.lang], "MENU_CHOICE_BACK.TGA");
     slotMenuButtons.useButton.setBackgroundRegularColor(10, 10, 60);
     slotMenuButtons.useButton.setBackgroundHoverColor(255, 255, 255);
     slotMenu.attach(slotMenuButtons.useButton);
 
-    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", "Drop", "MENU_CHOICE_BACK.TGA");
+    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", lang["INV_DROP"][Player.lang], "MENU_CHOICE_BACK.TGA");
     slotMenuButtons.dropButton.setBackgroundRegularColor(10, 10, 60);
     slotMenuButtons.dropButton.setBackgroundHoverColor(255, 255, 255);
     slotMenu.attach(slotMenuButtons.dropButton);
+
+    slotMenuButtons.useButton.rehover();
+    slotMenuButtons.dropButton.rehover();
 
     holdedRender = ItemRender(5000, 0, 600, 600, "");
 }
@@ -202,25 +205,24 @@ function handleSlotMenu(id, pointer)
         local item = Daedalus.instance(slotHolder.render.instance);
         if (item.mainflag == 32 || item.mainflag == 128)
         {
-            slotMenuButtons.useButton.changeText("Use");
+            slotMenuButtons.useButton.changeText(lang["INV_USE"][Player.lang]);
         }
         else if (item.mainflag == 2 || item.mainflag == 4 || item.mainflag == 16)
         {
             if (slotHolder.render.instance.toupper() == Player.eqWeapon || slotHolder.render.instance.toupper() == Player.eqWeapon2h || slotHolder.render.instance.toupper() == Player.eqArmor)
             {
-                slotMenuButtons.useButton.changeText("Unequip");
+                slotMenuButtons.useButton.changeText(lang["INV_UNEQUIP"][Player.lang]);
             }
             else
             {
-                slotMenuButtons.useButton.changeText("Equip");
+                slotMenuButtons.useButton.changeText(lang["INV_EQUIP"][Player.lang]);
             }
         }
         else
         {
-            slotMenuButtons.useButton.changeText("Non usable");
+            slotMenuButtons.useButton.changeText(lang["INV_NONUSABLE"][Player.lang]);
         }
 
-        slotMenuButtons
         pointer.btn.unhover();
     }
     else

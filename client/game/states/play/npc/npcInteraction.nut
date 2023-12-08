@@ -2,7 +2,7 @@
 info_draw <- Draw(0, 0, "");
 HERO <- heroId;
 BOT <- -1;
-distance_draw <- 8000;
+distance_draw <- 2000;
 
 local dialog_draw = null;
 local turning = false;
@@ -25,6 +25,8 @@ local intWindow = null;
 local dialogOpt = null;
 local cover1 = null;
 local cover2 = null;
+
+local currDial = null;
 
 ///////////
 // interaction mechanic
@@ -149,13 +151,16 @@ function show_dialog_menu(dialogs)
     intWindow.enable(true);
     setCursorVisible(true);
 
-    for(local i = 0; i < 5; i++) {
+    for(local i = 0; i < 5; i++)
+    {
         dialogOpt[i].centered = false;
         dialogOpt[i].align_left = true;
         dialogOpt[i].recolor();
         dialogOpt[i].setPosition(8192/2-1000, dialogOpt[i].pos.y);
         setDialogOptVisible(i, i < dialogs.len());
-        if (i < dialogs.len()) {
+
+        if (i < dialogs.len())
+        {
             dialogOpt[i].draw.text = dialogs[i].text;
         }
 
@@ -164,12 +169,16 @@ function show_dialog_menu(dialogs)
         numerdraw[i].top();
         numerdraw[i].setPosition(dialogOpt[i].draw.getPosition().x - numerdraw[i].width, dialogOpt[i].draw.getPosition().y);
     }
+
+    currDial = dialogs;
 }
 
 function hide_dialog_menu()
 {
     setCursorVisible(false);
-    for(local i = 0; i < 5; i++) {
+
+    for(local i = 0; i < 5; i++)
+    {
         numerdraw[i].visible = false;
         dialogOpt[i].force_enable(null);
     }
@@ -180,9 +189,11 @@ function update_dialog(text)
 {
     dialog_draw.text = text;
     dialog_draw.setPosition(8192 / 2 - dialog_draw.width / 2, intWindow.pos.y - dialog_draw.height - 50);
+
     if (text == "")
         dialog_draw.visible = false;
-    else {
+    else
+    {
         dialog_draw.visible = true;
         in_dial = true;
     }
@@ -203,12 +214,14 @@ function check_dialog(id)
     if (BOT == -1) return;
     if (BOT.holder[id] == null) return;
     hide_dialog_menu();
-    BOT.holder[id].event();
+
+    currDial[id].event();
 }
 
 function npcButtonHandler(id)
 {
-    switch(id) {
+    switch(id)
+    {
         case dialogOpt[0].id:
             check_dialog(0);
         break;
@@ -233,25 +246,40 @@ function npcButtonHandler(id)
 
 function hideAllNames()
 {
-    foreach(v in getNpcList()) {
-        if (v.draw.visible) v.draw.visible = false;
+    foreach(v in getNpcList())
+    {
+        if (v.draw.visible)
+        {
+            v.draw.visible = false;
+        }
     }
 }
 
-function npcInteractionHandler()
+function handleNpcRender()
 {
-    if (!interacting) {
+    if (!interacting)
+    {
         local pos = getPlayerPosition(heroId);
-        foreach(v in getNpcList()) {
+        foreach(v in getNpcList())
+        {
             local npos = getPlayerPosition(v.npc);
-            if (getDistance2d(pos.x, pos.z, npos.x, npos.z) < distance_draw && v.draw.visible == false)  {
+            local dist = getDistance3d(npos.x, npos.y, npos.z, pos.x, pos.y, pos.z);
+            if (dist < distance_draw && v.draw.visible == false)
+            {
                 v.draw.visible = true;
                 v.draw.setWorldPosition(npos.x, npos.y + 120, npos.z);
                 v.ambient_draw.setWorldPosition(npos.x, npos.y + 160, npos.z)
             }
-            if (getDistance2d(pos.x, pos.z, npos.x, npos.z) >= distance_draw && v.draw.visible == true) v.draw.visible = false;
-            if (v.animation != null) {
-                if (getPlayerAni(v.npc) != v.animation) {
+
+            if (dist >= distance_draw && v.draw.visible == true)
+            {
+                v.draw.visible = false;
+            }
+
+            if (v.animation != null)
+            {
+                if (getPlayerAni(v.npc) != v.animation)
+                {
                     playAni(v.npc, v.animation);
                 }
             }
@@ -259,10 +287,15 @@ function npcInteractionHandler()
 
         return;
     }
+}
 
-    if (turning) {
+function handleTurning()
+{
+    if (turning)
+    {
         mealpha += 10;
-        if (mealpha >= 255) {
+        if (mealpha >= 255)
+        {
             turning = false;
             turned = true;
             mealpha = 255;
@@ -270,7 +303,9 @@ function npcInteractionHandler()
         superTexture.alpha = mealpha;
         return;
     }
-    if (unturning) {
+
+    if (unturning)
+    {
         mealpha -= 20;
         if (mealpha <= 0) {
             unturning = false;
@@ -281,28 +316,48 @@ function npcInteractionHandler()
         return;
     }
 
-    if (turned) {
-        if (!exiting)  {
+    if (turned)
+    {
+        if (!exiting)
+        {
             interact(superf);
         }
-        else begin_hiding();
+        else
+        {
+            begin_hiding();
+        }
+
         turned = false;
         unturning = true;
+
         return;
     }
 
-    if (unturned) {
-        if (exiting) {
+    if (unturned)
+    {
+        if (exiting)
+        {
             end_interaction();
             exiting = false;
-        } else {
+        }
+        else
+        {
             BOT.start();
         }
+
         unturned = false;
         superTexture.visible = false;
         superf = -1;
+
         return;
     }
+}
+
+function npcInteractionHandler()
+{
+
+    handleNpcRender();
+    handleTurning();
 }
 
 function start_exiting()
@@ -313,6 +368,7 @@ function start_exiting()
     turning = true;
     hide_dialog_menu();
     stopSound();
+    currDial = null;
 }
 
 function play_gest(who)
@@ -322,32 +378,30 @@ function play_gest(who)
     stopAni(BOT.npc);
     stopFaceAni(BOT.npc);
 
-    if (who == HERO) {
+    if (who == HERO)
+    {
         local pos = getPlayerPosition(BOT.npc);
         Camera.setPosition(pos.x, pos.y, pos.z);
         Camera.setMode("CamModDialog", [getPlayerPtr(heroId), getPlayerPtr(BOT.npc)]);
+
         playGesticulation(heroId);
     }
 
-    if (who == BOT) {
+    if (who == BOT)
+    {
         local pos = getPlayerPosition(heroId);
         Camera.setPosition(pos.x, pos.y, pos.z);
         Camera.setMode("CamModDialog", [getPlayerPtr(BOT.npc), getPlayerPtr(heroId)]);
+
         playGesticulation(BOT.npc);
     }
 }
 
-function next_dial(func)
+function next_dial(func, time = 5000)
 {
-    local time = null;
-
     if (getSound() != null)
     {
         time = getSound().playingTime;
-    }
-    else
-    {
-        time = 5000;
     }
 
     dial_func = func;
@@ -378,6 +432,13 @@ function finish_dial()
     stopSound();
 
     in_dial = false;
+}
+
+function open_shop(items)
+{
+    finish_dial();
+    enableNpcTrade(true, true);
+    updateNpcShop(items);
 }
 
 local function onplayerkey(key)

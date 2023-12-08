@@ -84,11 +84,11 @@ function onSlidePlay(el)
 
 function onRenderP(currentTime, lastTime)
 {
+    globalNpcRender();
     handleQARender();
     npcInteractionHandler();
     mapRender();
     tradeRender();
-    globalNpcRender();
 }
 
 local function onplaykey(key)

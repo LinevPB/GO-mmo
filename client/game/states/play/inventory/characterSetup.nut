@@ -85,19 +85,19 @@ function setupCharacterSetup()
     w1 = 8192/2 - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 96;
     calw1 = (w1-Inventory.SIZE-100-Inventory.SIZE)/2;
 
-    labs_title.append(Draw(x1, y1, "Weapons"));
+    labs_title.append(Draw(x1, y1, lang["INV_WEAPON"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + labs_title[0].height + 50,
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + labs_title[0].height + 50,
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
-        labs_title.append(Draw(x1, y1, "Armor"));
+        labs_title.append(Draw(x1, y1, lang["INV_ARMOR"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + 1000 + labs_title[1].height + 50,
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 1000 + labs_title[1].height + 50,
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
-    labs_title.append(Draw(x1, y1, "Quick access"));
+    labs_title.append(Draw(x1, y1, lang["INV_QA"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + 2000 + labs_title[2].height + 50,
         Inventory.SIZE, Inventory.SIZE, "INV_SLOT_EQUIPPED.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 2000 + labs_title[2].height + 50,

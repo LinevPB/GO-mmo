@@ -1,172 +1,11 @@
 DEBUG <- true;
 
-lang <- {
-    ["SERVER_NAME"] = {
-        ["en"]= "Memory",
-        ["pl"]= "Memory"
-    },
-
-    ["BUTTON_MAIN_MENU_LOGIN"] = {
-        ["en"]= "Sign in",
-        ["pl"]= "Zaloguj"
-    },
-
-    ["BUTTON_MAIN_MENU_REGISTER"] = {
-        ["en"]= "Sign up",
-        ["pl"]= "Zarejestruj"
-    },
-
-    ["BUTTON_MAIN_MENU_QUIT"] = {
-        ["en"]= "Quit",
-        ["pl"]= "Wyjdź"
-    },
-
-    ///
-    ["LABEL_LOGIN_MENU_USERNAME"] = {
-        ["en"]= "Username",
-        ["pl"]= "Login"
-    },
-
-    ["LABEL_LOGIN_MENU_PASSWORD"] = {
-        ["en"]= "Password",
-        ["pl"]= "Hasło"
-    },
-
-    ["BUTTON_LOGIN_MENU_OK"] = {
-        ["en"]= "Ok",
-        ["pl"]= "Ok"
-    },
-
-    ["BUTTON_LOGIN_MENU_BACK"] = {
-        ["en"]= "Back",
-        ["pl"]= "Wróć"
-    },
-
-    ///
-    ["LABEL_REGISTER_MENU_USERNAME"] = {
-        ["en"]= "Username",
-        ["pl"]= "Login"
-    },
-
-    ["LABEL_REGISTER_MENU_PASSWORD"] = {
-        ["en"]= "Password",
-        ["pl"]= "Hasło"
-    },
-
-    ["LABEL_REGISTER_MENU_CPASSWORD"] = {
-        ["en"]= "Confirm password",
-        ["pl"]= "Powtórz hasło"
-    },
-
-    ["BUTTON_REGISTER_MENU_OK"] = {
-        ["en"]= "Ok",
-        ["pl"]= "Ok"
-    },
-
-    ["BUTTON_REGISTER_MENU_BACK"] = {
-        ["en"]= "Back",
-        ["pl"]= "Wróć"
-    },
-
-    //
-    ["LABEL_CHAR_SELECTION_MENU_CHARACTERS"] = {
-        ["en"]= "Characters",
-        ["pl"]= "Postacie"
-    },
-
-    ["LABEL_CHAR_SELECTION_MENU_SLOT1"] = {
-        ["en"]= "(Slot 1)",
-        ["pl"]= "(Slot 1)"
-    },
-
-    ["LABEL_CHAR_SELECTION_MENU_SLOT2"] = {
-        ["en"]= "(Slot 2)",
-        ["pl"]= "(Slot 2)"
-    },
-
-    ["LABEL_CHAR_SELECTION_MENU_SLOT3"] = {
-        ["en"]= "(Slot 3)",
-        ["pl"]= "(Slot 3)"
-    },
-
-    ["BUTTON_CHAR_SELECTION_MENU_OK"] = {
-        ["en"]= "Ok",
-        ["pl"]= "Ok"
-    },
-
-    ["BUTTON_CHAR_SELECTION_MENU_CREATE"] = {
-        ["en"]= "Create",
-        ["pl"]= "Stwórz"
-    },
-
-    ["BUTTON_CHAR_SELECTION_MENU_SELECT"] = {
-        ["en"]= "Select",
-        ["pl"]= "Wybierz"
-    },
-
-    ["BUTTON_CHAR_SELECTION_MENU_QUIT"] = {
-        ["en"]= "Quit",
-        ["pl"]= "Wyjdź"
-    },
-
-    //
-    ["LABEL_CREATION_TITLE"] = {
-        ["en"]= "Creation",
-        ["pl"]= "Kreacja"
-    },
-
-    ["LABEL_CREATION_NAME"] = {
-        ["en"]= "Name:",
-        ["pl"]= "Imię:"
-    },
-
-    ["LABEL_CREATION_MALE"] = {
-        ["en"]= "Male",
-        ["pl"]= "Mężczyzna"
-    },
-
-    ["LABEL_CREATION_FEMALE"] = {
-        ["en"]= "Female",
-        ["pl"]= "Kobieta"
-    },
-
-    ["LABEL_CREATION_SEX"] = {
-        ["en"]= "Sex",
-        ["pl"]= "Płeć"
-    },
-
-    ["LABEL_CREATION_BODYTEX"] = {
-        ["en"]= "Body texture",
-        ["pl"]= "Tekstura ciała"
-    },
-
-    ["LABEL_CREATION_HEADMODEL"] = {
-        ["en"]= "Head model",
-        ["pl"]= "Model głowy"
-    },
-
-    ["LABEL_CREATION_HEADTEX"] = {
-        ["en"]= "Head texture",
-        ["pl"]= "Tekstura głowy"
-    },
-
-    ["BUTTON_CREATION_OK"] = {
-        ["en"]= "Create",
-        ["pl"]= "Stwórz"
-    },
-
-    ["BUTTON_CREATION_BACK"] = {
-        ["en"]= "Back",
-        ["pl"]= "Wróć"
-    }
-};
-
 Player <- {
     id = 0,
     gameState = GameState.UNKNOWN,
     canProceed = false,
 
-    helper = createNpc("Glapiński"),
+    helper = createNpc("Helper"),
     bodyModel = ["Hum_Body_Naked0","Hum_Body_Babe0"],
     headModel = ["Hum_Head_FatBald","Hum_Head_Fighter","Hum_Head_Pony","Hum_Head_Bald","Hum_Head_Thief","Hum_Head_Psionic","Hum_Head_Babe"],
     cBodyModel = 0,
@@ -174,7 +13,7 @@ Player <- {
     cHeadModel = 6,
     cHeadTexture = 108,
     music = Sound("muzyka.wav"),
-    lang = "en",
+    lang = "pl",
     charSlot = -1,
     eqArmor = "",
     eqWeapon = "",
@@ -382,25 +221,25 @@ function findPositionBySlot(item)
 Player.addExperience <- function(val)
 {
     Player.experience += val;
-    notify("Experience +" + val, false, 400, 5000);
+    notify(lang["ADD_EXPERIENCE"][Player.lang] + val, false, 400, 5000);
 }
 
 Player.addLevel <- function(val)
 {
     addEffect(heroId, "Spellfx_Palheal");
-    notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
+    notify(lang["LEVEL_UP"][Player.lang], true, 8192/2 - textWidth(lang["LEVEL_UP"][Player.lang]), 4000);
 }
 
 local function onkey(key)
 {
     if (key == KEY_X)
     {
-        notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
+        notify(lang["LEVEL_UP"][Player.lang], true, 8192/2 - textWidth(lang["LEVEL_UP"][Player.lang]), 4000);
     }
 
     if (key == KEY_G)
     {
-        notify("Experience +" + 20, false, 400, 5000);
+        notify(lang["ADD_EXPERIENCE"][Player.lang] + 20, false, 400, 5000);
     }
 }
 addEventHandler("onKey", onkey);

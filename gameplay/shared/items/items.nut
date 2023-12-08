@@ -1,4 +1,4 @@
-enum ItemType
+ItemType <-
 {
     OTHER = 1, // other not usable items
     WEAPON = 2, // 1h melee and 2h melee weapon

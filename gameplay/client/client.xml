@@ -1,5 +1,7 @@
 <server>
 
+    <script src="language.nut" type="client" />
+
     <script src="guardians.nut" type="client" />
 
     <script src="trader.nut" type="client" />

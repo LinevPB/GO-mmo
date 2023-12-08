@@ -68,7 +68,7 @@ class NPC
 
         sound.play();
         ambient_draw.visible = true;
-        ambient_draw.insertText("Get out of here!");
+        ambient_draw.insertText(lang["GET_OUT"][Player.lang]);
         timer_ambient(this);
     }
 
@@ -123,8 +123,8 @@ function eventfocus(focusid, previd)
             BOT = v;
             HERO = heroId;
 
-            v.draw.setLineText(0, "(CTRL)");
-            v.draw.setLineText(1, "Porozmawiaj");
+            v.draw.setLineText(0, lang["CTRL"][Player.lang]);
+            v.draw.setLineText(1, lang["TALK"][Player.lang]);
         }
         else if (focusid == -1)
         {

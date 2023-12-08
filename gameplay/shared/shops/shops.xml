@@ -1,0 +1,5 @@
+<server>
+    <script src="shops.nut" type="shared" />
+
+    <script src="milko.nut" type="shared" />
+</server>

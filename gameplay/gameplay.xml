@@ -4,4 +4,7 @@
 
 	<!-- CLIENT -->
 	<import src="client/client.xml" />
+
+	<!-- SHARED -->
+	<import src="shared/shared.xml" />
 </server>

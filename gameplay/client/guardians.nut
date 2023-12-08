@@ -7,7 +7,7 @@ function random(dolnyZakres, gornyZakres)
 function initZiobro()
 {
     local npcValues = {
-        name = "Guardian",
+        name = lang["GUARDIAN"][Player.lang],
         camp = "Old Camp",
         ani = "S_HGUARD",
         armor = "ITAR_MIL_L"
@@ -35,7 +35,7 @@ function initZiobro()
 
     foreach(v in npcPositions)
     {
-        local npc = NPC("Zbysiu", v.x, v.y, v.z, v.angle);
+        local npc = NPC(lang["GUARDIAN"][Player.lang], v.x, v.y, v.z, v.angle);
         npc.spawn();
 
         equipItem(npc.npc, Items.id(npcValues.armor));

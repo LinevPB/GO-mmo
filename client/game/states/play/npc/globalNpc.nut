@@ -1,4 +1,4 @@
-local npc_list = [];
+local global_npc_list = [];
 
 class GlobalNpc
 {
@@ -9,8 +9,8 @@ class GlobalNpc
     angle = null;
     instance = null;
     oneTime = null;
-    currentAnim = "S_RUN";
-    previousAnim = "S_RUN";
+    currentAnim = null;
+    previousAnim = null;
     draw = null;
     texture = null;
     coverTexture = null;
@@ -20,6 +20,7 @@ class GlobalNpc
 
     levelTex = null;
     levelDraw = null;
+    visualVisible = null;
 
     constructor(npcId, npcName, posX, posY, posZ, npcAngle, npcInst)
     {
@@ -32,7 +33,7 @@ class GlobalNpc
         npc = createNpc(name);
 
         draw = Draw3d(posX, posY + 100, posZ);
-        draw.insertText(name);
+        draw.insertText(lang[name.toupper()][Player.lang]);
         draw.setLineColor(0, 250, 80, 10);
 
         texture = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");
@@ -46,15 +47,18 @@ class GlobalNpc
         levelDraw = Draw(0, 0, level);
         levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
         levelTex = Texture(0, 0, 100, 100, "MENU_CHOICE_BACK.TGA");
+        visualVisible = false;
 
-        npc_list.append(this);
+        currentAnim = "S_RUN";
+        previousAnim = "S_RUN";
+
+        updateWorld(false);
+
+        global_npc_list.append(this);
     }
 
     function die()
     {
-        draw.visible = false;
-        texture.visible = false;
-        coverTexture.visible = false;
         dead = true;
         dying = true;
         stopCurrentAnim();
@@ -152,19 +156,15 @@ class GlobalNpc
 
     function updateWorld(val)
     {
-        if (draw.visible != val || texture.visible != val || coverTexture != val || levelTex.visible != val || levelDraw.visible != val)
-        {
-            draw.visible = val;
-            texture.visible = val;
-            coverTexture.visible = val;
-            levelTex.visible = val;
-            levelDraw.visible = val;
-        }
+        // the reason for the weird mechanic is that textures in g2o are bugged
 
-        if (val == true)
-        {
-            updateWorldPos();
-        }
+        texture.visible = val;
+        coverTexture.visible = val;
+        levelTex.visible = val;
+        levelDraw.visible = val;
+        draw.visible = val;
+
+        visualVisible = val;
     }
 }
 
@@ -172,7 +172,7 @@ function onPlayerHit(kid, pid, desc)
 {
     cancelEvent();
 
-    foreach(v in npc_list)
+    foreach(v in global_npc_list)
     {
         if (pid == v.npc)
         {
@@ -211,14 +211,14 @@ function setNpcCoords(data)
     local posZ = data[3];
     local angle = data[4];
 
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
     npc.setPosition(posX, posY, posZ);
     npc.setAngle(angle);
 }
 
-function findNpc(id)
+function findGlobalNpc(id)
 {
-    foreach(v in npc_list)
+    foreach(v in global_npc_list)
     {
         if (v.id == id) return v;
     }
@@ -229,7 +229,7 @@ function findNpc(id)
 function handleNpcCoords(data)
 {
     local id = data[0];
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
     if (npc == null) return;
 
     local pos = getPlayerPosition(npc.npc);
@@ -247,7 +247,7 @@ function handleNpcAnimation(data)
     local id = data[0];
     local aniId = data[1];
 
-    foreach(v in npc_list)
+    foreach(v in global_npc_list)
     {
         if (id == v.id)
         {
@@ -257,61 +257,77 @@ function handleNpcAnimation(data)
     }
 }
 
+function handleDying(npc)
+{
+    local alpha = getPlayerVisualAlpha(npc.npc);
+    setPlayerVisualAlpha(npc.npc, alpha - 0.001);
+
+    if (alpha <= 0)
+    {
+        unspawnNpc(npc.npc);
+        npc.dying = false;
+        npc.updateWorld(false);
+        setPlayerVisualAlpha(npc.npc, 0.0);
+    }
+}
+
 function globalNpcRender()
 {
     local pos = getPlayerPosition(heroId);
 
-    foreach(npc in npc_list)
+    foreach(npc in global_npc_list)
     {
+        if (npc.dead) continue;
         if (npc.dying)
         {
-            local alpha = getPlayerVisualAlpha(npc.npc);
-            setPlayerVisualAlpha(npc.npc, alpha - 0.001);
-
-            if (alpha <= 0)
-            {
-                unspawnNpc(npc.npc);
-                npc.dying = false;
-                npc.updateWorld(false);
-                setPlayerVisualAlpha(npc.npc, 0.0);
-            }
-        }
-
-        if (npc.dead) continue;
-
-        local dist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
-
-        if (dist < 1000)
-        {
-            npc.updateWorld(true);
+            handleDying(npc);
             continue;
         }
 
-        npc.updateWorld(false);
+        local dist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
+        if (dist < distance_draw)
+        {
+            if (!npc.visualVisible)
+            {
+                npc.updateWorld(true);
+            }
+            else
+            {
+                npc.updateWorldPos();
+            }
+        }
+        else
+        {
+            if (npc.visualVisible)
+            {
+                npc.updateWorld(false);
+            }
+        }
     }
 }
 
 function handleNpcSetHealth(id, val)
 {
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
+    if (val == 0) val = 1;
     npc.setHealth(val);
 }
 
 function handleNpcSetMaxHealth(id, val)
 {
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
     npc.setMaxHealth(val);
 }
 
 function handleNpcDeath(id)
 {
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
     npc.die();
 }
 
 function handleNpcRespawn(id, pos, angle)
 {
-    local npc = findNpc(id);
+    local npc = findGlobalNpc(id);
     npc.respawn();
     setPlayerPosition(npc.npc, pos.x, pos.y, pos.z);
     setPlayerAngle(npc.npc, angle);
