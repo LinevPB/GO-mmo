@@ -1,0 +1,7 @@
+<server>
+	<!-- SERVER -->
+	<import src="server/server.xml" />
+
+	<!-- CLIENT -->
+	<import src="client/client.xml" />
+</server>

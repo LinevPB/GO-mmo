@@ -1,187 +1,78 @@
-local npc_list = [];
+
 info_draw <- Draw(0, 0, "");
-local dialog_draw = Draw(0, 0, "");
+HERO <- heroId;
+BOT <- -1;
+distance_draw <- 8000;
+
+local dialog_draw = null;
 local turning = false;
 local turned = false;
 local unturning = false;
 local unturned = false;
 local superf = -1;
-local superTexture = Texture(0, 0, 8192, 8192, "SR_BLANK.TGA");
-superTexture.setColor(0, 0, 0);
-superTexture.alpha = 0;
-superTexture.visible = false;
+local superTexture = null;
 local mealpha = 0;
 local interacting = false;
-HERO <- heroId;
-BOT <- -1;
 local in_dial = false;
-distance_draw <- 8000;
 
-local ambient_draws = [];
-
-function shide_ambient()
-{
-    foreach(v in ambient_draws) {
-        v.hide_ambient();
-    }
-
-    ambient_draws.clear();
-}
-
-function timer_ambient(l)
-{
-    ambient_draws.append(l);
-    setTimer(shide_ambient, 1000, 1);
-}
-
-class NPC
-{
-    npc = null;
-    nickname = null;
-    draw = null;
-    pos = null;
-    instance = null;
-    event = null;
-    holder = null;
-    sound = null;
-    ambient_draw = null;
-    animation = null;
-    angle = null;
-
-    constructor(name, x, y, z, ang)
-    {
-        npc = createNpc(name);
-        draw = Draw3d(x, y + 150, z);
-        ambient_draw = Draw3d(x, y+170, z);
-        pos = { x = x, y = y, z = z };
-        instance = "PC_HERO";
-        nickname = name;
-        angle = ang;
-
-        for (local i = 0; i < 4; i++)
-        {
-            draw.insertText("");
-        }
-
-        npc_list.append(this);
-    }
-
-    function spawn()
-    {
-        spawnNpc(npc, instance);
-        setPlayerPosition(npc, pos.x, pos.y, pos.z);
-        setPlayerAngle(npc, angle);
-        draw.setWorldPosition(pos.x, pos.y + 150, pos.z);
-        ambient_draw.setWorldPosition(pos.x, pos.y + 180, pos.z)
-    }
-
-    function interact()
-    {
-        if (event != null) {
-            begin_interact();
-            return;
-        }
-
-        play_ambient_dialog();
-    }
-
-    function set_ambient(l)
-    {
-        sound = Sound(l);
-    }
-
-    function play_ambient_dialog()
-    {
-        if (ambient_draw.visible) return;
-
-        sound.play();
-        ambient_draw.visible = true;
-        ambient_draw.insertText("Get out of here!");
-        timer_ambient(this);
-    }
-
-    function hide_ambient()
-    {
-        if (ambient_draw == null) return;
-        ambient_draw.visible = false;
-        ambient_draw.removeText(0);
-    }
-
-    function start()
-    {
-        if (event != null) {
-            event();
-        }
-    }
-
-    function setInteraction(int)
-    {
-        event = int;
-    }
-
-    function playAni(id)
-    {
-        animation = id;
-    }
-}
-
-function eventfocus(focusid, previd)
-{
-    foreach(v in npc_list)
-    {
-        if (v.npc == focusid)
-        {
-            info_draw.visible = true;
-            BOT = v;
-            HERO = heroId;
-
-            v.draw.setLineText(0, "(CTRL)");
-            v.draw.setLineText(1, "Porozmawiaj");
-        }
-        else if (focusid == -1)
-        {
-            info_draw.visible = false;
-            BOT = -1;
-            HERO = -1;
-
-            v.draw.setLineText(0, "");
-            v.draw.setLineText(1, "");
-        }
-    }
-}
-addEventHandler("onFocus", eventfocus);
-
+local dial_func = null;
+local skipping = false;
+local timer = null;
+local exiting = false;
+local con = null;
+local numerdraw = null;
+local intWindow = null;
+local dialogOpt = null;
+local cover1 = null;
+local cover2 = null;
 
 ///////////
 // interaction mechanic
 
-local con = 8192-6300-500;
-local numerdraw = [
-    Draw(8192/2, 6550, "1. "),
-    Draw(8192/2, 6850, "2. "),
-    Draw(8192/2, 6850, "3. "),
-    Draw(8192/2, 6850, "4. "),
-    Draw(8192/2, 6850, "5. ")
-];
+function initInteraction()
+{
+    info_draw.setPosition(8192 / 2 - info_draw.width / 2, 8192 - info_draw.height - 100);
+    info_draw.setColor(220, 210, 189);
 
-local intWindow = Window(0, 6500, 8192, 8192 - 6500, "SR_BLANK.TGA");
-intWindow.setCover("MENU_INGAME.TGA");
-local dialogOpt = [
-    Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "", "NONE"),
-    Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "", "NONE"),
-    Button(8192/2 - 1000, 700, 8000/2, 300, "NONE", "", "NONE"),
-    Button(8192/2 - 1000, 1000, 8000/2, 300, "NONE", "", "NONE"),
-    Button(8192/2 - 1000, 1300, 8000/2, 300, "NONE", "", "NONE")
-];
-intWindow.attach(dialogOpt[0]);
-intWindow.attach(dialogOpt[1]);
-intWindow.attach(dialogOpt[2]);
-intWindow.attach(dialogOpt[3]);
-intWindow.attach(dialogOpt[4]);
-local cover1 = Texture(0, 0, 8192, con, "SR_BLANK.TGA");
-cover1.setColor(0, 0, 0);
-local cover2 = Texture(0, 6300+500, 8192, con, "SR_BLANK.TGA");
-cover2.setColor(0, 0, 0);
+    con = 8192-6300-500;
+    numerdraw = [
+        Draw(8192/2, 6550, "1. "),
+        Draw(8192/2, 6850, "2. "),
+        Draw(8192/2, 6850, "3. "),
+        Draw(8192/2, 6850, "4. "),
+        Draw(8192/2, 6850, "5. ")
+    ];
+
+    intWindow = Window(0, 6500, 8192, 8192 - 6500, "SR_BLANK.TGA");
+    intWindow.setCover("MENU_INGAME.TGA");
+
+    dialogOpt = [
+        Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 1000, 700, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 1000, 1000, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 1000, 1300, 8000/2, 300, "NONE", "", "NONE")
+    ];
+    intWindow.attach(dialogOpt[0]);
+    intWindow.attach(dialogOpt[1]);
+    intWindow.attach(dialogOpt[2]);
+    intWindow.attach(dialogOpt[3]);
+    intWindow.attach(dialogOpt[4]);
+
+    cover1 = Texture(0, 0, 8192, con, "SR_BLANK.TGA");
+    cover1.setColor(0, 0, 0);
+
+    cover2 = Texture(0, 6300+500, 8192, con, "SR_BLANK.TGA");
+    cover2.setColor(0, 0, 0);
+
+    superTexture = Texture(0, 0, 8192, 8192, "SR_BLANK.TGA");
+    superTexture.setColor(0, 0, 0);
+    superTexture.alpha = 0;
+    superTexture.visible = false;
+    dialog_draw = Draw(0, 0, "");
+
+    initSoundController();
+}
 
 function begin_interact()
 {
@@ -340,11 +231,9 @@ function npcButtonHandler(id)
     }
 }
 
-local exiting = false;
-
 function hideAllNames()
 {
-    foreach(v in npc_list) {
+    foreach(v in getNpcList()) {
         if (v.draw.visible) v.draw.visible = false;
     }
 }
@@ -353,7 +242,7 @@ function npcInteractionHandler()
 {
     if (!interacting) {
         local pos = getPlayerPosition(heroId);
-        foreach(v in npc_list) {
+        foreach(v in getNpcList()) {
             local npos = getPlayerPosition(v.npc);
             if (getDistance2d(pos.x, pos.z, npos.x, npos.z) < distance_draw && v.draw.visible == false)  {
                 v.draw.visible = true;
@@ -423,9 +312,8 @@ function start_exiting()
     superTexture.visible = true;
     turning = true;
     hide_dialog_menu();
+    stopSound();
 }
-
-local timer = null;
 
 function play_gest(who)
 {
@@ -449,11 +337,19 @@ function play_gest(who)
     }
 }
 
-local dial_func = null;
-local skipping = false;
-
-function next_dial(func, time)
+function next_dial(func)
 {
+    local time = null;
+
+    if (getSound() != null)
+    {
+        time = getSound().playingTime;
+    }
+    else
+    {
+        time = 5000;
+    }
+
     dial_func = func;
     timer = setTimer(func, time.tointeger(), 1);
 }
@@ -479,15 +375,9 @@ function finish_dial()
     stopFaceAni(HERO);
     stopAni(BOT.npc);
     stopFaceAni(BOT.npc);
+    stopSound();
 
     in_dial = false;
-    show_dialog_menu(BOT.holder);
-}
-
-function initInteraction()
-{
-    info_draw.setPosition(8192 / 2 - info_draw.width / 2, 8192 - info_draw.height - 100);
-    info_draw.setColor(220, 210, 189);
 }
 
 local function onplayerkey(key)

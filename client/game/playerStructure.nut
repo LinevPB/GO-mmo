@@ -390,3 +390,17 @@ Player.addLevel <- function(val)
     addEffect(heroId, "Spellfx_Palheal");
     notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
 }
+
+local function onkey(key)
+{
+    if (key == KEY_X)
+    {
+        notify("Level up", true, 8192/2 - textWidth("Level up"), 4000);
+    }
+
+    if (key == KEY_G)
+    {
+        notify("Experience +" + 20, false, 400, 5000);
+    }
+}
+addEventHandler("onKey", onkey);

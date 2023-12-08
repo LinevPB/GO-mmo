@@ -1,43 +1,35 @@
-local OPT_1_01 = Sound("DIA_ABUYIN_WOHER_15_00.WAV");
-local OPT_1_02 = Sound("DIA_ABUYIN_WOHER_13_01.WAV");
-local OPT_1_03 = Sound("DIA_ABUYIN_WOHER_13_02.WAV");
-
-local OPT_5_01 = Sound("DIA_GORNOW_SEEYOU_15_00.WAV");
-
 /// DIAL OPT 1
 function DIALOG_MILKO_1()
 {
     play_gest(HERO);
     update_dialog("Where can I get apple tobbaco?");
-    OPT_1_01.play();
+    playSound("DIA_ABUYIN_WOHER_15_00.WAV");
 
-    next_dial(DIALOG_MILKO_1_2, OPT_1_01.playingTime);
+    next_dial(DIALOG_MILKO_1_2);
 }
 
 function DIALOG_MILKO_1_2()
 {
-    OPT_1_01.stop();
     play_gest(BOT);
     update_dialog("I shall give you two portions. It is up to you, in your wisdom, to do with them whatever you want");
-    OPT_1_02.play();
+    playSound("DIA_ABUYIN_WOHER_13_01.WAV");
 
-    next_dial(DIALOG_MILKO_1_3, OPT_1_02.playingTime);
+    next_dial(DIALOG_MILKO_1_3);
 }
 
 function DIALOG_MILKO_1_3()
 {
-    OPT_1_02.stop();
     play_gest(BOT);
     update_dialog("If you crave more then direct your steps to Zuris - the master of portions. He produces this tobbaco and he sells it too.");
-    OPT_1_03.play();
+    playSound("DIA_ABUYIN_WOHER_13_02.WAV");
 
-    next_dial(DIALOG_MILKO_1_4, OPT_1_03.playingTime);
+    next_dial(DIALOG_MILKO_1_4);
 }
 
 function DIALOG_MILKO_1_4()
 {
-    OPT_1_03.stop();
     finish_dial();
+    show_dialog_menu(BOT.holder);
 }
 
 /// DIAL OPT 5
@@ -45,20 +37,19 @@ function DIALOG_MILKO_5()
 {
     play_gest(HERO);
     update_dialog("We'll meet again");
-    OPT_5_01.play();
+    playSound("DIA_GORNOW_SEEYOU_15_00.WAV");
 
-    next_dial(DIALOG_MILKO_5_2, OPT_5_01.playingTime);
+    next_dial(DIALOG_MILKO_5_2);
 }
 
 function DIALOG_MILKO_5_2()
 {
-    OPT_5_01.stop();
     start_exiting();
 }
 
-function initMilko()
+function initTrader()
 {
-    local npc = NPC("Zbysiu", 887.266, 247.734, 1057.5, 180.003);
+    local npc = NPC("Milko", 887.266, 247.734, 1057.5, 180.003);
     npc.spawn();
 
     equipItem(npc.npc, Items.id("ItAr_Vlk_H"));

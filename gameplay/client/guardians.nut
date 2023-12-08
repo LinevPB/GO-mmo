@@ -1,4 +1,5 @@
-function random(dolnyZakres, gornyZakres) {
+function random(dolnyZakres, gornyZakres)
+{
     local zakres = gornyZakres - dolnyZakres + 1;
     return dolnyZakres + rand() % zakres;
 }

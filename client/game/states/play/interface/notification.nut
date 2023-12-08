@@ -19,11 +19,12 @@ function notify(text, big = true, x = -1, y = -1)
     if (queue.len() > 0)
     {
         if (queue[0].Message == text)
+        {
             return queue[0].TimeLeft = NotificationTime - 255;
+        }
     }
 
     local font = big ? "Font_Old_20_White_Hi.TGA" : "Font_Old_10_White_Hi.TGA";
-    draw.font = font;
     draw.visible = true;
     draw.top();
 
@@ -42,6 +43,7 @@ function notificationRender()
             local posY = queue[0].y == -1 ? 6000 : queue[0].y;
             draw.setPosition(posX, posY);
             draw.visible = true;
+            draw.alpha = 255;
             draw.font = queue[0].font;
         }
 

@@ -1,0 +1,5 @@
+<server>
+
+    <script src="enemies.nut" type="server" />
+
+</server>

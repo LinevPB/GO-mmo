@@ -1,0 +1,5 @@
+function initNpcs()
+{
+    initTrader();
+    initZiobro();
+}

@@ -37,6 +37,8 @@ function enableQA(val)
 
 function handleQARender()
 {
+    if (coverTex == null) return;
+
     for(local i = 0; i < 4; i++)
     {
         if (Player.qa[i] != QA_Renders[i].instance)

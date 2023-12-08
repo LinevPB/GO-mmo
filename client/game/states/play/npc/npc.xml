@@ -1,11 +1,11 @@
 <server>
-    <script src="npcInteraction.nut" type="client" />
 
     <import src="trade/trade.xml" type="client" />
 
-    <script src="ziobro.nut" type="client" />
-    <script src="milko.nut" type="client" />
-
+    <script src="soundController.nut" type="client" />
+    <script src="npcInteraction.nut" type="client" />
     <script src="npc.nut" type="client" />
+
+    <script src="globalNpc.nut" type="client" />
 
 </server>

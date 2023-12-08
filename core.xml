@@ -8,6 +8,9 @@
 	<!-- CLIENT -->
 	<import src="client/client.xml" />
 
+	<!-- GAMEPLAY -->
+	<import src="gameplay/gameplay.xml" />
+
 	<!-- MODULES -->
 	<module src="modules/mysql.dll" type="server" />
 </server>
