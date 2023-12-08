@@ -6,6 +6,8 @@ function onTickNpc()
 
     foreach(v in npcs)
     {
+        if (v.dead) continue;
+
         local players = findNearbyPlayers(Vec3(v.pos.x, v.pos.y, v.pos.z), 3500, "HK.ZEN");
         v.streamedPlayers = players;
 
@@ -64,18 +66,16 @@ function NPC_updateCoords(pid, data)
             }
             else
             {
+                v.pos.x = posX;
+                v.pos.y = posY;
+                v.pos.z = posZ;
+
                 if (pid == v.focusId)
                 {
-                    v.pos.x = posX;
-                    v.pos.y = posY;
-                    v.pos.z = posZ;
                     v.setAngleAtFocus();
                 }
                 else if (v.focusId == -1)
                 {
-                    v.pos.x = posX;
-                    v.pos.y = posY;
-                    v.pos.z = posZ;
                     v.angle = angle;
                 }
             }

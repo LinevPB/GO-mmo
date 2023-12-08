@@ -368,5 +368,10 @@ lang <- {
     ["GET_OUT"] = {
         ["en"] = "Get out of here!",
         ["pl"] = "Spadaj stąd!"
+    },
+
+    ["RESPAWN_INFO"] = {
+        ["en"] = "You are going to respawn in ",
+        ["pl"] = "Odrodzisz się za "
     }
 };

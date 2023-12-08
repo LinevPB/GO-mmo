@@ -1,4 +1,5 @@
 local players = [];
+RESPAWN_TIME <- 10;
 
 class PlayerStructure
 {
@@ -35,6 +36,7 @@ class PlayerStructure
     tradePrice = null;
     tradePlayerItems = null;
     tradeNpcItems = null;
+    dead = null;
 
     constructor(playerid)
     {
@@ -70,6 +72,7 @@ class PlayerStructure
         tradePrice = 0;
         tradePlayerItems = [];
         tradeNpcItems = [];
+        dead = false;
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
@@ -180,6 +183,8 @@ class PlayerStructure
 
     function setHealth(val, loading=false)
     {
+        if (val < 1) val = 1;
+
         health = val;
         setPlayerHealth(id, val);
 
@@ -189,6 +194,8 @@ class PlayerStructure
 
     function setMaxHealth(val, loading=false)
     {
+        if (val < 1) val = 1;
+
         max_health = val;
         setPlayerMaxHealth(id, val);
 
@@ -301,6 +308,33 @@ class PlayerStructure
             sendPlayerPacket(id, PacketType.LEVEL_UP);
         }
     }
+
+    function die()
+    {
+        dead = true;
+        foreach(v in players)
+        {
+            sendPlayerPacket(v.id, PacketType.PLAYER_DIE, id, RESPAWN_TIME);
+        }
+        setTimer(respawnPlayer, RESPAWN_TIME * 1000, 1, id);
+    }
+
+    function respawn()
+    {
+        dead = false;
+        foreach(v in players)
+        {
+            sendPlayerPacket(v.id, PacketType.PLAYER_RESPAWN, id);
+        }
+    }
+}
+
+function respawnPlayer(pid)
+{
+    local player = findPlayer(pid);
+    if (player == -1) return;
+
+    player.respawn();
 }
 
 function findPlayer(pid)
@@ -550,4 +584,18 @@ function ManageQA(pid, id, instance)
 {
     local player = findPlayer(pid);
     mysql.squery("UPDATE `characters` SET `qa" + id + "` = '" + instance + "' WHERE `id`=" + player.charId);
+}
+
+function HitPlayer(pid, val)
+{
+    local player = findPlayer(pid);
+    local calcHealth = player.health - val;
+
+    if (calcHealth < 1)
+    {
+        calcHealth = 1;
+        player.die();
+    }
+
+    player.setHealth(calcHealth);
 }

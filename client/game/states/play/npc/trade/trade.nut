@@ -157,11 +157,6 @@ function tradeRender()
 
 function tradeKey(key)
 {
-    if (key == KEY_X)
-    {
-        enableNpcTrade(!isTradeEnabled());
-    }
-
     if (!tradeEnabled) return;
     if (key != KEY_RETURN) return;
     if (!TradeBox.IsEnabled()) return;

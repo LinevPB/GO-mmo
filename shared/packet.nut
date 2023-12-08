@@ -37,7 +37,9 @@ enum PacketType {
     NPC_DIE = 35,
     ADD_EXPERIENCE = 36,
     LEVEL_UP = 37,
-    NPC_RESPAWN = 38
+    NPC_RESPAWN = 38,
+    PLAYER_DIE = 39,
+    PLAYER_RESPAWN = 40
 };
 
 function encode(args)

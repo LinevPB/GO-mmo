@@ -221,25 +221,10 @@ function findPositionBySlot(item)
 Player.addExperience <- function(val)
 {
     Player.experience += val;
-    notify(lang["ADD_EXPERIENCE"][Player.lang] + val, false, 400, 5000);
 }
 
 Player.addLevel <- function(val)
 {
+    Player.level += val;
     addEffect(heroId, "Spellfx_Palheal");
-    notify(lang["LEVEL_UP"][Player.lang], true, 8192/2 - textWidth(lang["LEVEL_UP"][Player.lang]), 4000);
 }
-
-local function onkey(key)
-{
-    if (key == KEY_X)
-    {
-        notify(lang["LEVEL_UP"][Player.lang], true, 8192/2 - textWidth(lang["LEVEL_UP"][Player.lang]), 4000);
-    }
-
-    if (key == KEY_G)
-    {
-        notify(lang["ADD_EXPERIENCE"][Player.lang] + 20, false, 400, 5000);
-    }
-}
-addEventHandler("onKey", onkey);

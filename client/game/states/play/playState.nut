@@ -13,6 +13,7 @@ function initPlayState()
     Chat.Enable(true);
     Showcase.Init();
     Inventory.Init();
+    initDeathDraw();
     disableLogicalKey(GAME_INVENTORY, true);
     setPlayerPosition(Player.helper, 38086, 4681, 44551);
     setPlayerAngle(Player.helper, 250);
@@ -140,17 +141,6 @@ local function onplaykey(key)
         exitGame();
     }
 
-    if (key == KEY_X)
-    {
-        sendPacket(PacketType.TEST, 0);
-    }
-
-    if (key == KEY_V)
-    {
-        local pos = getPlayerAngle(heroId);
-        print(pos);
-    }
-
 
     if (Inventory.IsEnabled() || Chat.IsEnabled())
     {
@@ -187,4 +177,25 @@ function onClickPlay(key)
 function onReleasePlay(key)
 {
     tradeRelease(key);
+}
+
+function handlePlayerRespawn(id)
+{
+    playAni(id, "S_RUN");
+    // cancel anim
+    if (id == heroId)
+    {
+        setFreeze(false);
+    }
+}
+
+function handlePlayerDeath(id, sec)
+{
+    playAni(id, "T_DEADB");
+    // play anim
+    if (id == heroId)
+    {
+        setFreeze(true);
+        startDeathDraw(sec);
+    }
 }

@@ -4,19 +4,31 @@ local attack_distance = 200;
 
 function monster_ai(npc)
 {
+    if (npc.dead) return;
+
     local players = npc.streamedPlayers;
     local dist = warn_distance;
+    local idToFocus = -1;
 
     foreach(v in players)
     {
+        local player = findPlayer(v);
+        if (player == -1) continue;
+        if (player.dead) continue;
+
         local pos = getPlayerPosition(v);
         local calcDist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
 
         if (calcDist < dist)
         {
             dist = calcDist;
-            npc.focusPlayer(v);
+            idToFocus = v;
         }
+    }
+
+    if (idToFocus != -1)
+    {
+        npc.focusPlayer(idToFocus);
     }
 
     if (players.len() == 0 || (dist >= warn_distance && npc.focusId != -1))
@@ -59,6 +71,7 @@ function monster_attack(npc)
     {
         npc.playAni("S_FISTATTACK");
         npc.pause = 3; // each 1 is 500ms
+        HitPlayer(npc.focusId, 5000);
     }
     else
     {

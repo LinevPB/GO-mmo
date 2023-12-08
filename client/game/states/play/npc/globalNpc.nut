@@ -62,6 +62,7 @@ class GlobalNpc
         dead = true;
         dying = true;
         stopCurrentAnim();
+        playAnim("T_DEADB");
         updateWorld(false);
     }
 
@@ -70,6 +71,8 @@ class GlobalNpc
         dead = false;
         dying = false;
         spawn();
+        stopAni(npc, "S_DEADB");
+        stopAni(npc, "T_DEADB");
         playAnim("S_RUN");
     }
 

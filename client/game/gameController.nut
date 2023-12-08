@@ -282,14 +282,26 @@ local function onPacket(packet) {
 
         case PacketType.ADD_EXPERIENCE:
             Player.addExperience(data[0]);
+            local text = lang["ADD_EXPERIENCE"][Player.lang];
+            notify(text + "" + data[0], false, 400, 5000);
         break;
 
         case PacketType.LEVEL_UP:
             Player.addLevel(1);
+            local text = lang["LEVEL_UP"][Player.lang];
+            notify(text, true, 8192/2 - textWidth(text), 4000);
         break;
 
         case PacketType.NPC_RESPAWN:
             handleNpcRespawn(data[0], Vec3(data[1], data[2], data[3]), data[4]);
+        break;
+
+        case PacketType.PLAYER_DIE:
+            handlePlayerDeath(data[0], data[1]);
+        break;
+
+        case PacketType.PLAYER_RESPAWN:
+            handlePlayerRespawn(data[0]);
         break;
     }
 }
