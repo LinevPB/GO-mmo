@@ -321,11 +321,14 @@ class PlayerStructure
 
     function respawn()
     {
-        dead = false;
         foreach(v in players)
         {
             sendPlayerPacket(v.id, PacketType.PLAYER_RESPAWN, id);
         }
+        setPlayerPosition(id, 0, 300, 0);
+        setHealth((max_health / 10).tointeger());
+
+        dead = false;
     }
 }
 
@@ -529,6 +532,7 @@ function MoveItems(pid, fid1, fid2)
                 break;
             }
         }
+
         mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
     }
 

@@ -71,7 +71,7 @@ function monster_attack(npc)
     {
         npc.playAni("S_FISTATTACK");
         npc.pause = 3; // each 1 is 500ms
-        HitPlayer(npc.focusId, 5000);
+        HitPlayer(npc.focusId, 500);
     }
     else
     {

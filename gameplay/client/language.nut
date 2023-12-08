@@ -365,6 +365,11 @@ lang <- {
         ["pl"] = "Porozmawiaj"
     },
 
+    ["TAKE"] = {
+        ["en"] = "Take",
+        ["pl"] = "Podnieś"
+    },
+
     ["GET_OUT"] = {
         ["en"] = "Get out of here!",
         ["pl"] = "Spadaj stąd!"
