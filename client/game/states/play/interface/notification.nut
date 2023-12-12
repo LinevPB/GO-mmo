@@ -55,20 +55,7 @@ function notificationRender()
             draw.text = "";
             draw.alpha = 0;
 
-            if (queue.len() == 1)
-            {
-                return queue.remove(0);
-            }
-
-            for(local i = 0; i < queue.len() - 2; i++)
-            {
-                queue[i + 1] = queue[i];
-
-                if(i == queue.len() - 3)
-                {
-                    queue.remove(i + 1);
-                }
-            }
+            queue.remove(0);
         }
         else if (queue[0].TimeLeft > NotificationTime - 255)
         {

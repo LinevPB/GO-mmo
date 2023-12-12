@@ -22,4 +22,6 @@ function absolute(v)
 }
 
 // monster texture out of screen
-// need to add inv drop items
+// need to add amount to inv drop items
+// interface controller
+// need to add use mechanic

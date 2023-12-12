@@ -315,11 +315,6 @@ function findSlot(instance)
     return null;
 }
 
-function handleDropItem(slot)
-{
-    sendPacket(PacketType.DROP_ITEM, slot.instance, 1);
-}
-
 function INVplayButtonHandler(id) // release
 {
     if (id == slotMenuButtons.useButton.id)
@@ -449,4 +444,9 @@ function onElementRender(el)
         holdedRender.setPosition(curs.x - renderOffsetX, curs.y - renderOffsetY);
         clickTick += 20;
     }
+}
+
+function handleDropItem(slot)
+{
+    sendPacket(PacketType.DROP_ITEM, slot.instance, 1);
 }
