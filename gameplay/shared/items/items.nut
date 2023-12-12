@@ -48,9 +48,10 @@ ServerItems.getName <- function(inst)
     return null;
 }
 
-function handleWeaponInfo(item)
+local function weaponInfoEnglish(item)
 {
     local result = [];
+
     result.append("Level required: " + item.levelRequired);
 
     if (item.damage.physical > 0)
@@ -71,7 +72,49 @@ function handleWeaponInfo(item)
     return result;
 }
 
-function handleArmorInfo(item)
+local function weaponInfoPolish(item)
+{
+    local result = [];
+
+    result.append("Wymagany poziom: " + item.levelRequired);
+
+    if (item.damage.physical > 0)
+        result.append("Obrażenia fizyczne: " + item.damage.physical);
+    else
+        result.append("");
+
+    if (item.damage.magical > 0)
+        result.append("Obrażenia magiczne: " + item.damage.magical);
+    else
+        result.append("");
+
+    if (item.bonusStats.critical != null)
+        result.append("Bonus krytyczny: " + item.bonusStats.critical);
+    else
+        result.append("");
+
+    return result;
+}
+
+function handleWeaponInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = weaponInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = weaponInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function armorInfoEnglish(item)
 {
     local result = [];
 
@@ -95,7 +138,49 @@ function handleArmorInfo(item)
     return result;
 }
 
-function handleAmmoInfo(item)
+function armorInfoPolish(item)
+{
+    local result = [];
+
+    result.append("Wymagany poziom: " + item.levelRequired);
+
+    if (item.defence.physical > 0)
+        result.append("Obrona fizyczna: " + item.defence.physical);
+    else
+        result.append("");
+
+    if (item.defence.magical > 0)
+        result.append("Obrona magiczna: " + item.defence.magical);
+    else
+        result.append("");
+
+    if (item.bonusStats.strength != null)
+        result.append("Bonus do siły: " + item.bonusStats.strength);
+    else
+        result.append("");
+
+    return result;
+}
+
+function handleArmorInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = armorInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = armorInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function ammoInfoEnglish(item)
 {
     local result = [];
 
@@ -119,7 +204,49 @@ function handleAmmoInfo(item)
     return result;
 }
 
-function handleMagicInfo(item)
+function ammoInfoPolish(item)
+{
+    local result = [];
+
+    result.append("Amunicja do broni dalekosiężnej");
+
+    if (item.damage.physical > 0)
+        result.append("Obrażenia fizyczne: " + item.damage.physical);
+    else
+        result.append("");
+
+    if (item.damage.magical > 0)
+        result.append("Obrażenia magiczne: " + item.damage.magical);
+    else
+        result.append("");
+
+    if (item.bonusStats.critical != null)
+        result.append(item.bonusStats.critical);
+    else
+        result.append("");
+
+    return result;
+}
+
+function handleAmmoInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = ammoInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = ammoInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function magicInfoEnglish(item)
 {
     local result = [];
 
@@ -146,7 +273,53 @@ function handleMagicInfo(item)
     return result;
 }
 
-function handleFoodInfo(item)
+function magicInfoPolish(item)
+{
+    local result = [];
+
+    if (item.magicLevelRequired == 0)
+        result.append("Zwój")
+    else
+        result.append("Wymagany krąg magii: " + item.magicLevelRequired);
+
+    if (item.damage.physical > 0)
+        result.append("Obrażenia fizyczne: " + item.damage.physical);
+    else
+        result.append("");
+
+    if (item.damage.magical > 0)
+        result.append("Obrażenia magiczne: " + item.damage.magical);
+    else
+        result.append("");
+
+    if (item.cost.mana > 0)
+        result.append("Koszt many: " + item.cost.mana);
+    else
+        result.append("");
+
+    return result;
+}
+
+
+function handleMagicInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = magicInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = magicInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function foodInfoEnglish(item)
 {
     local result = [];
 
@@ -166,7 +339,45 @@ function handleFoodInfo(item)
     return result;
 }
 
-function handlePotionInfo(item)
+function foodInfoPolish(item)
+{
+    local result = [];
+
+    result.append("Można spożyć");
+    result.append("");
+
+    if (item.restores.health > 0)
+        result.append("Odnawia życie: " + item.restores.health);
+    else
+        result.append("");
+
+    if (item.restores.mana > 0)
+        result.append("Odnawia manę: " + item.restores.mana);
+    else
+        result.append("");
+
+    return result;
+}
+
+function handleFoodInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = foodInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = foodInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function potionInfoEnglish(item)
 {
     local result = [];
 
@@ -186,14 +397,83 @@ function handlePotionInfo(item)
     return result;
 }
 
-function handleOtherInfo(item)
+function potionInfoPolish(item)
+{
+    local result = [];
+
+    result.append("Można spożyć");
+    result.append("");
+
+    if (item.restores.health > 0)
+        result.append("Odnawia życie: " + item.restores.health);
+    else
+        result.append("");
+
+    if (item.restores.mana > 0)
+        result.append("Odnawia manę: " + item.restores.mana);
+    else
+        result.append("");
+
+    return result;
+}
+
+
+function handlePotionInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = potionInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = potionInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function otherInfoEnglish(item)
 {
     local result = [];
 
     result.append("");
     result.append("");
     result.append("");
-    result.append("Price: " + item.price);
+    result.append("");
+
+    return result;
+}
+
+function otherInfoPolish(item)
+{
+    local result = [];
+
+    result.append("");
+    result.append("");
+    result.append("");
+    result.append("");
+
+    return result;
+}
+
+function handleOtherInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = otherInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = otherInfoPolish(item);
+        break;
+    }
 
     return result;
 }

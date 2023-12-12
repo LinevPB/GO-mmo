@@ -34,6 +34,7 @@ class TradeSlot
     instance = null;
     originalAmount = null;
     originalId = null;
+    amountEnabled = null;
 
     constructor(x, y, width, height)
     {
@@ -58,6 +59,7 @@ class TradeSlot
 
         enabled = false;
         hovered = false;
+        amountEnabled = true;
 
         amount = 0;
         originalAmount = 0;
@@ -73,7 +75,10 @@ class TradeSlot
     function enable(val)
     {
         background.visible = val;
-        amountDraw.visible = val;
+
+        if (amountEnabled)
+            amountDraw.visible = val;
+
         render.visible = val;
         enabled = val;
     }
@@ -198,7 +203,7 @@ function enableBoxHelper(slotId, pointerId, instance)
 {
     TradeBox.Enable(true);
     TradeBox.SetHold({ id = slotId, pointerId = pointerId, instance = instance });
-    TradeBox.SetItemName(ServerItems.getName(instance));
+    TradeBox.SetItemName(ServerItems.getName(instance)[Player.lang]);
     TradeBox.Select();
 }
 
@@ -274,7 +279,7 @@ function handleSlotRelease(slot)
 
     if (holdedRender.instance == Player.eqWeapon || holdedRender.instance == Player.eqWeapon2h || holdedRender.instance == Player.eqArmor)
     {
-        if (slotPointer.id < 108) return;
+        if (slotPointer.id < 108 && (slotPointer.id <= 8 && slotPointer.id > 18)) return;
     }
 
     if (slot.id == slotPointer.id || slotPointer.render.instance == "") return;
@@ -283,7 +288,6 @@ function handleSlotRelease(slot)
     {
         if (slotPointer.id < 8) // jesli przeniesiemy ze slotu wymiany gracza
         {
-            //if pointer inst == ""
             local tempInst = slot.render.instance;
             local tempAmount = slot.amount;
             local tempId = slot.originalId;

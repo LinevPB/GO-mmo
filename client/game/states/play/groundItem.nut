@@ -24,7 +24,7 @@ class GroundItem
         itemDraw = Draw3d(pos.x, pos.y, pos.z);
         itemDraw.insertText("");
         itemDraw.insertText("");
-        itemDraw.insertText(item.name);
+        itemDraw.insertText(item.name[Player.lang]);
         itemDraw.setLineColor(2, 160, 160, 255);
         itemDraw.visible = true;
 

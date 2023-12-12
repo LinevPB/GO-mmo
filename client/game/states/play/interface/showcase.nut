@@ -132,11 +132,11 @@ Showcase.UpdateOnlyPrice <- function(instance, amount)
 {
     SH_clearInfo();
     local item = ServerItems.find(instance);
-    updateShowcaseName(item.name, amount);
+    updateShowcaseName(item.name[Player.lang], amount);
     SH_render.instance = instance;
     SH_resetRenderSettings();
 
-    SH_draws[0].text = "Price: ";
+    SH_draws[0].text = lang["PRICE"][Player.lang];
     SH_priceDraw.text = calcGoldAmount(item.price);
     SH_draws[0].setPosition(SH_draws[0].getPosition().x, SH_render.getPosition().y + 100);
     SH_priceDraw.setPosition(SH_draws[0].getPosition().x + SH_draws[0].width, SH_draws[0].getPosition().y);
@@ -159,40 +159,42 @@ Showcase.Update <- function(instance)
         SH_wasPriceOnly = false;
         SH_draws[0].setColor(180, 180, 180);
     }
+
     SH_clearInfo();
+
     local item = ServerItems.find(instance);
-    updateShowcaseName(item.name, getItemAmount(instance));
+    updateShowcaseName(item.name[Player.lang], getItemAmount(instance));
     SH_render.instance = instance;
     SH_resetRenderSettings();
 
     switch(item.type)
     {
         case ItemType.WEAPON:
-            SH_handleInfo(handleWeaponInfo(item));
+            SH_handleInfo(handleWeaponInfo(item, Player.lang));
         break;
 
         case ItemType.ARMOR:
-            SH_handleInfo(handleArmorInfo(item));
+            SH_handleInfo(handleArmorInfo(item, Player.lang));
         break;
 
         case ItemType.AMMO:
-            SH_handleInfo(handleAmmoInfo(item));
+            SH_handleInfo(handleAmmoInfo(item, Player.lang));
         break;
 
         case ItemType.MAGIC:
-            SH_handleInfo(handleMagicInfo(item));
+            SH_handleInfo(handleMagicInfo(item, Player.lang));
         break;
 
         case ItemType.FOOD:
-            SH_handleInfo(handleFoodInfo(item));
+            SH_handleInfo(handleFoodInfo(item, Player.lang));
         break;
 
         case ItemType.POTION:
-            SH_handleInfo(handlePotionInfo(item));
+            SH_handleInfo(handlePotionInfo(item, Player.lang));
         break;
 
         case ItemType.OTHER:
-            SH_handleInfo(handleOtherInfo(item));
+            SH_handleInfo(handleOtherInfo(item, Player.lang));
         break;
     }
 }

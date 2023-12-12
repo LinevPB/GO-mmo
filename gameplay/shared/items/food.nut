@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Rum",
+    name = {
+        ["en"] = "Rum",
+        ["pl"] = "Rum"
+    },
     instance = "ITFO_ADDON_RUM",
     type = ItemType.FOOD,
 
@@ -17,7 +20,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Jablko",
+    name = {
+        ["en"] = "Apple",
+        ["pl"] = "Jabłko"
+    },
     instance = "ITFO_APPLE",
     type = ItemType.FOOD,
 

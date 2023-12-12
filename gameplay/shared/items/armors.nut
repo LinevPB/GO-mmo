@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Kaftan gubernatora"
+    name = {
+        ["en"] = "Governor's armor",
+        ["pl"] = "Kaftan gubernatora"
+    },
     instance = "ITAR_GOVERNOR",
     type = ItemType.ARMOR,
 
@@ -18,7 +21,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Stroj obywatela"
+    name = {
+        ["en"] = "Citizen's wear",
+        ["pl"] = "Strój obywatela"
+    },
     instance = "ITAR_VLK_M",
     type = ItemType.ARMOR,
 

@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Luk",
+    name = {
+        ["en"] = "Bow",
+        ["pl"] = "Łuk"
+    },
     instance = "ITRW_SLD_BOW",
     type = ItemType.WEAPON,
     levelRequired = 1,
@@ -17,7 +20,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Kusza",
+    name = {
+        ["en"] = "Crossbow",
+        ["pl"] = "Kusza"
+    },
     instance = "ITRW_MIL_CROSSBOW",
     type = ItemType.WEAPON,
     levelRequired = 2,

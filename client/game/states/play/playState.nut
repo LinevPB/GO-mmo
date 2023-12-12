@@ -74,7 +74,7 @@ function startBuffs()
 function onMessage(data)
 {
     Chat.Add([data[0], data[1], data[2], data[3]], data[4]);
-    startBuffs();
+    //startBuffs();
 }
 
 function onSlidePlay(el)

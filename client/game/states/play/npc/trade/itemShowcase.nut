@@ -71,31 +71,31 @@ function updateTradeShowcase(instance, amount = 1)
     switch(item.type)
     {
         case ItemType.WEAPON:
-            handleTradeShowcase(handleWeaponInfo(item));
+            handleTradeShowcase(handleWeaponInfo(item, Player.lang));
         break;
 
         case ItemType.ARMOR:
-            handleTradeShowcase(handleArmorInfo(item));
+            handleTradeShowcase(handleArmorInfo(item, Player.lang));
         break;
 
         case ItemType.AMMO:
-            handleTradeShowcase(handleAmmoInfo(item));
+            handleTradeShowcase(handleAmmoInfo(item, Player.lang));
         break;
 
         case ItemType.MAGIC:
-            handleTradeShowcase(handleMagicInfo(item));
+            handleTradeShowcase(handleMagicInfo(item, Player.lang));
         break;
 
         case ItemType.FOOD:
-            handleTradeShowcase(handleFoodInfo(item));
+            handleTradeShowcase(handleFoodInfo(item, Player.lang));
         break;
 
         case ItemType.POTION:
-            handleTradeShowcase(handlePotionInfo(item));
+            handleTradeShowcase(handlePotionInfo(item, Player.lang));
         break;
 
         case ItemType.OTHER:
-            handleTradeShowcase(handleOtherInfo(item));
+            handleTradeShowcase(handleOtherInfo(item, Player.lang));
         break;
     }
 

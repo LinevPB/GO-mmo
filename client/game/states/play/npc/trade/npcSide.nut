@@ -128,6 +128,7 @@ function initNpcSlots()
         {
             local slot = TradeSlot(npcInventory.pos.x + 250 + 600 * j, npcInventory.pos.y + 800 + 600 * i, 600, 600);
             slot.updateSlot("", 0);
+            slot.amountEnabled = false;
             npc_slots.append(slot);
         }
     }

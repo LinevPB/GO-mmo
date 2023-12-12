@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Lodowa lanca",
+    name = {
+        ["en"] = "Ice lance",
+        ["pl"] = "Lodowa lanca"
+    },
     instance = "ITSC_ICELANCE",
     type = ItemType.MAGIC,
     rune = false,
@@ -19,7 +22,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Lodowa lanca",
+    name = {
+        ["en"] = "Ice lance",
+        ["pl"] = "Lodowa lanca"
+    },
     instance = "ITRU_ICELANCE",
     type = ItemType.MAGIC,
     rune = true,
@@ -39,7 +45,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Lodowy strzal",
+    name = {
+        ["en"] = "Ice shot",
+        ["pl"] = "Lodowy strzał"
+    },
     instance = "ITRU_ICEBOLT",
     type = ItemType.MAGIC,
     rune = true,
@@ -59,7 +68,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Sztorm",
+    name = {
+        ["en"] = "Storm",
+        ["pl"] = "Sztorm"
+    },
     instance = "ITRU_THUNDERSTORM",
     type = ItemType.MAGIC,
     rune = true,

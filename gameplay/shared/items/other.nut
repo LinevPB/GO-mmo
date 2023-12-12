@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Amulet many",
+    name = {
+        ["en"] = "Mana amulet",
+        ["pl"] = "Amulet many"
+    },
     instance = "ITAM_ADDON_MANA",
     type = ItemType.OTHER,
 
@@ -7,7 +10,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Brylka zlota",
+    name = {
+        ["en"] = "Gold ore",
+        ["pl"] = "Bryłka złota"
+    },
     instance = "ITMI_GOLDNUGGET_ADDON",
     type = ItemType.OTHER,
 

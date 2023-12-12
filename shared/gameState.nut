@@ -21,7 +21,5 @@ function absolute(v)
     return v;
 }
 
-//equiped items on npc slot movement
-//chat input keeps cleaning under some special reason?
-//monster texture out of screen
-//has to add drop
+// monster texture out of screen
+// need to add inv drop items

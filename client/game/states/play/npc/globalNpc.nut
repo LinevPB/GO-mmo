@@ -33,7 +33,7 @@ class GlobalNpc
         npc = createNpc(name);
 
         draw = Draw3d(posX, posY + 100, posZ);
-        draw.insertText(lang[name.toupper()][Player.lang]);
+        draw.insertText(lang[instance.toupper()][Player.lang]);
         draw.setLineColor(0, 250, 80, 10);
 
         texture = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");

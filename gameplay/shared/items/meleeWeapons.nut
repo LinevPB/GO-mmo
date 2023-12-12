@@ -1,5 +1,8 @@
 ServerItems.add({
-    name = "Kiepski miecz poltorareczny",
+    name = {
+        ["en"] = "One-handed sword",
+        ["pl"] = "Kiepski miecz"
+    },
     instance = "ITMW_SCHWERT3",
     type = ItemType.WEAPON,
     levelRequired = 1,
@@ -17,7 +20,10 @@ ServerItems.add({
 });
 
 ServerItems.add({
-    name = "Ciezki Orkowy Topor",
+    name = {
+        ["en"] = "Orc's axe",
+        ["pl"] = "Orkowy topór"
+    },
     instance = "ITMW_2H_ORCAXE_03",
     type = ItemType.WEAPON,
     levelRequired = 1,

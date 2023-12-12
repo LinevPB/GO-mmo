@@ -579,15 +579,19 @@ function MoveItems(pid, fid1, fid2)
 
 function UseItem(pid, instance, amount)
 {
-    local player = findPlayer(pid);
-    print("Trying to use " + instance + " with amount of " + amount);
+    //
+        // need to add use mechanic
+    //
+
     RemoveItem(pid, instance, amount);
 }
 
 function DropItem(pid, instance, amount)
 {
-    local player = findPlayer(pid);
-    print("Trying to drop " + instance + " with amount of " + amount);
+    RemoveItem(pid, instance, amount);
+
+    local pos = getPlayerPosition(pid);
+    handleSpawnGround(pos, instance, amount);
 }
 
 function ManageQA(pid, id, instance)
