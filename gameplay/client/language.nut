@@ -378,5 +378,10 @@ lang <- {
     ["RESPAWN_INFO"] = {
         ["en"] = "You are going to respawn in ",
         ["pl"] = "Odrodzisz się za "
+    },
+
+    ["ADD_GOLD"] = {
+        ["en"] = "Ore +",
+        ["pl"] = "Ruda +"
     }
 };

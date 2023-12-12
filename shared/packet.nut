@@ -40,7 +40,10 @@ enum PacketType {
     NPC_RESPAWN = 38,
     PLAYER_DIE = 39,
     PLAYER_RESPAWN = 40,
-    PICKUP_ITEM = 41
+    PICKUP_ITEM = 41,
+    SPAWN_GROUND_ITEM = 42,
+    REMOVE_GROUND_ITEM = 43,
+    ADD_GOLD = 44
 };
 
 function encode(args)

@@ -8,5 +8,6 @@
 
 	<import src="states/play/playState.xml" type="client" />
 
+	<script src="packetController.nut" type="client" />
 	<script src="gameController.nut" type="client" />
 </server>

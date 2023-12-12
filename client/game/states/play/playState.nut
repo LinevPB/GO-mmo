@@ -90,11 +90,13 @@ function onRenderP(currentTime, lastTime)
     npcInteractionHandler();
     mapRender();
     tradeRender();
+    gi_render();
 }
 
 local function onplaykey(key)
 {
     tradeKey(key);
+    gi_key(key);
 
     if (!Inventory.IsEnabled())
     {

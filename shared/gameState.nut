@@ -12,7 +12,7 @@ Animation <- {
 
 function calcNextLevelExperience(level)
 {
-    return 500 * (level + 1);
+    return 500 * (level);
 }
 
 function absolute(v)
@@ -20,3 +20,8 @@ function absolute(v)
     if (v <= 0) return v * (-1);
     return v;
 }
+
+//equiped items on npc slot movement
+//chat input keeps cleaning under some special reason?
+//monster texture out of screen
+//has to add drop

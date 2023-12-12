@@ -1,10 +1,13 @@
 <server>
     <script src="playerStructure.nut" type="server" />
 
+    <script src="groundItems.nut" type="server" />
+
     <script src="states/login/loginState.nut" type="server" />
     <script src="states/play/playState.nut" type="server" />
 
     <import src="npc/npc.xml" type="server" />
 
+    <script src="packetController.nut" type="server" />
     <script src="gameController.nut" type="server" />
 </server>

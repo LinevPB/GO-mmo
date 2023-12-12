@@ -62,6 +62,7 @@ class GlobalNpc
         dead = true;
         dying = true;
         stopCurrentAnim();
+        setHealth(0);
         playAnim("T_DEADB");
         updateWorld(false);
     }
@@ -280,12 +281,12 @@ function globalNpcRender()
 
     foreach(npc in global_npc_list)
     {
-        if (npc.dead) continue;
         if (npc.dying)
         {
             handleDying(npc);
-            continue;
         }
+
+        if (npc.dead) continue;
 
         local dist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
         if (dist < distance_draw)

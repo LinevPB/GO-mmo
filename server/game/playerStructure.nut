@@ -293,6 +293,12 @@ class PlayerStructure
             mysql.squery("UPDATE `characters` SET `gold` = '" + val + "' WHERE `id`='" + charId + "'");
     }
 
+    function addGold(val)
+    {
+        setGold(gold + val);
+        sendPlayerPacket(id, PacketType.ADD_GOLD, val);
+    }
+
     function addExperience(val)
     {
         setExperience(experience + val);

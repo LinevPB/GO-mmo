@@ -5,6 +5,7 @@
     <import src="inventory/inventory.xml" type="client" />
     <import src="npc/npc.xml" type="client" />
 
+    <script src="groundItem.nut" type="client" />
     <script src="quickAccess.nut" type="client" />
     <script src="playState.nut" type="client" />
 

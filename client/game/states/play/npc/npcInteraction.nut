@@ -2,7 +2,7 @@
 info_draw <- Draw(0, 0, "");
 HERO <- heroId;
 BOT <- -1;
-distance_draw <- 2000;
+distance_draw <- 3500;
 
 local dialog_draw = null;
 local turning = false;

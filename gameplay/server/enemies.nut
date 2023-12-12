@@ -2,8 +2,8 @@ function initNpcs()
 {
     local pos = [
         { x = -4810.47, y = -297.969, z = -2276.41, angle = 293.966 },
-        // { x = -4672.89, y = -301.719, z = -2337.5, angle = 293.966 },
-        // { x = -4144.45, y = -285.156, z = -2602.27, angle = 228.821 },
+        { x = -4672.89, y = -301.719, z = -2337.5, angle = 293.966 },
+        { x = -4144.45, y = -285.156, z = -2602.27, angle = 228.821 },
         // { x = -4056.48, y = -273.281, z = -2525.08, angle = 228.821 },
         // { x = -3843.2, y = -197.891, z = -1970.31, angle = 158.667 },
         // { x = -3879.77, y = -196.719, z = -1877.03, angle = 158.667 },
@@ -26,6 +26,10 @@ function initNpcs()
         npc.setHealth(100);
         npc.setDamage(10);
         npc.setLevel(2);
+        npc.setRespawnTime(10);
+        npc.addDrop("ITAR_GOVERNOR", 1);
+        npc.setGoldReward(100);
+        npc.setExpReward(20);
 
         npc.movementSpeed = 1;
     }

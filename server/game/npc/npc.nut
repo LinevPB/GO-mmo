@@ -29,6 +29,9 @@ class Npc
     originalPos = null;
     originalAngle = null;
     dead = null;
+    drops = null;
+    goldReward = null;
+    expReward = null;
 
     constructor(npcName, v3pos, npcAngle, inst)
     {
@@ -54,8 +57,41 @@ class Npc
         respawnTime = 10;
         level = 0;
         dead = false;
+        drops = [];
+        goldReward = 0;
+        expReward = 0;
 
         npc_list.append(this);
+    }
+
+    function setExpReward(val)
+    {
+        expReward = val;
+    }
+
+    function hasDrops()
+    {
+        if (drops.len() > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    function setGoldReward(am)
+    {
+        goldReward = am;
+    }
+
+    function addDrop(instance, amount)
+    {
+        drops.append({instance = instance, amount = amount});
+    }
+
+    function getDrops()
+    {
+        return drops;
     }
 
     function setPosition(vec)
@@ -167,7 +203,6 @@ class Npc
 
     function die()
     {
-        health = 0;
         dead = true;
 
         foreach(v in getPlayers())
@@ -176,6 +211,11 @@ class Npc
         }
 
         setTimer(respawnNpc, 1000 * respawnTime, 1, id);
+    }
+
+    function setRespawnTime(time)
+    {
+        respawnTime = time;
     }
 }
 
@@ -221,6 +261,24 @@ function getEnemies()
     return enemy_list;
 }
 
+function onKillEnemy(player, enemy)
+{
+    player.addExperience(enemy.expReward);
+
+    if (enemy.hasDrops())
+    {
+        foreach(v in enemy.getDrops())
+        {
+            handleSpawnGround(enemy.pos, v.instance, v.amount);
+        }
+    }
+
+    if (enemy.goldReward > 0)
+    {
+        player.addGold(enemy.goldReward);
+    }
+}
+
 function handleNpcDamage(pid, npc_id)
 {
     foreach(v in getNpcs())
@@ -234,12 +292,14 @@ function handleNpcDamage(pid, npc_id)
 
             if (calcHealth < 1)
             {
-                calcHealth = 1;
+                calcHealth = 0;
                 v.die();
-                player.addExperience(20);
-            }//T_DEADB
+                onKillEnemy(player, v);
+            }
 
             v.setHealth(calcHealth);
+
+            return;
         }
     }
 }
