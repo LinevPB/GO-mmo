@@ -7,24 +7,25 @@ local labs = [];
 local labs_title = [];
 local qa_draws = [];
 
-local characterMenu = null;
+local weaponMenu = null;
+local armorMenu = null;
+local qaMenu = null;
 
 function getCharacterLabs()
 {
     return labs;
 }
 
-function getCharacterMenu()
-{
-    return characterMenu;
-}
-
 function enableCharacterSetup()
 {
+    weaponMenu.enable(true);
+    armorMenu.enable(true);
+    qaMenu.enable(true);
+
     for (local i = 0; i < labs_title.len(); i++)
     {
         labs_title[i].visible = true;
-        labs_title[i].setPosition(x1 + w1/2 - labs_title[i].width / 2, y1 + 1000 * i);
+        labs_title[i].setPosition(x1 + w1/2 - labs_title[i].width / 2, labs_title[i].getPosition().y);
     }
 
     foreach(i, v in labs)
@@ -65,6 +66,10 @@ function disableCharacterSetup()
             qa_draws[i-4].visible = false;
         }
     }
+
+    weaponMenu.enable(false);
+    armorMenu.enable(false);
+    qaMenu.enable(false);
 }
 
 function findLab(id)
@@ -81,35 +86,41 @@ function findLab(id)
 function setupCharacterSetup()
 {
     x1 = Inventory.MAX_COLUMN * Inventory.SIZE + 600;
-    y1 = Inventory.SIZE + 350;
+    y1 = Inventory.SIZE + 100 + invY;
     w1 = 8192/2 - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 96;
     calw1 = (w1-Inventory.SIZE-100-Inventory.SIZE)/2;
 
-    labs_title.append(Draw(x1, y1, lang["INV_WEAPON"][Player.lang]));
-    labs.append(InventorySlot(x1 + calw1, y1 + labs_title[0].height + 50,
+
+    /// weapons
+    weaponMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, invY + 600, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, 1200, "WINDOW_BACKGROUND.TGA");
+
+    labs_title.append(Draw(x1, weaponMenu.pos.y + 100, lang["INV_WEAPON"][Player.lang]));
+    labs.append(InventorySlot(x1 + calw1, weaponMenu.pos.y + labs_title[0].height + 200,
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
-    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + labs_title[0].height + 50,
+    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, weaponMenu.pos.y + labs_title[0].height + 200,
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
 
-        labs_title.append(Draw(x1, y1, lang["INV_ARMOR"][Player.lang]));
-    labs.append(InventorySlot(x1 + calw1, y1 + 1000 + labs_title[1].height + 50,
+    /// armors
+    armorMenu = Window(weaponMenu.pos.x, weaponMenu.pos.y + weaponMenu.size.height + 200, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, 1200, "WINDOW_BACKGROUND.TGA");
+
+    labs_title.append(Draw(x1, armorMenu.pos.y + 100, lang["INV_ARMOR"][Player.lang]));
+    labs.append(InventorySlot(x1 + calw1, armorMenu.pos.y + labs_title[1].height + 200,
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
-    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 1000 + labs_title[1].height + 50,
+    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, armorMenu.pos.y + labs_title[1].height + 200,
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
 
-    labs_title.append(Draw(x1, y1, lang["INV_QA"][Player.lang]));
-    labs.append(InventorySlot(x1 + calw1, y1 + 2000 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
-    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 2000 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
-    labs.append(InventorySlot(x1 + calw1, y1 + 2800 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
-    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 2800 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
+    /// quick access
+    qaMenu = Window(armorMenu.pos.x, armorMenu.pos.y + armorMenu.size.height + 200, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, 2200, "WINDOW_BACKGROUND.TGA");
 
-        ///
-    characterMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, Inventory.SIZE + 250, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, Inventory.MAX_ROW * Inventory.SIZE - 250, "WINDOW_BACKGROUND.TGA");
-    getMainMenu().attach(characterMenu);
+    labs_title.append(Draw(x1, qaMenu.pos.y + 100, lang["INV_QA"][Player.lang]));
+    labs.append(InventorySlot(x1 + calw1, qaMenu.pos.y + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, qaMenu.pos.y + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+    labs.append(InventorySlot(x1 + calw1, qaMenu.pos.y + 800 + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, qaMenu.pos.y + 800 + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
     for(local i = 1; i < 5; i++)
     {

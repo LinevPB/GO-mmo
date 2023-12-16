@@ -13,6 +13,9 @@ function initPlayState()
     Chat.Enable(true);
     Showcase.Init();
     Inventory.Init();
+    setupStatistics();
+    initSettings();
+    EscMenu.Init();
     initDeathDraw();
     disableLogicalKey(GAME_INVENTORY, true);
     setPlayerPosition(Player.helper, 38086, 4681, 44551);
@@ -92,70 +95,165 @@ function onRenderP(currentTime, lastTime)
     tradeRender();
     gi_render();
     statisticsRender();
+    escMenuRender();
 }
 
-local function onplaykey(key)
+local isInAction = false;
+local actionType = 0;
+
+function handleAction(key)
 {
-    tradeKey(key);
-    gi_key(key);
-
-    if (!Inventory.IsEnabled())
+    switch(actionType)
     {
-        if (key == KEY_T)
-        {
-            Chat.EnableInput(true);
-        }
+        // free gaming :)
+        case 0:
+            freeAction(key);
+        break;
 
-        if (key == KEY_RETURN)
-        {
-            Chat.Send();
-        }
+        // chat opened
+        case 1:
+            chatAction(key);
+        break;
 
-        if (key == KEY_ESCAPE)
-        {
-            Chat.EnableInput(false);
-        }
+        // inventory opened
+        case 2:
+            inventoryAction(key);
+        break;
+
+        // map opened
+        case 3:
+            mapAction(key);
+        break;
+
+        // npc interaction
+        case 4:
+            interactionAction(key);
+        break;
+
+        // escape menu opened :)
+        case 5:
+            escMenuAction(key);
+        break;
     }
+}
+addEventHandler("onKey", handleAction);
 
-    if (key == KEY_TAB || key == KEY_I)
+function resetAction()
+{
+    actionType = 0;
+}
+
+function freeAction(key)
+{
+    switch(key)
     {
-        if (Chat.IsEnabled()) return;
+        case KEY_T:
+            actionType = 1;
+            Chat.EnableInput(true);
+        break;
 
-        if (Inventory.IsEnabled())
-        {
-            enableQA(true);
-            Inventory.Enable(false);
-        }
-        else
-        {
+        case KEY_TAB:
+        case KEY_I:
+            actionType = 2;
             enableQA(false);
             Inventory.Enable(true);
-        }
-    }
+        break;
 
-    if (key == KEY_ESCAPE && Inventory.IsEnabled())
-    {
-        Inventory.Enable(false);
-        enableQA(true);
-    }
+        case KEY_M:
+            actionType = 3;
+            enableMap(true);
+        break;
 
-    if (key == KEY_Z)
-    {
-        exitGame();
-    }
+        case KEY_LCONTROL:
+            gi_key();
+            local result = focusInteract_NPC();
+            if (result == true)
+            {
+                actionType = 4;
+            }
+        break;
 
+        case KEY_X:
+            actionType = 5;
+            enableQA(false);
+            EscMenu.Enable(true);
+        break;
 
-    if (Inventory.IsEnabled() || Chat.IsEnabled())
-    {
-        return;
-    }
-    else {
-        mapKey(key);
-    }
+        case KEY_Z:
+            exitGame();
+        break;
 
-    handleQAKey(key);
+        default:
+            handleQAKey(key);
+        break;
+    }
 }
-addEventHandler("onKey", onplaykey);
+
+function chatAction(key)
+{
+    switch(key)
+    {
+        case KEY_RETURN:
+            resetAction();
+            Chat.Send();
+        break;
+
+        case KEY_ESCAPE:
+            resetAction();
+            Chat.EnableInput(false);
+        break;
+    }
+}
+
+function inventoryAction(key)
+{
+    switch(key)
+    {
+        case KEY_TAB:
+        case KEY_I:
+        case KEY_ESCAPE:
+            resetAction();
+            Inventory.Enable(false);
+            enableQA(true);
+        break;
+    }
+}
+
+function mapAction(key)
+{
+    switch(key)
+    {
+        case KEY_M:
+            resetAction();
+            enableMap(false);
+        break;
+    }
+}
+
+function escMenuAction(key)
+{
+    switch(key)
+    {
+        case KEY_ESCAPE:
+        case KEY_X:
+            resetAction();
+            EscMenu.Enable(false);
+            enableQA(true);
+        break;
+    }
+}
+
+function interactionAction(key)
+{
+    tradeKey(key);
+
+    switch(key)
+    {
+        case KEY_SPACE:
+            skip_dial();
+        break;
+    }
+}
 
 function playButtonHandler(id)
 {
@@ -175,11 +273,13 @@ function playButtonHandler(id)
 function onClickPlay(key)
 {
     tradeClick(key);
+    escMenuClickPress(key);
 }
 
 function onReleasePlay(key)
 {
     tradeRelease(key);
+    escMenuClickRelease(key);
 }
 
 function handlePlayerRespawn(id)

@@ -4,8 +4,6 @@
 
     <script src="characterSetup.nut" type="client" />
 
-    <script src="statistics.nut" type="client" />
-
     <script src="inventorySlots.nut" type="client" />
 
     <script src="inventoryCover.nut" type="client" />

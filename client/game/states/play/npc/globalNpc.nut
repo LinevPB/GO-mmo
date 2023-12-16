@@ -300,7 +300,6 @@ function globalNpcRender()
 
     foreach(npc in global_npc_list)
     {
-        print(getPlayerHealth(npc.npc) + "/" + getPlayerMaxHealth(npc.npc));
         if (npc.dying)
         {
             if (npc.isSomethingVisible())

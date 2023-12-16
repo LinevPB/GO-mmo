@@ -112,23 +112,15 @@ function gi_render()
     }
 }
 
-function gi_key(key)
+function gi_key()
 {
-    if (key == KEY_X)
+    local foc = getFocusVob();
+    foreach(v in groundItems)
     {
-        sendPacket(PacketType.QUEST, 1);
-    }
-
-    if (key == KEY_LCONTROL)
-    {
-        local foc = getFocusVob();
-        foreach(v in groundItems)
+        if (v.vob.ptr == foc)
         {
-            if (v.vob.ptr == foc)
-            {
-                handleTakeItem(v.id);
-                return;
-            }
+            handleTakeItem(v.id);
+            return v;
         }
     }
 }

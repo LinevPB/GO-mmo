@@ -74,6 +74,11 @@ Player.manageItem <- function(act, instance, amount, slot)
     }
 }
 
+function getUniqueItemsAmount()
+{
+    return Player.items.len();
+}
+
 Player.updateEquipped <- function(weapon, armor, ranged, helpers = Player.helper)
 {
     if (armor != Player.eqArmor) {

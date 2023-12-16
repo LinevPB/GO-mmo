@@ -6,21 +6,7 @@ function getStatisticsMenu()
     return statisticsMenu;
 }
 
-local draws = [
-    Draw(0, 0, "Name: Michael"),
-    Draw(0, 0, "Level: 20"),
-    Draw(0, 0, "Experience: 1944/2137"),
-    Draw(0, 0, ""),
-    Draw(0, 0, "Health: 1950/2000"),
-    Draw(0, 0, "Mana: 500/500"),
-    Draw(0, 0, "Strength: 0"),
-    Draw(0, 0, "Dexterity: 0"),
-    Draw(0, 0, "Skill 1h: 0"),
-    Draw(0, 0, "Skill 2h: 0"),
-    Draw(0, 0, "Skill Bow: 0"),
-    Draw(0, 0, "Skill Crossbow: 0")
-    Draw(0, 0, "Magic Circle: 0")
-];
+local draws = null;
 
 function updateDraws()
 {
@@ -41,11 +27,29 @@ function updateDraws()
 
 function setupStatistics()
 {
-    statisticsMenu = Window(100, Inventory.SIZE + Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE - 200, 4192 - 292, 4192 - 3 * Inventory.SIZE + 300, "WINDOW_BACKGROUND_SF.TGA");
-    getMainMenu().attach(statisticsMenu);
+    statisticsMenu = Window(0, 600, 8192, 8192-600, "WINDOW_BACKGROUND_SF.TGA");
+
+    draws = [
+        Draw(0, 0, "Name: Michael"),
+        Draw(0, 0, "Level: 20"),
+        Draw(0, 0, "Experience: 1944/2137"),
+        Draw(0, 0, ""),
+        Draw(0, 0, "Health: 1950/2000"),
+        Draw(0, 0, "Mana: 500/500"),
+        Draw(0, 0, "Strength: 0"),
+        Draw(0, 0, "Dexterity: 0"),
+        Draw(0, 0, "Skill 1h: 0"),
+        Draw(0, 0, "Skill 2h: 0"),
+        Draw(0, 0, "Skill Bow: 0"),
+        Draw(0, 0, "Skill Crossbow: 0")
+        Draw(0, 0, "Magic Circle: 0")
+    ];
+
+    setupDrawsPositions();
 }
 
-function setupDrawsPositions() {
+function setupDrawsPositions()
+{
     local ls = 0;
     foreach (i, v in draws) {
         v.setPosition(250, statisticsMenu.pos.y + 125 + i * (50 + v.height));
@@ -57,17 +61,10 @@ function setupDrawsPositions() {
     }
 }
 
-function statisticsSlide()
-{
-    statisticsMenu.background.texture.top();
-
-    foreach(v in draws) {
-        v.top();
-    }
-}
-
 function enableStatistics(val)
 {
+    statisticsMenu.enable(val);
+
     foreach (v in draws)
     {
         v.visible = val;

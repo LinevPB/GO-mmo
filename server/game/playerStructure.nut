@@ -183,6 +183,7 @@ class PlayerStructure
 
     function setHealth(val, loading=false)
     {
+        if (val > max_health) val = max_health;
         if (val < 1) val = 1;
 
         health = val;
@@ -194,7 +195,6 @@ class PlayerStructure
 
     function setMaxHealth(val, loading=false)
     {
-        if (val > max_health) val = max_health;
         if (val < 1) val = 1;
 
         max_health = val;
@@ -397,10 +397,10 @@ function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, stren
 
     player.setLevel(level, true);
     player.setExperience(exp, true);
-    player.setHealth(health, true);
     player.setMaxHealth(max_health, true);
-    player.setMana(mana, true);
+    player.setHealth(health, true);
     player.setMaxMana(max_mana, true);
+    player.setMana(mana, true);
     player.setStrength(strength, true);
     player.setDexterity(dexterity, true);
     player.setSkill1h(skill_1h, true);

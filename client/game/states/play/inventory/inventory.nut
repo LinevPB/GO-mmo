@@ -8,6 +8,7 @@ Inventory.height <- 8192;
 Inventory.invEnabled <- false;
 
 local mainMenu = null;
+invY <- 600;
 local slotMenu = null;
 local slotMenuButtons = {
     useButton = null,
@@ -24,6 +25,9 @@ local slotId = -1;
 local holdedRender = null;
 local slotPointer = false;
 
+local lastCamPos = null;
+local lastCamRot = null;
+
 function getMainMenu()
 {
     return mainMenu;
@@ -35,26 +39,25 @@ Inventory.Init <- function()
 
     setupInventorySlots();
 
-    setupCharacterSetup();
-
-    setupStatistics();
-
     setupCoverTextures();
 
-    setupDrawsPositions();
+    setupCharacterSetup();
 
     initializeInventorySlots();
 
     setupItemSlider();
 
     initializeItemRenders();
+
+    lastCamPos = Camera.getPosition();
+    lastCamRot = Camera.getRotation();
 }
 
 function setupInventoryMenu()
 {
-    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "WINDOW_BACKGROUND_SF.TGA");
+    mainMenu = Window(0, invY - 200, Inventory.width, Inventory.height, "WINDOW_BACKGROUND_SF.TGA");
 
-    slotMenu = Window(0, 0, 1000, 500, "WINDOW_BACKGROUND.TGA");
+    slotMenu = Window(0, invY, 1000, 500, "WINDOW_BACKGROUND.TGA");
 
     slotMenuButtons.useButton = Button(0, 0, 1000, 250, "BUTTON_BACKGROUND.TGA", lang["INV_USE"][Player.lang], "BUTTON_BACKGROUND.TGA");
     slotMenuButtons.useButton.setBackgroundRegularColor(200, 20, 20);
@@ -72,17 +75,10 @@ function setupInventoryMenu()
     holdedRender = ItemRender(5000, 0, 600, 600, "");
 }
 
-Inventory.Enable <- function(val)
+Inventory.Enable <- function(val, soft = false)
 {
-    setFreeze(val);
-    Camera.movementEnabled = !val;
-    disableControls(val);
-    setCursorVisible(val);
     mainMenu.enable(val);
-    setCoverTexturesVisibility(val);
     Inventory.invEnabled = val;
-
-    enableStatistics(val);
 
     if (val == true)
     {
@@ -91,8 +87,9 @@ Inventory.Enable <- function(val)
             getItemSlots()[v.slot].setRender(v.instance, v.amount);
             getItemSlots()[v.slot].setAlpha(true);
         }
+        lastCamPos = Camera.getPosition();
+        lastCamRot = Camera.getRotation();
 
-        setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
         Camera.setPosition(37900, 4680, 44440);
         Camera.setRotation(0, 30, 0);
 
@@ -103,10 +100,13 @@ Inventory.Enable <- function(val)
         updateGoldDraws();
         updateInvEqColor();
 
-        onSlidePlay(getItemSlider());
+        onInvSlide(getItemSlider());
     }
     else
     {
+        Camera.setPosition(lastCamPos.x, lastCamPos.y, lastCamPos.z);
+        Camera.setRotation(lastCamRot.x, lastCamRot.y, lastCamRot.z);
+
         for (local i = 0; i < Inventory.MAX_ITEMS; i++)
         {
             getItemSlots()[i].setRender("", 0);
@@ -116,8 +116,6 @@ Inventory.Enable <- function(val)
         {
             v.enable(false);
         }
-
-        setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
 
         disableCharacterSetup();
         disableCover();

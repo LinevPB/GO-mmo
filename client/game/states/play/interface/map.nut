@@ -13,23 +13,20 @@ function initMap()
     meOnMap.alpha = 0;
 }
 
-function mapKey(key)
+function enableMap(val)
 {
-    if (key == KEY_M)
+    if (val == true)
     {
-        if (!mapEnabled)
-        {
-            map.alpha = 255;
-            meOnMap.alpha = 255;
-            mapEnabled = true;
-        }
-        else
-        {
-            map.alpha = 0;
-            meOnMap.alpha = 0;
-            mapEnabled = false;
-        }
+        map.alpha = 255;
+        meOnMap.alpha = 255;
+        mapEnabled = true;
+
+        return;
     }
+
+    map.alpha = 0;
+    meOnMap.alpha = 0;
+    mapEnabled = false;
 }
 
 function mapRender()

@@ -142,6 +142,7 @@ function end_interaction()
     setFreeze(false);
     disableControls(false);
     interacting = false;
+    resetAction();
 }
 
 function show_dialog_menu(dialogs)
@@ -412,9 +413,10 @@ function skip_func()
     dial_func();
 }
 
-function skip()
+function skip_dial()
 {
     if (skipping) return;
+    if (!interacting && !exiting && BOT == -1 && !in_dial) return;
 
     skipping = true;
     killTimer(timer);
@@ -439,18 +441,10 @@ function open_shop(items)
     updateNpcShop(items);
 }
 
-local function onplayerkey(key)
+function focusInteract_NPC()
 {
-    if (key == KEY_LCONTROL)
-    {
-        if (BOT == -1) return;
-        if (interacting) return;
-        BOT.interact();
-    }
-
-    if (key == KEY_SPACE && interacting && !exiting && BOT != -1 && in_dial)
-    {
-        skip();
-    }
+    if (BOT == -1) return false;
+    if (interacting) return false;
+    BOT.interact();
+    return true;
 }
-addEventHandler("onKey", onplayerkey);

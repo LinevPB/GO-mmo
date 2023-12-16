@@ -22,6 +22,3 @@ function absolute(v)
     if (v <= 0) return v * (-1);
     return v;
 }
-
-
-// interface controller

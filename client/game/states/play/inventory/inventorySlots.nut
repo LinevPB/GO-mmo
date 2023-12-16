@@ -42,6 +42,7 @@ class InventorySlot
         enabledA = false;
         btn.more = this;
         equipped = false;
+        render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, "");
     }
 
     function reset()
@@ -69,15 +70,15 @@ class InventorySlot
         enabledA = val;
         invUnhover(this.btn);
 
-        if (instance == null) render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, "");
-        else render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, instance);
-
         render.visible = val;
 
-        if (alpha) {
-            render.lightingswell = true;
-        } else {
-            render.lightingswell = true;
+        if (val == false)
+        {
+            render.setPosition(0, 0);
+        }
+        else
+        {
+            render.setPosition(btn.pos.x, btn.pos.y);
         }
     }
 
@@ -93,8 +94,10 @@ class InventorySlot
 
         btn.setDrawPosition(btn.size.width - btn.draw.width - 25, btn.size.height - btn.draw.height - 25);
 
-        if (render == null && btn.enabled) {
+        if (render == null && btn.enabled)
+        {
             render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, instance);
+            render.lightingswell = true;
             render.visible = false;
         }
 
@@ -118,8 +121,9 @@ function handleSlideSlots(el)
 {
     itemMenu.setPosition(itemMenu.baseX, itemMenu.baseY - el.getValue());
 
-    foreach(v in itemSlots) {
-        if ((v.btn.pos.y + v.btn.size.height < v.btn.parent.baseY) || (v.btn.pos.y > v.btn.parent.baseY + Inventory.MAX_ROW * Inventory.SIZE))
+    foreach(v in itemSlots)
+    {
+        if ((v.btn.pos.y + v.btn.size.height < invY) || (v.btn.pos.y > 8192 - 392))
             v.enable(false);
         else
             v.enable(true);
@@ -135,7 +139,7 @@ function handleSlotsRelease()
 
 function setupInventorySlots()
 {
-    itemMenu = Window(200, Inventory.SIZE, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
+    itemMenu = Window(200, invY, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
     itemMenu.setBackgroundColor(75, 75, 100);
     getMainMenu().attach(itemMenu);
 }
@@ -158,7 +162,7 @@ function getInvSlots()
 
 function setupItemSlider()
 {
-    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), "", "SLIDER_HANDLE.TGA", true);
+    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300,  350, getMainMenu().size.height - invY * 2 - 150, "TEXTBOX_BACKGROUND.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - 12), "", "SLIDER_HANDLE.TGA", true);
     getMainMenu().attach(itemSlider);
 }
 
