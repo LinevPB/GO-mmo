@@ -87,25 +87,25 @@ function setupCharacterSetup()
 
     labs_title.append(Draw(x1, y1, lang["INV_WEAPON"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + labs_title[0].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + labs_title[0].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
 
         labs_title.append(Draw(x1, y1, lang["INV_ARMOR"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + 1000 + labs_title[1].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 1000 + labs_title[1].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
 
     labs_title.append(Draw(x1, y1, lang["INV_QA"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, y1 + 2000 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 2000 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
     labs.append(InventorySlot(x1 + calw1, y1 + 2800 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, y1 + 2800 + labs_title[2].height + 50,
-        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED.TGA"));
 
         ///
     characterMenu = Window(Inventory.MAX_COLUMN * Inventory.SIZE + 600 - 36, Inventory.SIZE + 250, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, Inventory.MAX_ROW * Inventory.SIZE - 250, "WINDOW_BACKGROUND.TGA");

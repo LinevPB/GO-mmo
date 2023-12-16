@@ -176,7 +176,7 @@ function initializeInventorySlots()
     local row = 0;
     itemSlots = [];
     for (local i = 0; i < Inventory.MAX_ITEMS; i++) {
-        local temp = InventorySlot(Inventory.SIZE * column, Inventory.SIZE * row, Inventory.SIZE, Inventory.SIZE, "INV_SLOT.TGA", "INV_SLOT_HIGHLIGHTED.TGA");
+        local temp = InventorySlot(Inventory.SIZE * column, Inventory.SIZE * row, Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT.TGA", "INVENTORY_SLOT_HIGHLIGHTED.TGA");
         temp.btn.rehover();
         temp.row = row;
         temp.column = column;
@@ -211,11 +211,11 @@ function updateInvEqColor()
 {
     foreach(v in itemSlots) {
         if (v.equipped) {
-            v.btn.background.regular = "INV_SLOT_EQUIPPED.TGA";
-            v.btn.background.hover = "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
+            v.btn.background.regular = "INVENTORY_SLOT_EQUIPPED.TGA";
+            v.btn.background.hover = "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
         } else {
             v.btn.background.regular = "INVENTORY_SLOT.TGA";
-            v.btn.background.hover = "INV_SLOT_HIGHLIGHTED.TGA";
+            v.btn.background.hover = "INVENTORY_SLOT_HIGHLIGHTED.TGA";
         }
         v.btn.rehover();
     }

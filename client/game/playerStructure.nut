@@ -219,10 +219,12 @@ function findPositionBySlot(item)
 Player.addExperience <- function(val)
 {
     Player.experience += val;
+    STATS_AWAITING = true;
 }
 
 Player.addLevel <- function(val)
 {
     Player.level += val;
     addEffect(heroId, "Spellfx_Palheal");
+    STATS_AWAITING = true;
 }

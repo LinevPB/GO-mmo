@@ -48,7 +48,7 @@ function handleQARender()
 
         if (QA_Renders[i].instance == Player.eqArmor || QA_Renders[i].instance == Player.eqWeapon || QA_Renders[i].instance == Player.eqWeapon2h)
         {
-            QA_Slots[i].file = "INV_SLOT_EQUIPPED.TGA";
+            QA_Slots[i].file = "INVENTORY_SLOT_EQUIPPED.TGA";
         }
         else
         {

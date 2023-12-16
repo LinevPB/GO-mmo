@@ -37,9 +37,9 @@ class GlobalNpc
         draw.insertText(lang[instance.toupper()][Player.lang]);
         draw.setLineColor(0, 250, 80, 10);
 
-        texture = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");
+        texture = Texture(0, 0, 1000, 80, "SR_BLANK.TGA");
         texture.setColor(250, 80, 80);
-        coverTexture = Texture(0, 0, 1000, 100, "INV_BACK.TGA");
+        coverTexture = Texture(0, 0, 1000, 100, "TEXTBOX_BACKGROUND.TGA");
 
         dead = false;
         dying = false;
@@ -48,7 +48,7 @@ class GlobalNpc
         max_health = 20;
         levelDraw = Draw(0, 0, level);
         levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
-        levelTex = Texture(0, 0, 100, 100, "INV_SLOT.TGA");
+        levelTex = Texture(0, 0, 100, 100, "INVENTORY_SLOT.TGA");
         visualVisible = false;
 
         currentAnim = "S_RUN";
@@ -145,15 +145,13 @@ class GlobalNpc
         draw.setWorldPosition(npos.x, npos.y + 100, npos.z);
 
         local dPos = draw.getPosition();
-        texture.setPosition(dPos.x + draw.width / 2 - 500, dPos.y - draw.height - 150);
+        coverTexture.setPosition(dPos.x + draw.width / 2 - 500, dPos.y - draw.height - 150);
 
-        dPos = texture.getPosition();
-        coverTexture.setPosition(dPos.x, dPos.y);
+        dPos = coverTexture.getPosition();
+        texture.setPosition(dPos.x, dPos.y + 10);
 
         local healthSize = 1000.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
         texture.setSize(healthSize, 100);
-        print(coverTexture.getSize().width);
-        print(texture.getSize().width);
 
         levelTex.setPosition(texture.getPosition().x - levelTex.getSize().width, texture.getPosition().y - levelTex.getSize().height / 2);
         levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2);

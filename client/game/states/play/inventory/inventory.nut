@@ -52,7 +52,7 @@ Inventory.Init <- function()
 
 function setupInventoryMenu()
 {
-    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "WINDOW_BACKGROUND.TGA");
+    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "WINDOW_BACKGROUND_SF.TGA");
 
     slotMenu = Window(0, 0, 1000, 500, "WINDOW_BACKGROUND.TGA");
 

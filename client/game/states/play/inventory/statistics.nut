@@ -1,4 +1,5 @@
 local statisticsMenu = null;
+STATS_AWAITING <- false;
 
 function getStatisticsMenu()
 {
@@ -40,7 +41,7 @@ function updateDraws()
 
 function setupStatistics()
 {
-    statisticsMenu = Window(100, Inventory.SIZE + Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE - 200, 4192 - 292, 4192 - 3 * Inventory.SIZE + 300, "WINDOW_BACKGROUND.TGA");
+    statisticsMenu = Window(100, Inventory.SIZE + Inventory.SIZE + Inventory.MAX_ROW * Inventory.SIZE - 200, 4192 - 292, 4192 - 3 * Inventory.SIZE + 300, "WINDOW_BACKGROUND_SF.TGA");
     getMainMenu().attach(statisticsMenu);
 }
 
@@ -72,3 +73,22 @@ function enableStatistics(val)
         v.visible = val;
     }
 }
+
+function statisticsRender()
+{
+    if (STATS_AWAITING == true)
+    {
+        STATS_AWAITING = false;
+        updateDraws();
+    }
+}
+
+local function updateStatisticsDraw(pid, old = 0, new = 1)
+{
+    if (pid != heroId) return;
+    STATS_AWAITING = true;
+}
+addEventHandler("onPlayerChangeHealth", updateStatisticsDraw);
+addEventHandler("onPlayerChangeMaxHealth", updateStatisticsDraw);
+addEventHandler("onPlayerChangeMana", updateStatisticsDraw);
+addEventHandler("onPlayerChangeMaxMana", updateStatisticsDraw);

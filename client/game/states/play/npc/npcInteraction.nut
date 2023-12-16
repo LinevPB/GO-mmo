@@ -47,11 +47,11 @@ function initInteraction()
     intWindow = Window(0, 6500, 8192, 8192 - 6500, "TEXTBOX_BACKGROUND.TGA");
 
     dialogOpt = [
-        Button(8192/2 - 2000, 100, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2000, 400, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2000, 700, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2000, 1000, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2000, 1300, 8000/2, 300, "NONE", "", "NONE")
+        Button(8192/2 - 2500, 200, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 500, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 800, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 1100, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 1400, 8000/2, 300, "NONE", "", "NONE")
     ];
 
     intWindow.attach(dialogOpt[0]);

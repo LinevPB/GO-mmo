@@ -39,9 +39,9 @@ class TradeSlot
     constructor(x, y, width, height)
     {
         regularTex = "INVENTORY_SLOT.TGA";
-        hoverTex = "INV_SLOT_HIGHLIGHTED.TGA";
-        equippedTex = "INV_SLOT_EQUIPPED.TGA";
-        equippedHoverTex = "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
+        hoverTex = "INVENTORY_SLOT_HIGHLIGHTED.TGA";
+        equippedTex = "INVENTORY_SLOT_EQUIPPED.TGA";
+        equippedHoverTex = "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
 
         pos = { x = x, y = y };
         size = { width = width, height = height };

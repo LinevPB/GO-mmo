@@ -25,4 +25,3 @@ function absolute(v)
 
 
 // interface controller
-// need to add use mechanic

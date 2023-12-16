@@ -194,6 +194,7 @@ class PlayerStructure
 
     function setMaxHealth(val, loading=false)
     {
+        if (val > max_health) val = max_health;
         if (val < 1) val = 1;
 
         max_health = val;
@@ -205,6 +206,7 @@ class PlayerStructure
 
     function setMana(val, loading=false)
     {
+        if (val > max_mana) val = max_mana;
         mana = val;
         setPlayerMana(id, val);
 
@@ -335,6 +337,16 @@ class PlayerStructure
         setHealth((max_health / 10).tointeger());
 
         dead = false;
+    }
+
+    function getHealth()
+    {
+        return health;
+    }
+
+    function getMana()
+    {
+        return mana;
     }
 }
 
@@ -582,6 +594,21 @@ function UseItem(pid, instance, amount)
     //
         // need to add use mechanic
     //
+    local item = ServerItems.find(instance);
+    local player = findPlayer(pid);
+
+    if (item.restores)
+    {
+        if (item.restores.health)
+        {
+            player.setHealth(player.getHealth() + item.restores.health);
+        }
+
+        if (item.restores.mana)
+        {
+            player.setMana(player.getMana() + item.restores.mana);
+        }
+    }
 
     RemoveItem(pid, instance, amount);
 }

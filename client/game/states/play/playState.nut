@@ -91,6 +91,7 @@ function onRenderP(currentTime, lastTime)
     mapRender();
     tradeRender();
     gi_render();
+    statisticsRender();
 }
 
 local function onplaykey(key)
