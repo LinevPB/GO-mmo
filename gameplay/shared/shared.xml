@@ -3,4 +3,6 @@
 
 	<import src="items/items.xml" type="shared" />
 	<import src="shops/shops.xml" type="shared" />
+
+	<script src="config.nut" type="shared" />
 </server>

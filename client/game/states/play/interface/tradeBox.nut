@@ -55,16 +55,20 @@ TradeBox.Init <- function()
     info_label2 = Label(100, 200 + info_label.height() + 50, item_name);
     info_label3 = Label(100, info_label2.pos.y + info_label2.height() + 50, " ");
 
-    box = Textbox(1600/2-250, info_label3.pos.y + info_label3.height() + 200, 500, 300, "MENU_CHOICE_BACK.TGA", "1", "INV_SLOT_FOCUS.TGA");
+    window = Window(2800, 2000, 1600, 2200, "WINDOW_BACKGROUND.TGA");
+
+    box = Textbox(1600/2-250, info_label3.pos.y + info_label3.height() + 200, 500, 300, "TEXTBOX_BACKGROUND.TGA", "1", "TEXTBOX_BACKGROUND.TGA");
+    box.addHoverCover(Texture(0, 0, 500, 300, "TEXTBOX_SHADOW.TGA"));
     box.setNumericOnly(true);
     box.setDefaultValue(1);
 
-    window = Window(2800, 2000, 1600, 2200, "SR_BLANK.TGA");
-    window.setBackgroundColor(10, 10, 40);
-    window.setCover("MENU_INGAME.TGA");
+    ok_btn = Button(250, box.pos.y + box.size.height + 200, 500, 300, "BUTTON_BACKGROUND.TGA", lang["TRADEBOX_OK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ok_btn.setBackgroundRegularColor(200, 20, 20);
+    ok_btn.setBackgroundHoverColor(150, 20, 20);
 
-    ok_btn = Button(250, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", lang["TRADEBOX_OK"][Player.lang], "INV_SLOT_FOCUS.TGA");
-    cancel_btn = Button(850, box.pos.y + box.size.height + 200, 500, 300, "MENU_CHOICE_BACK.TGA", lang["TRADEBOX_CANCEL"][Player.lang], "INV_SLOT_FOCUS.TGA");
+    cancel_btn = Button(850, box.pos.y + box.size.height + 200, 500, 300, "BUTTON_BACKGROUND.TGA", lang["TRADEBOX_CANCEL"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    cancel_btn.setBackgroundRegularColor(200, 20, 20);
+    cancel_btn.setBackgroundHoverColor(150, 20, 20);
 
     window.attach(info_label);
     window.attach(info_label2);

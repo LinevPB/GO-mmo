@@ -23,7 +23,7 @@ ServerItems.add({
 ServerItems.add({
     name = {
         ["en"] = "Citizen's wear",
-        ["pl"] = "StrÃ³j obywatela"
+        ["pl"] = "Strój obywatela"
     },
     instance = "ITAR_VLK_M",
     type = ItemType.ARMOR,

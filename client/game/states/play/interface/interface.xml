@@ -8,6 +8,8 @@
 
     <script src="chat.nut" type="client" />
 
+    <script src="tradeBox.nut" type="client" />
+
     <script src="interface.nut" type="client" />
 
 </server>

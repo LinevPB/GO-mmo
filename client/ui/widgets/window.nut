@@ -17,6 +17,11 @@ class Window extends Element {
         val.setPosition(val.pos.x + pos.x, val.pos.y + pos.y);
         elements.append(val);
         refresh();
+
+        if (val.elementType == ElementType.BUTTON)
+        {
+            val.rehover();
+        }
     }
 
     function enable(val) {

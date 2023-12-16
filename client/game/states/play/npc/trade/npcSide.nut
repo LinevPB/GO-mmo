@@ -73,15 +73,15 @@ function updateNpcShop(items)
 
 function initNpcWindow()
 {
-    npcInventory = Window(8192/2 + 300, 300, 8192/2-600, 6000, "SR_BLANK.TGA");
+    npcInventory = Window(8192/2 + 300, 300, 8192/2-600, 6000, "WINDOW_BACKGROUND.TGA");
     npcInventory.setBackgroundColor(10, 10, 30);
-    npcInventory.setCover("MENU_INGAME.TGA");
+    npcInventory.setCover("WINDOW_BACKGROUND.TGA");
 
-    NPC_itemsToTradeTex = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "SR_BLANK.TGA");
-    NPC_itemsToTradeTexCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "MENU_INGAME.TGA");
+    NPC_itemsToTradeTex = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "WINDOW_BACKGROUND.TGA");
+    NPC_itemsToTradeTexCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "WINDOW_BACKGROUND.TGA");
     NPC_itemsToTradeTex.setColor(10, 10, 30);
 
-    NPC_tradeSlotsCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "SR_BLANK.TGA");
+    NPC_tradeSlotsCover = Texture(8192/2 + 300, 6375, 8192/2-600, 8192 - 6500 - 50, "WINDOW_BACKGROUND.TGA");
     NPC_tradeSlotsCover.setColor(75, 75, 100);
 
     NPC_basketValueDraw = Draw(0, 0, lang["VALUE"][Player.lang]);
@@ -133,15 +133,14 @@ function initNpcSlots()
         }
     }
 
-    npcItemsCover = Texture(npcInventory.pos.x + 250, npcInventory.pos.y + 800, 600 * 5, 600*8, "SR_BLANK.TGA");
-    npcItemsCover.setColor(75, 75, 100);
+    npcItemsCover = Texture(npcInventory.pos.x + 250, npcInventory.pos.y + 800, 600 * 5, 600*8, "WINDOW_BACKGROUND.TGA");
 
     npcInvDraw = Draw(0, 0, lang["SHOP"][Player.lang]);
     npcInvDraw.setColor(240, 220, 180);
     npcInvDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
     npcInvDraw.setPosition(npcInventory.pos.x + npcInventory.size.width / 2 - npcInvDraw.width / 2, npcInventory.pos.y + 300 - npcInvDraw.height / 2);
 
-    npcInvDrawCover = Texture(npcInventory.pos.x, npcInventory.pos.y, npcInventory.size.width, 600, "MENU_CHOICE_BACK.TGA");
+    npcInvDrawCover = Texture(npcInventory.pos.x, npcInventory.pos.y, npcInventory.size.width, 600, "WINDOW_BACKGROUND.TGA");
 }
 
 function initNpcTradeSlots()

@@ -38,7 +38,7 @@ class TradeSlot
 
     constructor(x, y, width, height)
     {
-        regularTex = "INV_SLOT.TGA";
+        regularTex = "INVENTORY_SLOT.TGA";
         hoverTex = "INV_SLOT_HIGHLIGHTED.TGA";
         equippedTex = "INV_SLOT_EQUIPPED.TGA";
         equippedHoverTex = "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
@@ -202,7 +202,7 @@ function tradeClick(key)
 function enableBoxHelper(slotId, pointerId, instance)
 {
     TradeBox.Enable(true);
-    TradeBox.SetHold({ id = slotId, pointerId = pointerId, instance = instance });
+    TradeBox.SetHold({ type = 1, id = slotId, pointerId = pointerId, instance = instance });
     TradeBox.SetItemName(ServerItems.getName(instance)[Player.lang]);
     TradeBox.Select();
 }

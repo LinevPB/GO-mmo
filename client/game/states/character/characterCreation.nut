@@ -44,9 +44,7 @@ function initCharacterCreation()
 
     local wW = 2000;
     local wH = 6000;
-    makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
-    makeupMenu.window.setBackgroundColor(10, 10, 40);
-    makeupMenu.window.setCover("MENU_COVER.TGA");
+    makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND.TGA");
 
     local temp = Label(0, 100, lang["LABEL_CREATION_TITLE"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");
@@ -59,7 +57,8 @@ function initCharacterCreation()
     temp.move(0, -(temp.height() + 25));
     makeupMenu.window.attach(temp);
     temp = null;
-    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "MENU_COVER.TGA", "", "INV_TITEL.TGA", false);
+    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", false);
+    makeupMenu.nickTextbox.addHoverCover(Texture(0, 0, 1700, 300, "TEXTBOX_SHADOW.TGA"));
     makeupMenu.window.attach(makeupMenu.nickTextbox);
 
     temp = Label(wW / 2 - 850, 1500, lang["LABEL_CREATION_SEX"][Player.lang]);
@@ -71,17 +70,23 @@ function initCharacterCreation()
     makeupMenu.characterList.center();
     makeupMenu.characterList.selectFirstAsDefault();
 
-    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "MENU_CHOICE_BACK.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
+    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "TEXTBOX_BACKGROUND.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "SLIDER_HANDLE.TGA");
     makeupMenu.window.attach(makeupMenu.bodySlider);
 
-    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "MENU_CHOICE_BACK.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
+    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "TEXTBOX_BACKGROUND.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "SLIDER_HANDLE.TGA");
     makeupMenu.window.attach(makeupMenu.headSlider);
 
-    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "MENU_CHOICE_BACK.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "MENU_CHOICE_BACK_NT.TGA");
+    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "TEXTBOX_BACKGROUND.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "SLIDER_HANDLE.TGA");
     makeupMenu.window.attach(makeupMenu.headTexSlider);
 
-    makeupMenu.ok = Button(300, 5400, 600, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "INV_TITEL.TGA");
-    makeupMenu.quit = Button(1100, 5400, 600, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "INV_TITEL.TGA");
+    makeupMenu.ok = Button(300, 5400, 600, 400, "BUTTON_BACKGROUND.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    makeupMenu.ok.setBackgroundRegularColor(200, 20, 20);
+    makeupMenu.ok.setBackgroundHoverColor(150, 20, 20);
+
+    makeupMenu.quit = Button(1100, 5400, 600, 400, "BUTTON_BACKGROUND.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    makeupMenu.quit.setBackgroundRegularColor(200, 20, 20);
+    makeupMenu.quit.setBackgroundHoverColor(150, 20, 20);
+
     makeupMenu.window.attach(makeupMenu.ok);
     makeupMenu.window.attach(makeupMenu.quit);
 

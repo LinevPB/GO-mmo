@@ -1,7 +1,7 @@
 ServerItems.add({
     name = {
         ["en"] = "Bow",
-        ["pl"] = "≈Åuk"
+        ["pl"] = "£uk"
     },
     instance = "ITRW_SLD_BOW",
     type = ItemType.WEAPON,

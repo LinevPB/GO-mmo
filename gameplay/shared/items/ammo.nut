@@ -1,7 +1,7 @@
 ServerItems.add({
     name = {
         ["en"] = "Belt",
-        ["pl"] = "Be≈Çt"
+        ["pl"] = "Be≥t"
     },
     instance = "ITRW_BOLT",
     type = ItemType.AMMO,

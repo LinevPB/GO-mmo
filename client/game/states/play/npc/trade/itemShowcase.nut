@@ -4,8 +4,8 @@ local TShowcaseVisible = false;
 function initTradeShowcase()
 {
     TShowcase2 = {
-        texture = Texture(2900, 2700, 1400, 3200, "SR_BLANK.TGA"),
-        cover = Texture(2900, 2700, 1400, 3200, "MENU_INGAME.TGA"),
+        texture = Texture(2900, 2700, 1400, 3200, "WINDOW_BACKGROUND.TGA"),
+        cover = Texture(2900, 2700, 1400, 3200, "WINDOW_BACKGROUND.TGA"),
         render = ItemRender(2900, 2700, 1400, 1400, ""),
         draws = [],
         valueDraw = Draw(0, 0, "0")

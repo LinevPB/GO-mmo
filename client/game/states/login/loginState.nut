@@ -120,105 +120,115 @@ function initLoginState()
     local wH; // window height
     //////////////
     // main window
-    wW = 1600;
-    wH = 2600;
-    ui.selection.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
-    ui.selection.main.setBackgroundColor(10, 10, 40);
-    ui.selection.main.setCover("MENU_INGAME.TGA");
+    wW = 3000;
+    wH = 4000;
+    ui.selection.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND.TGA");
 
-    local temp = Label(0, 100, "Memory");
+    local temp = Label(0, 400, "Memory");
     temp.setFont("Font_Old_20_White_Hi.TGA");
     temp.setColor(255, 180, 0);
     ui.selection.main.attach(temp);
     temp.center();
     temp = null;
 
-    ui.selection.login_button = Button(wW / 2 - 350, 700, 700, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_MAIN_MENU_LOGIN"][Player.lang], "INV_TITEL.TGA");
+    ui.selection.login_button = Button(wW / 2 - 500, 1200, 1000, 600, "BUTTON_BACKGROUND.TGA", lang["BUTTON_MAIN_MENU_LOGIN"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.selection.login_button.setBackgroundRegularColor(200, 20, 20);
+    ui.selection.login_button.setBackgroundHoverColor(150, 20, 20);
     ui.selection.main.attach(ui.selection.login_button);
 
-    ui.selection.register_button = Button(wW / 2 - 350, 1300, 700, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_MAIN_MENU_REGISTER"][Player.lang], "INV_TITEL.TGA");
+    ui.selection.register_button = Button(wW / 2 - 500, 2000, 1000, 600, "BUTTON_BACKGROUND.TGA", lang["BUTTON_MAIN_MENU_REGISTER"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.selection.register_button.setBackgroundRegularColor(200, 20, 20);
+    ui.selection.register_button.setBackgroundHoverColor(150, 20, 20);
     ui.selection.main.attach(ui.selection.register_button);
 
-    ui.selection.exit_button = Button(wW / 2 - 350, 1900, 700, 400, "MENU_CHOICE_BACK.TGA", lang["BUTTON_MAIN_MENU_QUIT"][Player.lang], "INV_TITEL.TGA");
+    ui.selection.exit_button = Button(wW / 2 - 500, 2800, 1000, 600, "BUTTON_BACKGROUND.TGA", lang["BUTTON_MAIN_MENU_QUIT"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.selection.exit_button.setBackgroundRegularColor(200, 20, 20);
+    ui.selection.exit_button.setBackgroundHoverColor(150, 20, 20);
     ui.selection.main.attach(ui.selection.exit_button);
 
     ui.selection.main.enable(true);
 
     ///////////////
     // login window
-    wW = 2000;
-    wH = 2600;
-    ui.login.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
-    ui.login.main.setBackgroundColor(10, 10, 40);
-    ui.login.main.setCover("MENU_INGAME.TGA");
+    wW = 3000;
+    wH = 4000;
+    ui.login.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND1.TGA");
 
-    temp = Label(0, 100, "Memory");
+    temp = Label(0, 400, "Memory");
     temp.setFont("Font_Old_20_White_Hi.TGA");
     temp.setColor(255, 180, 0);
     ui.login.main.attach(temp);
     temp.center();
     temp = null;
 
-    temp = Label(wW / 2 - 750, 800, lang["LABEL_LOGIN_MENU_USERNAME"][Player.lang]);
+    temp = Label(400, 1200, lang["LABEL_LOGIN_MENU_USERNAME"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.login.main.attach(temp);
     temp = null;
-    ui.login.login_textbox = Textbox(wW / 2 - 750, 800, 1500, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", false);
+    ui.login.login_textbox = Textbox(400, 1200, 2200, 500, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", false);
+    ui.login.login_textbox.addHoverCover(Texture(0, 0, 2200, 500, "TEXTBOX_SHADOW.TGA"));
     ui.login.main.attach(ui.login.login_textbox);
 
-    temp = Label(wW / 2 - 750, 1500, lang["LABEL_LOGIN_MENU_PASSWORD"][Player.lang]);
+    temp = Label(400, 2200, lang["LABEL_LOGIN_MENU_PASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.login.main.attach(temp);
     temp = null;
-    ui.login.password_textbox = Textbox(wW / 2 - 750, 1500, 1500, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", true);
+    ui.login.password_textbox = Textbox(400, 2200, 2200, 500, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", true);
+    ui.login.password_textbox.addHoverCover(Texture(0, 0, 2200, 500, "TEXTBOX_SHADOW.TGA"));
     ui.login.main.attach(ui.login.password_textbox);
 
-    ui.login.ok_button = Button(wW / 2 - 600, 2100, 500, 300, "MENU_CHOICE_BACK.TGA", lang["BUTTON_LOGIN_MENU_OK"][Player.lang], "INV_TITEL.TGA");
+    ui.login.ok_button = Button(wW / 2 - 900, 3000, 700, 500, "BUTTON_BACKGROUND.TGA", lang["BUTTON_LOGIN_MENU_OK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.login.ok_button.setBackgroundRegularColor(200, 20, 20);
+    ui.login.ok_button.setBackgroundHoverColor(150, 20, 20);
     ui.login.main.attach(ui.login.ok_button);
 
-    ui.login.back_button = Button(wW / 2 + 100, 2100, 500, 300, "MENU_CHOICE_BACK.TGA", lang["BUTTON_LOGIN_MENU_BACK"][Player.lang], "INV_TITEL.TGA");
+    ui.login.back_button = Button(wW / 2 + 200, 3000, 700, 500, "BUTTON_BACKGROUND.TGA", lang["BUTTON_LOGIN_MENU_BACK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.login.back_button.setBackgroundRegularColor(200, 20, 20);
+    ui.login.back_button.setBackgroundHoverColor(150, 20, 20);
     ui.login.main.attach(ui.login.back_button);
 
     //////////////////
     // register window
-    wW = 2000;
-    wH = 3400;
-    ui.register.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "SR_BLANK.TGA");
-    ui.register.main.setBackgroundColor(10, 10, 40);
-    ui.register.main.setCover("MENU_INGAME.TGA");
+    wW = 3000;
+    wH = 5000;
+    ui.register.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND.TGA");
 
-    temp = Label(0, 100, "Memory");
+    temp = Label(0, 400, "Memory");
     temp.setFont("Font_Old_20_White_Hi.TGA");
     temp.setColor(255, 180, 0);
     ui.register.main.attach(temp);
     temp.center();
     temp = null;
 
-    temp = Label(wW / 2 - 750, 800, lang["LABEL_REGISTER_MENU_USERNAME"][Player.lang]);
+    temp = Label(400, 1200, lang["LABEL_REGISTER_MENU_USERNAME"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
-    ui.register.login_textbox = Textbox(wW / 2 - 750, 800, 1500, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", false);
+    ui.register.login_textbox = Textbox(400, 1200, 2200, 500, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", false);
     ui.register.main.attach(ui.register.login_textbox);
 
-    temp = Label(wW / 2 - 750, 1500, lang["LABEL_REGISTER_MENU_PASSWORD"][Player.lang]);
+    temp = Label(400, 2200, lang["LABEL_REGISTER_MENU_PASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
-    ui.register.password_textbox = Textbox(wW / 2 - 750, 1500, 1500, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", true);
+    ui.register.password_textbox = Textbox(400, 2200, 2200, 500, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", true);
     ui.register.main.attach(ui.register.password_textbox);
 
-    temp = Label(wW / 2 - 750, 2200, lang["LABEL_REGISTER_MENU_CPASSWORD"][Player.lang]);
+    temp = Label(400, 3200, lang["LABEL_REGISTER_MENU_CPASSWORD"][Player.lang]);
     temp.move(0, -(temp.height() + 25));
     ui.register.main.attach(temp);
     temp = null;
-    ui.register.cpassword_textbox = Textbox(wW / 2 - 750, 2200, 1500, 300, "MENU_INGAME.TGA", "", "INV_TITEL.TGA", true);
+    ui.register.cpassword_textbox = Textbox(400, 3200, 2200, 500, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", true);
     ui.register.main.attach(ui.register.cpassword_textbox);
 
-    ui.register.ok_button = Button(wW / 2 - 600, 2800, 500, 300, "MENU_CHOICE_BACK.TGA", lang["BUTTON_REGISTER_MENU_OK"][Player.lang], "INV_TITEL.TGA");
+    ui.register.ok_button = Button(wW / 2 - 900, 4000, 700, 500, "BUTTON_BACKGROUND.TGA", lang["BUTTON_REGISTER_MENU_OK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.register.ok_button.setBackgroundRegularColor(200, 20, 20);
+    ui.register.ok_button.setBackgroundHoverColor(150, 20, 20);
     ui.register.main.attach(ui.register.ok_button);
 
-    ui.register.back_button = Button(wW / 2 + 100, 2800, 500, 300, "MENU_CHOICE_BACK.TGA", lang["BUTTON_REGISTER_MENU_BACK"][Player.lang], "INV_TITEL.TGA");
+    ui.register.back_button = Button(wW / 2 + 200, 4000, 700, 500, "BUTTON_BACKGROUND.TGA", lang["BUTTON_REGISTER_MENU_BACK"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    ui.register.back_button.setBackgroundRegularColor(200, 20, 20);
+    ui.register.back_button.setBackgroundHoverColor(150, 20, 20);
     ui.register.main.attach(ui.register.back_button);
 }
 

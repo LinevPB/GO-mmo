@@ -71,7 +71,7 @@ function setupCoverTextures()
 
 function createCoverTexture(x, y, width, height)
 {
-    return Texture(x, y, width, height, "MENU_CHOICE_BACK_NT.TGA");
+    return Texture(x, y, width, height, "TEXTBOX_BACKGROUND.TGA");
 }
 
 function setCoverTexturesVisibility(val)

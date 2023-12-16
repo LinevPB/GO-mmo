@@ -10,9 +10,7 @@ function isTradeEnabled()
 
 function initNpcTrade()
 {
-    mainWindow = Window(0, 0, 8192, 8192, "SR_BLANK.TGA");
-    mainWindow.setBackgroundColor(10, 10, 20);
-    mainWindow.setCover("MENU_INGAME.TGA");
+    mainWindow = Window(0, 0, 8192, 8192, "WINDOW_BACKGROUND.TGA");
 
     local playerInv = initPlayerWindow();
     local npcInv = initNpcWindow();
@@ -20,8 +18,13 @@ function initNpcTrade()
     mainWindow.attach(playerInv);
     mainWindow.attach(npcInv);
 
-    tradeButton = Button(2800 + 296, 6500 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", lang["TRADE"][Player.lang], "INV_TITEL.TGA");
-    exitButton = Button(2800 + 296, 7100 + 196, 1000, 400, "MENU_CHOICE_BACK.TGA", lang["EXIT"][Player.lang], "INV_TITEL.TGA");
+    tradeButton = Button(2800 + 296, 6500 + 196, 1000, 400, "BUTTON_BACKGROUND.TGA", lang["TRADE"][Player.lang], "BUTTON_BG.TGA");
+    tradeButton.setBackgroundRegularColor(200, 20, 20);
+    tradeButton.setBackgroundHoverColor(150, 20, 20);
+
+    exitButton = Button(2800 + 296, 7100 + 196, 1000, 400, "BUTTON_BACKGROUND.TGA", lang["EXIT"][Player.lang], "BUTTON_BG.TGA");
+    exitButton.setBackgroundRegularColor(200, 20, 20);
+    exitButton.setBackgroundHoverColor(150, 20, 20);
 
     mainWindow.attach(tradeButton);
     mainWindow.attach(exitButton);

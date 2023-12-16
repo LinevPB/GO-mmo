@@ -158,7 +158,7 @@ function getInvSlots()
 
 function setupItemSlider()
 {
-    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), "", "MENU_CHOICE_BACK_NT.TGA", true);
+    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300, Inventory.SIZE + 50, Inventory.MAX_ROW * Inventory.SIZE - 100, "LOG_PAPER.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - Inventory.MAX_ROW), "", "SLIDER_HANDLE.TGA", true);
     getMainMenu().attach(itemSlider);
 }
 
@@ -214,7 +214,7 @@ function updateInvEqColor()
             v.btn.background.regular = "INV_SLOT_EQUIPPED.TGA";
             v.btn.background.hover = "INV_SLOT_EQUIPPED_HIGHLIGHTED.TGA";
         } else {
-            v.btn.background.regular = "INV_SLOT.TGA";
+            v.btn.background.regular = "INVENTORY_SLOT.TGA";
             v.btn.background.hover = "INV_SLOT_HIGHLIGHTED.TGA";
         }
         v.btn.rehover();
@@ -342,6 +342,8 @@ function invUnequip(slot, instance)
 
 function handleItemMenuRender()
 {
+    if (TradeBox.IsEnabled()) return;
+
     foreach(v in itemSlots)
     {
         if (v.render == null)

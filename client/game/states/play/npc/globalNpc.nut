@@ -21,6 +21,7 @@ class GlobalNpc
     levelTex = null;
     levelDraw = null;
     visualVisible = null;
+    max_health = null;
 
     constructor(npcId, npcName, posX, posY, posZ, npcAngle, npcInst)
     {
@@ -38,21 +39,20 @@ class GlobalNpc
 
         texture = Texture(0, 0, 1000, 100, "SR_BLANK.TGA");
         texture.setColor(250, 80, 80);
-        coverTexture = Texture(0, 0, 1000, 100, "MENU_COVER.TGA");
+        coverTexture = Texture(0, 0, 1000, 100, "INV_BACK.TGA");
 
         dead = false;
         dying = false;
 
         level = 0;
+        max_health = 20;
         levelDraw = Draw(0, 0, level);
         levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
-        levelTex = Texture(0, 0, 100, 100, "MENU_CHOICE_BACK.TGA");
+        levelTex = Texture(0, 0, 100, 100, "INV_SLOT.TGA");
         visualVisible = false;
 
         currentAnim = "S_RUN";
         previousAnim = "S_RUN";
-
-        updateWorld(false);
 
         global_npc_list.append(this);
     }
@@ -64,7 +64,6 @@ class GlobalNpc
         stopCurrentAnim();
         setHealth(0);
         playAnim("T_DEADB");
-        updateWorld(false);
     }
 
     function respawn()
@@ -72,6 +71,7 @@ class GlobalNpc
         dead = false;
         dying = false;
         spawn();
+        setPlayerMaxHealth(npc, max_health);
         stopAni(npc, "S_DEADB");
         stopAni(npc, "T_DEADB");
         playAnim("S_RUN");
@@ -92,6 +92,7 @@ class GlobalNpc
 
     function setMaxHealth(val)
     {
+        max_health = val;
         setPlayerMaxHealth(npc, val);
     }
 
@@ -151,6 +152,8 @@ class GlobalNpc
 
         local healthSize = 1000.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
         texture.setSize(healthSize, 100);
+        print(coverTexture.getSize().width);
+        print(texture.getSize().width);
 
         levelTex.setPosition(texture.getPosition().x - levelTex.getSize().width, texture.getPosition().y - levelTex.getSize().height / 2);
         levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2);
@@ -158,17 +161,35 @@ class GlobalNpc
         levelTex.rotation = 45;
     }
 
+    function isSomethingVisible()
+    {
+        return (texture.visible || coverTexture.visible || levelTex.visible || levelDraw.visible || draw.visible || visualVisible);
+    }
+
     function updateWorld(val)
     {
-        // the reason for the weird mechanic is that textures in g2o are bugged
+        if (val == false)
+        {
+            texture.setPosition(0, 0);
+            coverTexture.setPosition(0, 0);
+        }
 
-        texture.visible = val;
         coverTexture.visible = val;
+        texture.visible = val;
+
         levelTex.visible = val;
         levelDraw.visible = val;
         draw.visible = val;
 
         visualVisible = val;
+    }
+
+    function handleDeath()
+    {
+        dying = false;
+        dead = true;
+        setPlayerVisualAlpha(npc, 0.0);
+        unspawnNpc(npc);
     }
 }
 
@@ -264,14 +285,14 @@ function handleNpcAnimation(data)
 function handleDying(npc)
 {
     local alpha = getPlayerVisualAlpha(npc.npc);
-    setPlayerVisualAlpha(npc.npc, alpha - 0.001);
+    alpha -= 0.003;
+    if (alpha <= 0.0) alpha = 0.0;
 
-    if (alpha <= 0)
+    setPlayerVisualAlpha(npc.npc, alpha);
+
+    if (alpha == 0.0)
     {
-        unspawnNpc(npc.npc);
-        npc.dying = false;
-        npc.updateWorld(false);
-        setPlayerVisualAlpha(npc.npc, 0.0);
+        npc.handleDeath();
     }
 }
 
@@ -281,9 +302,16 @@ function globalNpcRender()
 
     foreach(npc in global_npc_list)
     {
+        print(getPlayerHealth(npc.npc) + "/" + getPlayerMaxHealth(npc.npc));
         if (npc.dying)
         {
+            if (npc.isSomethingVisible())
+            {
+                npc.updateWorld(false);
+            }
+
             handleDying(npc);
+            continue;
         }
 
         if (npc.dead) continue;
@@ -291,7 +319,7 @@ function globalNpcRender()
         local dist = getDistance3d(npc.pos.x, npc.pos.y, npc.pos.z, pos.x, pos.y, pos.z);
         if (dist < distance_draw)
         {
-            if (!npc.visualVisible)
+            if (!npc.isSomethingVisible())
             {
                 npc.updateWorld(true);
             }
@@ -302,7 +330,7 @@ function globalNpcRender()
         }
         else
         {
-            if (npc.visualVisible)
+            if (npc.isSomethingVisible())
             {
                 npc.updateWorld(false);
             }
@@ -313,7 +341,7 @@ function globalNpcRender()
 function handleNpcSetHealth(id, val)
 {
     local npc = findGlobalNpc(id);
-    if (val == 0) val = 1;
+    //if (val == 0) val = 1;
     npc.setHealth(val);
 }
 

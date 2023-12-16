@@ -1,4 +1,5 @@
-enum GameState {
+enum GameState
+{
     UNKNOWN,
     LOGIN,
     CHARACTER_SELECTION,
@@ -6,7 +7,8 @@ enum GameState {
     PLAY
 };
 
-Animation <- {
+Animation <-
+{
     STAND = "T_STAND_2_SIT"
 };
 
@@ -21,7 +23,6 @@ function absolute(v)
     return v;
 }
 
-// monster texture out of screen
-// need to add amount to inv drop items
+
 // interface controller
 // need to add use mechanic

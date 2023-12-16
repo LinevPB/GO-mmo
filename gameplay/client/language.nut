@@ -16,7 +16,7 @@ lang <- {
 
     ["BUTTON_MAIN_MENU_QUIT"] = {
         ["en"]= "Quit",
-        ["pl"]= "WyjdÅº"
+        ["pl"]= "WyjdŸ"
     },
 
     ///
@@ -27,7 +27,7 @@ lang <- {
 
     ["LABEL_LOGIN_MENU_PASSWORD"] = {
         ["en"]= "Password",
-        ["pl"]= "HasÅ‚o"
+        ["pl"]= "Has³o"
     },
 
     ["BUTTON_LOGIN_MENU_OK"] = {
@@ -37,7 +37,7 @@ lang <- {
 
     ["BUTTON_LOGIN_MENU_BACK"] = {
         ["en"]= "Back",
-        ["pl"]= "WrÃ³Ä‡"
+        ["pl"]= "Wróæ"
     },
 
     ///
@@ -48,12 +48,12 @@ lang <- {
 
     ["LABEL_REGISTER_MENU_PASSWORD"] = {
         ["en"]= "Password",
-        ["pl"]= "HasÅ‚o"
+        ["pl"]= "Has³o"
     },
 
     ["LABEL_REGISTER_MENU_CPASSWORD"] = {
         ["en"]= "Confirm password",
-        ["pl"]= "PowtÃ³rz hasÅ‚o"
+        ["pl"]= "Powtórz has³o"
     },
 
     ["BUTTON_REGISTER_MENU_OK"] = {
@@ -63,7 +63,7 @@ lang <- {
 
     ["BUTTON_REGISTER_MENU_BACK"] = {
         ["en"]= "Back",
-        ["pl"]= "WrÃ³Ä‡"
+        ["pl"]= "Wróæ"
     },
 
     //
@@ -94,7 +94,7 @@ lang <- {
 
     ["BUTTON_CHAR_SELECTION_MENU_CREATE"] = {
         ["en"]= "Create",
-        ["pl"]= "StwÃ³rz"
+        ["pl"]= "Stwórz"
     },
 
     ["BUTTON_CHAR_SELECTION_MENU_SELECT"] = {
@@ -104,7 +104,7 @@ lang <- {
 
     ["BUTTON_CHAR_SELECTION_MENU_QUIT"] = {
         ["en"]= "Quit",
-        ["pl"]= "WyjdÅº"
+        ["pl"]= "WyjdŸ"
     },
 
     //
@@ -115,12 +115,12 @@ lang <- {
 
     ["LABEL_CREATION_NAME"] = {
         ["en"]= "Name:",
-        ["pl"]= "ImiÄ™:"
+        ["pl"]= "Imiê:"
     },
 
     ["LABEL_CREATION_MALE"] = {
         ["en"]= "Male",
-        ["pl"]= "MÄ™Å¼czyzna"
+        ["pl"]= "Mê¿czyzna"
     },
 
     ["LABEL_CREATION_FEMALE"] = {
@@ -130,54 +130,54 @@ lang <- {
 
     ["LABEL_CREATION_SEX"] = {
         ["en"]= "Sex",
-        ["pl"]= "PÅ‚eÄ‡"
+        ["pl"]= "P³eæ"
     },
 
     ["LABEL_CREATION_BODYTEX"] = {
         ["en"]= "Body texture",
-        ["pl"]= "Tekstura ciaÅ‚a"
+        ["pl"]= "Tekstura cia³a"
     },
 
     ["LABEL_CREATION_HEADMODEL"] = {
         ["en"]= "Head model",
-        ["pl"]= "Model gÅ‚owy"
+        ["pl"]= "Model g³owy"
     },
 
     ["LABEL_CREATION_HEADTEX"] = {
         ["en"]= "Head texture",
-        ["pl"]= "Tekstura gÅ‚owy"
+        ["pl"]= "Tekstura g³owy"
     },
 
     ["BUTTON_CREATION_OK"] = {
         ["en"]= "Create",
-        ["pl"]= "StwÃ³rz"
+        ["pl"]= "Stwórz"
     },
 
     ["BUTTON_CREATION_BACK"] = {
         ["en"]= "Back",
-        ["pl"]= "WrÃ³Ä‡"
+        ["pl"]= "Wróæ"
     },
 
     ///
 
     ["INV_USE"] = {
         ["en"]= "Use",
-        ["pl"]= "UÅ¼yj"
+        ["pl"]= "U¿yj"
     },
 
     ["INV_DROP"] = {
         ["en"]= "Drop",
-        ["pl"]= "WyrzuÄ‡"
+        ["pl"]= "Wyrzuæ"
     },
 
     ["INV_NONUSABLE"] = {
         ["en"]= "Non usable",
-        ["pl"]= "BezuÅ¼yteczne"
+        ["pl"]= "Bezu¿yteczne"
     },
 
     ["INV_EQUIP"] = {
         ["en"]= "Equip",
-        ["pl"]= "ZaÅ‚Ã³Å¼"
+        ["pl"]= "Za³ó¿"
     },
 
     ["INV_UNEQUIP"] = {
@@ -192,12 +192,12 @@ lang <- {
 
     ["ADD_EXPERIENCE"] = {
         ["en"]= "Experience +",
-        ["pl"]= "DoÅ›wiadczenie +"
+        ["pl"]= "Doœwiadczenie +"
     },
 
     ["VALUE"] = {
         ["en"]= "Value: ",
-        ["pl"]= "WartoÅ›Ä‡: "
+        ["pl"]= "Wartoœæ: "
     },
 
     ["SHOP"] = {
@@ -212,7 +212,7 @@ lang <- {
 
     ["MY_INVENTORY"] = {
         ["en"] = "My inventory",
-        ["pl"] = "MÃ³j ekwipunek"
+        ["pl"] = "Mój ekwipunek"
     },
 
     ["PRICE"] = {
@@ -222,12 +222,12 @@ lang <- {
 
     ["TRADE_SUCCESS"] = {
         ["en"] = "Trade successful",
-        ["pl"] = "Handel pomyÅ›lny"
+        ["pl"] = "Handel pomyœlny"
     },
 
     ["TRADE_LITTLE_ORES"] = {
         ["en"] = "Not enough ores!",
-        ["pl"] = "Za maÅ‚o rudy!"
+        ["pl"] = "Za ma³o rudy!"
     },
 
     ["TRADE"] = {
@@ -237,12 +237,12 @@ lang <- {
 
     ["EXIT"] = {
         ["en"] = "Exit",
-        ["pl"] = "WyjdÅº"
+        ["pl"] = "WyjdŸ"
     },
 
     ["ENTER_AMOUNT"] = {
         ["en"] = "Enter the amount of",
-        ["pl"] = "WprowadÅº iloÅ›Ä‡"
+        ["pl"] = "WprowadŸ iloœæ"
     },
 
     ["TRADEBOX_OK"] = {
@@ -267,7 +267,7 @@ lang <- {
 
     ["INV_QA"] = {
         ["en"] = "Quick access",
-        ["pl"] = "Szybki dostÄ™p"
+        ["pl"] = "Szybki dostêp"
     },
 
     ["STATISTICS"] = {
@@ -277,12 +277,12 @@ lang <- {
 
     ["ESC_INFO"] = {
         ["en"] = "(ESC) Press to resume",
-        ["pl"] = "(ESC) WciÅ›nij by powrÃ³ciÄ‡"
+        ["pl"] = "(ESC) Wciœnij by powróciæ"
     },
 
     ["NAME"] = {
         ["en"] = "Name: ",
-        ["pl"] = "ImiÄ™: "
+        ["pl"] = "Imiê: "
     },
 
     ["LEVEL"] = {
@@ -292,12 +292,12 @@ lang <- {
 
     ["EXPERIENCE"] = {
         ["en"] = "Experience: ",
-        ["pl"] = "DoÅ›wiadczenie: "
+        ["pl"] = "Doœwiadczenie: "
     },
 
     ["HEALTH"] = {
         ["en"] = "Health: ",
-        ["pl"] = "Å»ycie: "
+        ["pl"] = "¯ycie: "
     },
 
     ["MANA"] = {
@@ -307,42 +307,42 @@ lang <- {
 
     ["STRENGTH"] = {
         ["en"] = "Strength: ",
-        ["pl"] = "SiÅ‚a: "
+        ["pl"] = "Si³a: "
     },
 
     ["DEXTERITY"] = {
         ["en"] = "Dexterity: ",
-        ["pl"] = "ZwinnoÅ›Ä‡: "
+        ["pl"] = "Zwinnoœæ: "
     },
 
     ["SKILL_1H"] = {
         ["en"] = "One-handed fight: ",
-        ["pl"] = "Walka broniÄ… jednorÄ™czna: "
+        ["pl"] = "Walka broni¹ jednorêczna: "
     },
 
     ["SKILL_2H"] = {
         ["en"] = "Two-handed fight: ",
-        ["pl"] = "Walka broniÄ… dwurÄ™cznÄ…: "
+        ["pl"] = "Walka broni¹ dwurêczn¹: "
     },
 
     ["SKILL_BOW"] = {
         ["en"] = "Bow fight: ",
-        ["pl"] = "Walka Å‚ukiem: "
+        ["pl"] = "Walka ³ukiem: "
     },
 
     ["SKILL_CBOW"] = {
         ["en"] = "Crossbow fight: ",
-        ["pl"] = "Walka kuszÄ…: "
+        ["pl"] = "Walka kusz¹: "
     },
 
     ["MAGIC_LEVEL"] = {
         ["en"] = "Magic level: ",
-        ["pl"] = "KrÄ…g magii: "
+        ["pl"] = "Kr¹g magii: "
     },
 
     ["GUARDIAN"] = {
         ["en"] = "Guardian",
-        ["pl"] = "StraÅ¼nik"
+        ["pl"] = "Stra¿nik"
     },
 
     ["TRADER"] = {
@@ -352,7 +352,7 @@ lang <- {
 
     ["SCAVENGER"] = {
         ["en"] = "Scavenger",
-        ["pl"] = "Åšcierwojad"
+        ["pl"] = "Œcierwojad"
     },
 
     ["CTRL"] = {
@@ -367,17 +367,17 @@ lang <- {
 
     ["TAKE"] = {
         ["en"] = "Take",
-        ["pl"] = "PodnieÅ›"
+        ["pl"] = "Podnieœ"
     },
 
     ["GET_OUT"] = {
         ["en"] = "Get out of here!",
-        ["pl"] = "Spadaj stÄ…d!"
+        ["pl"] = "Spadaj st¹d!"
     },
 
     ["RESPAWN_INFO"] = {
         ["en"] = "You are going to respawn in ",
-        ["pl"] = "Odrodzisz siÄ™ za "
+        ["pl"] = "Odrodzisz siê za "
     },
 
     ["ADD_GOLD"] = {

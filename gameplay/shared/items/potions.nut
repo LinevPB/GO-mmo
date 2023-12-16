@@ -1,7 +1,7 @@
 ServerItems.add({
     name = {
         ["en"] = "Health potion",
-        ["pl"] = "Pe≈Çnia ≈ºycia"
+        ["pl"] = "Pe≥nia øycia"
     },
     instance = "ITPO_HEALTH_ADDON_04",
     type = ItemType.POTION,

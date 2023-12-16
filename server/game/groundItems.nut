@@ -20,9 +20,9 @@ class GroundItem
     }
 }
 
-function addGroundItem(pos, instance)
+function addGroundItem(pos, instance, amount)
 {
-    local item = GroundItem(pos, instance);
+    local item = GroundItem(pos, instance, amount);
     return item;
 }
 

@@ -1,5 +1,5 @@
 local players = [];
-RESPAWN_TIME <- 10;
+RESPAWN_TIME <- 15;
 
 class PlayerStructure
 {

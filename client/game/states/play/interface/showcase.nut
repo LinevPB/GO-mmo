@@ -16,11 +16,11 @@ Showcase.Init <- function()
 {
     SH_tex = Texture(0, 0, 1500, 1000, "SR_BLANK");
     SH_tex.setColor(10, 10, 40);
-    SH_cover = Texture(0, 0, 1500, 1000, "MENU_COVER.TGA");
+    SH_cover = Texture(0, 0, 1500, 1000, "WINDOW_BACKGROUND.TGA");
 
     SH_name = Draw(0, 0, "Item name");
     SH_name.setColor(100, 255, 100);
-    SH_nameCover = Texture(0, 0, SH_name.width + 100, SH_name.height + 100, "MENU_CHOICE_BACK_NT.TGA");
+    SH_nameCover = Texture(0, 0, SH_name.width + 100, SH_name.height + 100, "TEXTBOX_BACKGROUND.TGA");
 
     SH_render = ItemRender(0, SH_nameCover.getPosition().y + SH_nameCover.getSize().height, 1000, 1000, "ITAR_GOVERNOR");
     SH_render.lightingswell = true;

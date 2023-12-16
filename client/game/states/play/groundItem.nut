@@ -1,6 +1,12 @@
 local groundItems = [];
 local giId = 0;
 
+local function amountVisible(amount)
+{
+    if (amount <= 1) return "";
+    return " x" + amount;
+}
+
 class GroundItem
 {
     id = null;
@@ -24,7 +30,7 @@ class GroundItem
         itemDraw = Draw3d(pos.x, pos.y, pos.z);
         itemDraw.insertText("");
         itemDraw.insertText("");
-        itemDraw.insertText(item.name[Player.lang]);
+        itemDraw.insertText(item.name[Player.lang] + amountVisible(aAmount));
         itemDraw.setLineColor(2, 160, 160, 255);
         itemDraw.visible = true;
 
@@ -61,9 +67,9 @@ function getGroundItems()
     return groundItems;
 }
 
-function handleSpawnGroundItem(id, pos, instance)
+function handleSpawnGroundItem(id, pos, instance, amount)
 {
-    local temp = GroundItem(id, pos, instance);
+    local temp = GroundItem(id, pos, instance, amount);
     temp.spawn();
 }
 

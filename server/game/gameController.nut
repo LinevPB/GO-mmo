@@ -248,11 +248,11 @@ function handleTrade(pid, item_list, target)
 
 function handleSpawnGround(pos, instance, amount = 1)
 {
-    local item = addGroundItem(pos, instance);
+    local item = addGroundItem(pos, instance, amount);
 
     foreach(v in getPlayers())
     {
-        sendPlayerPacket(v.id, PacketType.SPAWN_GROUND_ITEM, item.id, item.pos.x, item.pos.y, item.pos.z, item.instance);
+        sendPlayerPacket(v.id, PacketType.SPAWN_GROUND_ITEM, item.id, item.pos.x, item.pos.y, item.pos.z, item.instance, item.amount);
     }
 }
 

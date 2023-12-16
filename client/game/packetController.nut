@@ -163,7 +163,7 @@ local function onPacket(packet) {
         break;
 
         case PacketType.SPAWN_GROUND_ITEM:
-            handleSpawnGroundItem(data[0], Vec3(data[1], data[2], data[3]), data[4]);
+            handleSpawnGroundItem(data[0], Vec3(data[1], data[2], data[3]), data[4], data[5]);
         break;
 
         case PacketType.REMOVE_GROUND_ITEM:

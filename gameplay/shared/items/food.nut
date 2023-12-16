@@ -22,7 +22,7 @@ ServerItems.add({
 ServerItems.add({
     name = {
         ["en"] = "Apple",
-        ["pl"] = "Jab≈Çko"
+        ["pl"] = "Jab≥ko"
     },
     instance = "ITFO_APPLE",
     type = ItemType.FOOD,

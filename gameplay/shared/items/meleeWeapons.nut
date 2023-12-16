@@ -22,7 +22,7 @@ ServerItems.add({
 ServerItems.add({
     name = {
         ["en"] = "Orc's axe",
-        ["pl"] = "Orkowy topÃ³r"
+        ["pl"] = "Orkowy topór"
     },
     instance = "ITMW_2H_ORCAXE_03",
     type = ItemType.WEAPON,

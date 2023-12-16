@@ -79,12 +79,12 @@ local function weaponInfoPolish(item)
     result.append("Wymagany poziom: " + item.levelRequired);
 
     if (item.damage.physical > 0)
-        result.append("ObraÅ¼enia fizyczne: " + item.damage.physical);
+        result.append("Obra¿enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("ObraÅ¼enia magiczne: " + item.damage.magical);
+        result.append("Obra¿enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -155,7 +155,7 @@ function armorInfoPolish(item)
         result.append("");
 
     if (item.bonusStats.strength != null)
-        result.append("Bonus do siÅ‚y: " + item.bonusStats.strength);
+        result.append("Bonus do si³y: " + item.bonusStats.strength);
     else
         result.append("");
 
@@ -208,15 +208,15 @@ function ammoInfoPolish(item)
 {
     local result = [];
 
-    result.append("Amunicja do broni dalekosiÄ™Å¼nej");
+    result.append("Amunicja do broni dalekosiê¿nej");
 
     if (item.damage.physical > 0)
-        result.append("ObraÅ¼enia fizyczne: " + item.damage.physical);
+        result.append("Obra¿enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("ObraÅ¼enia magiczne: " + item.damage.magical);
+        result.append("Obra¿enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -278,17 +278,17 @@ function magicInfoPolish(item)
     local result = [];
 
     if (item.magicLevelRequired == 0)
-        result.append("ZwÃ³j")
+        result.append("Zwój")
     else
-        result.append("Wymagany krÄ…g magii: " + item.magicLevelRequired);
+        result.append("Wymagany kr¹g magii: " + item.magicLevelRequired);
 
     if (item.damage.physical > 0)
-        result.append("ObraÅ¼enia fizyczne: " + item.damage.physical);
+        result.append("Obra¿enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("ObraÅ¼enia magiczne: " + item.damage.magical);
+        result.append("Obra¿enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -343,16 +343,16 @@ function foodInfoPolish(item)
 {
     local result = [];
 
-    result.append("MoÅ¼na spoÅ¼yÄ‡");
+    result.append("Mo¿na spo¿yæ");
     result.append("");
 
     if (item.restores.health > 0)
-        result.append("Odnawia Å¼ycie: " + item.restores.health);
+        result.append("Odnawia ¿ycie: " + item.restores.health);
     else
         result.append("");
 
     if (item.restores.mana > 0)
-        result.append("Odnawia manÄ™: " + item.restores.mana);
+        result.append("Odnawia manê: " + item.restores.mana);
     else
         result.append("");
 
@@ -401,16 +401,16 @@ function potionInfoPolish(item)
 {
     local result = [];
 
-    result.append("MoÅ¼na spoÅ¼yÄ‡");
+    result.append("Mo¿na spo¿yæ");
     result.append("");
 
     if (item.restores.health > 0)
-        result.append("Odnawia Å¼ycie: " + item.restores.health);
+        result.append("Odnawia ¿ycie: " + item.restores.health);
     else
         result.append("");
 
     if (item.restores.mana > 0)
-        result.append("Odnawia manÄ™: " + item.restores.mana);
+        result.append("Odnawia manê: " + item.restores.mana);
     else
         result.append("");
 

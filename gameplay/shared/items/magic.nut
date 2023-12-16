@@ -47,7 +47,7 @@ ServerItems.add({
 ServerItems.add({
     name = {
         ["en"] = "Ice shot",
-        ["pl"] = "Lodowy strza≈Ç"
+        ["pl"] = "Lodowy strza≥"
     },
     instance = "ITRU_ICEBOLT",
     type = ItemType.MAGIC,

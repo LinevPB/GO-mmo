@@ -1,5 +1,3 @@
-DEBUG <- true;
-
 Player <- {
     id = 0,
     gameState = GameState.UNKNOWN,

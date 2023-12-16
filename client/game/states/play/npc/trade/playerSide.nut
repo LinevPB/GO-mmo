@@ -48,15 +48,13 @@ function clearPlayerBasket()
 
 function initPlayerWindow()
 {
-    myInventory = Window(300, 300, 2500, 6000, "SR_BLANK.TGA");
-    myInventory.setBackgroundColor(10, 10, 30);
-    myInventory.setCover("MENU_INGAME.TGA");
+    myInventory = Window(300, 300, 2500, 6000, "WINDOW_BACKGROUND.TGA");
 
-    itemsToTradeTex = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
-    itemsToTradeTexCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "MENU_INGAME.TGA");
+    itemsToTradeTex = Texture(300, 6400, 2500, 8192 - 6500 - 100, "WINDOW_BACKGROUND.TGA");
+    itemsToTradeTexCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "WINDOW_BACKGROUND.TGA");
     itemsToTradeTex.setColor(10, 10, 30);
 
-    tradeSlotsCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "SR_BLANK.TGA");
+    tradeSlotsCover = Texture(300, 6400, 2500, 8192 - 6500 - 100, "WINDOW_BACKGROUND.TGA");
     tradeSlotsCover.setColor(75, 75, 100);
 
     basketValueDraw = Draw(0, 0, lang["VALUE"][Player.lang]);
@@ -152,13 +150,13 @@ function initPlayerSlots()
         }
     }
 
-    topCover = Texture(myInventory.pos.x, myInventory.pos.y, myInventory.size.width, 600, "SR_BLANK.TGA");
+    topCover = Texture(myInventory.pos.x, myInventory.pos.y, myInventory.size.width, 600, "WINDOW_BACKGROUND.TGA");
     topCover.setColor(10, 10, 40);
 
-    bottomCover = Texture(myInventory.pos.x, myInventory.pos.y + 6 * 900, myInventory.size.width, 600, "SR_BLANK.TGA");
+    bottomCover = Texture(myInventory.pos.x, myInventory.pos.y + 6 * 900, myInventory.size.width, 600, "WINDOW_BACKGROUND.TGA");
     bottomCover.setColor(10, 10, 40);
 
-    bottomCoverSecond = Texture(myInventory.pos.x, myInventory.pos.y + 6 * 900, myInventory.size.width, 600, "MENU_INGAME.TGA");
+    bottomCoverSecond = Texture(myInventory.pos.x, myInventory.pos.y + 6 * 900, myInventory.size.width, 600, "WINDOW_BACKGROUND.TGA");
 
     myGoldDraw = Draw(0, 0, lang["ORE"][Player.lang]);
     myGoldDraw.setPosition(myInventory.pos.x + 350, myInventory.pos.y + 6 * 900 + 300 - myGoldDraw.height / 2);
@@ -168,11 +166,11 @@ function initPlayerSlots()
     myGoldAmountDraw.setColor(0, 150, 255);
     myGoldAmountDraw.setPosition(myGoldDraw.getPosition().x + myGoldDraw.width, myGoldDraw.getPosition().y);
 
-    itemSlider = Slider(3 * 600 + 400, 600 + 50, 8 * 600 - 100, "LOG_PAPER.TGA", 600 * (90 / 3 - 8), "", "MENU_CHOICE_BACK_NT.TGA", true);
+    itemSlider = Slider(3 * 600 + 400, 600 + 50, 8 * 600 - 100, "LOG_PAPER.TGA", 600 * (90 / 3 - 8), "", "SLIDER_HANDLE.TGA", true);
     itemSlider.setBackgroundColor(255, 255, 0);
     myInventory.attach(itemSlider);
 
-    myItemsCover = Texture(myInventory.pos.x + 200, myInventory.pos.y + 600, 600 * 3, 600*8, "SR_BLANK.TGA");
+    myItemsCover = Texture(myInventory.pos.x + 200, myInventory.pos.y + 600, 600 * 3, 600*8, "WINDOW_BACKGROUND.TGA");
     myItemsCover.setColor(75, 75, 100);
 
     myInvDraw = Draw(0, 0, lang["MY_INVENTORY"][Player.lang]);
@@ -180,7 +178,7 @@ function initPlayerSlots()
     myInvDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
     myInvDraw.setPosition(myInventory.pos.x + myInventory.size.width / 2 - myInvDraw.width / 2, myInventory.pos.y + 300 - myInvDraw.height / 2);
 
-    myInvDrawCover = Texture(myInventory.pos.x, myInventory.pos.y, myInventory.size.width, 600, "MENU_CHOICE_BACK.TGA");
+    myInvDrawCover = Texture(myInventory.pos.x, myInventory.pos.y, myInventory.size.width, 600, "WINDOW_BACKGROUND.TGA");
 }
 
 function initPlayerTradeSlots()

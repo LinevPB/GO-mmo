@@ -6,11 +6,11 @@ local QAA_Draws = [];
 
 function initQA()
 {
-    coverTex = Texture(8192/2 - 1400, 8192-1000, 2800, 500, "SR_BLANK.TGA");
-    coverTex.setColor(10, 10, 40);
+    coverTex = Texture(8192/2 - 1400, 8192-1000, 2800, 500, "TEXTBOX_BACKGROUND.TGA");
+
     for(local i = 0;  i < 4; i++)
     {
-        QA_Slots.append(Texture(coverTex.getPosition().x + 700 * i, coverTex.getPosition().y, 700, 500, "MENU_COVER.TGA"));
+        QA_Slots.append(Texture(coverTex.getPosition().x + 700 * i, coverTex.getPosition().y, 700, 500, "INVENTORY_SLOT.TGA"));
         QA_Renders.append(ItemRender(QA_Slots[i].getPosition().x + 100, QA_Slots[i].getPosition().y, QA_Slots[i].getSize().width - 200, QA_Slots[i].getSize().height, Player.qa[i]));
         QAF_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, "F" + (i + 1)));
         QAA_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, ""));
@@ -52,7 +52,7 @@ function handleQARender()
         }
         else
         {
-            QA_Slots[i].file = "MENU_COVER.TGA";
+            QA_Slots[i].file = "INVENTORY_SLOT.TGA";
         }
 
         foreach(v in Player.items)

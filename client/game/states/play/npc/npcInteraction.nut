@@ -2,7 +2,6 @@
 info_draw <- Draw(0, 0, "");
 HERO <- heroId;
 BOT <- -1;
-distance_draw <- 3500;
 
 local dialog_draw = null;
 local turning = false;
@@ -45,16 +44,16 @@ function initInteraction()
         Draw(8192/2, 6850, "5. ")
     ];
 
-    intWindow = Window(0, 6500, 8192, 8192 - 6500, "SR_BLANK.TGA");
-    intWindow.setCover("MENU_INGAME.TGA");
+    intWindow = Window(0, 6500, 8192, 8192 - 6500, "TEXTBOX_BACKGROUND.TGA");
 
     dialogOpt = [
-        Button(8192/2 - 1000, 100, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 1000, 400, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 1000, 700, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 1000, 1000, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 1000, 1300, 8000/2, 300, "NONE", "", "NONE")
+        Button(8192/2 - 2000, 100, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2000, 400, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2000, 700, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2000, 1000, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2000, 1300, 8000/2, 300, "NONE", "", "NONE")
     ];
+
     intWindow.attach(dialogOpt[0]);
     intWindow.attach(dialogOpt[1]);
     intWindow.attach(dialogOpt[2]);
@@ -107,7 +106,6 @@ function interact(fid)
 
     intWindow.setColorForAllButtons(160, 160, 255);
     intWindow.setHoverColorForAllButtons(200, 200, 255);
-    intWindow.setBackgroundColor(60, 40, 20);
 
     local pos = getPlayerPosition(heroId);
     local npos = getPlayerPosition(fid.npc);

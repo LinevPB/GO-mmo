@@ -52,21 +52,18 @@ Inventory.Init <- function()
 
 function setupInventoryMenu()
 {
-    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "SR_BLANK.TGA");
-    mainMenu.background.texture.setColor(10, 10, 20);
+    mainMenu = Window(0, 0, Inventory.width, Inventory.height, "WINDOW_BACKGROUND.TGA");
 
-    slotMenu = Window(0, 0, 1000, 500, "SR_BLANK.TGA");
-    slotMenu.background.texture.setColor(210, 10, 60);
-    slotMenu.setCover("MENU_CHOICE_BACK.TGA");
+    slotMenu = Window(0, 0, 1000, 500, "WINDOW_BACKGROUND.TGA");
 
-    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "SR_BLANK.TGA", lang["INV_USE"][Player.lang], "MENU_CHOICE_BACK.TGA");
-    slotMenuButtons.useButton.setBackgroundRegularColor(10, 10, 60);
-    slotMenuButtons.useButton.setBackgroundHoverColor(255, 255, 255);
+    slotMenuButtons.useButton = Button(0, 0, 1000, 250, "BUTTON_BACKGROUND.TGA", lang["INV_USE"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    slotMenuButtons.useButton.setBackgroundRegularColor(200, 20, 20);
+    slotMenuButtons.useButton.setBackgroundHoverColor(150, 20, 20);
     slotMenu.attach(slotMenuButtons.useButton);
 
-    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "SR_BLANK.TGA", lang["INV_DROP"][Player.lang], "MENU_CHOICE_BACK.TGA");
-    slotMenuButtons.dropButton.setBackgroundRegularColor(10, 10, 60);
-    slotMenuButtons.dropButton.setBackgroundHoverColor(255, 255, 255);
+    slotMenuButtons.dropButton = Button(0, 250, 1000, 250, "BUTTON_BACKGROUND.TGA", lang["INV_DROP"][Player.lang], "BUTTON_BACKGROUND.TGA");
+    slotMenuButtons.dropButton.setBackgroundRegularColor(200, 20, 20);
+    slotMenuButtons.dropButton.setBackgroundHoverColor(150, 20, 20);
     slotMenu.attach(slotMenuButtons.dropButton);
 
     slotMenuButtons.useButton.rehover();
@@ -148,6 +145,8 @@ function invUnhover(el)
 function playClickButtonHandler(id) // click
 {
     if (!Inventory.invEnabled) return;
+    if (TradeBox.IsEnabled()) return;
+
     local temp = null;
 
     foreach(i, v in getItemSlots())
@@ -236,6 +235,8 @@ function handleSlotMenu(id, pointer)
 
 function rawOnClick(key)
 {
+    if (TradeBox.IsEnabled()) return;
+
     if (!slotMenu.enabled)
     {
         return;
@@ -317,6 +318,21 @@ function findSlot(instance)
 
 function INVplayButtonHandler(id) // release
 {
+    if (id == TradeBox.GetCancelBtn())
+    {
+        return TradeBox.Enable(false);
+    }
+
+    if (id == TradeBox.GetOkBtn())
+    {
+        local temp = TradeBox.GetHold();
+        local val = TradeBox.GetValue();
+
+        sendPacket(PacketType.DROP_ITEM, temp.instance, val.tointeger());
+
+        return TradeBox.Enable(false);
+    }
+
     if (id == slotMenuButtons.useButton.id)
     {
         if (!inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
@@ -421,6 +437,7 @@ function INVplayButtonHandler(id) // release
 function onElementRender(el)
 {
     if (!Inventory.IsEnabled()) return;
+    if (TradeBox.IsEnabled()) return;
 
     if (ITEM_CHANGE)
     {
@@ -448,5 +465,10 @@ function onElementRender(el)
 
 function handleDropItem(slot)
 {
-    sendPacket(PacketType.DROP_ITEM, slot.instance, 1);
+    TradeBox.Enable(true);
+    TradeBox.SetHold({ instance = slot.instance });
+    TradeBox.SetItemName(ServerItems.getName(slot.instance)[Player.lang]);
+    TradeBox.Select();
+
+    return;
 }

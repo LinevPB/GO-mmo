@@ -38,6 +38,8 @@ class Element {
     more = null;
     frozen = null;
 
+    hoverCovers = null;
+
     constructor(x, y, width, height, texture, title, hover_texture = "NONE") {
         id = element_id;
         element_id++;
@@ -72,6 +74,7 @@ class Element {
         baseY = y;
 
         frozen = false;
+        hoverCovers = [];
     }
 
     function isHovered()
@@ -113,6 +116,11 @@ class Element {
     function setPosition(x, y) {
         pos.x = x;
         pos.y = y;
+
+        foreach(v in hoverCovers)
+        {
+            v.setPosition(x, y);
+        }
 
         refresh();
     }
@@ -175,11 +183,23 @@ class Element {
             if (bg_color_hover != null)
                 setBackgroundColor(bg_color_hover.r, bg_color_hover.g, bg_color_hover.b);
         }
+
+        foreach(v in hoverCovers)
+        {
+            v.visible = true;
+            v.top();
+        }
+
         onHover(this);
     }
 
     function unhover() {
         if (!hovered) return;
+
+        foreach(v in hoverCovers)
+        {
+            v.visible = false;
+        }
 
         hovered = false;
         if (background != null && !disableBackground) {
@@ -209,6 +229,11 @@ class Element {
     {
         background.texture.top();
         draw.top();
+    }
+
+    function addHoverCover(val)
+    {
+        hoverCovers.append(val);
     }
 }
 
