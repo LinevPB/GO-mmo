@@ -25,7 +25,6 @@ class InventorySlot
     row = null;
     column = null;
     slot = null;
-    enabledA = null;
     alpha = null;
     equipped = null;
 
@@ -39,10 +38,10 @@ class InventorySlot
         amount = null;
         instance = null;
         alpha = false;
-        enabledA = false;
         btn.more = this;
         equipped = false;
         render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, "");
+        render.visible = false;
     }
 
     function reset()
@@ -56,29 +55,13 @@ class InventorySlot
         alpha = val;
     }
 
-    function isVisible()
-    {
-        return enabledA;
-    }
-
     function enable(val)
     {
-        if (val == true && isVisible()) return;
-        if (val == false && !isVisible()) return;
-
-        btn.enable(val);
-        enabledA = val;
-        invUnhover(this.btn);
-
-        render.visible = val;
-
-        if (val == false)
+        if (render.visible != val)
         {
-            render.setPosition(0, 0);
-        }
-        else
-        {
-            render.setPosition(btn.pos.x, btn.pos.y);
+            btn.enable(val);
+            invUnhover(this.btn);
+            render.visible = val;
         }
     }
 
@@ -111,7 +94,9 @@ class InventorySlot
 
     function updatePos()
     {
-        if (isVisible()) {
+        local pos = render.getPosition();
+        if ((pos.x != btn.pos.x || pos.y != btn.pos.y) || render.visible)
+        {
             render.setPosition(btn.pos.x, btn.pos.y);
         }
     }
@@ -124,9 +109,13 @@ function handleSlideSlots(el)
     foreach(v in itemSlots)
     {
         if ((v.btn.pos.y + v.btn.size.height < invY) || (v.btn.pos.y > 8192 - 392))
+        {
             v.enable(false);
+        }
         else
+        {
             v.enable(true);
+        }
 
         v.updatePos();
     }
@@ -166,16 +155,19 @@ function setupItemSlider()
     getMainMenu().attach(itemSlider);
 }
 
-function initializeItemRenders()
+function onInvSlide(el)
 {
-    for (local i = 0; i < Inventory.MAX_ITEMS; i++)
-    {
-        itemSlots[i].setRender("", 0);
-    }
+    if (!Inventory.IsEnabled()) return;
+
+    handleSlideSlots(el);
+
+    letCoversTop();
 }
 
 function initializeInventorySlots()
 {
+    itemMenu.setPosition(itemMenu.baseX, itemMenu.baseY);
+
     local column = 0;
     local row = 0;
     itemSlots = [];
@@ -190,6 +182,8 @@ function initializeInventorySlots()
 
         itemMenu.attach(temp.btn);
         itemSlots.append(temp);
+
+        temp.updatePos();
 
         if (column == Inventory.MAX_COLUMN - 1) {
             column = 0;

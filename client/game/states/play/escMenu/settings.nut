@@ -1,5 +1,6 @@
 local draw = null;
 local settingsMenu = null;
+local enabled = false;
 
 function initSettings()
 {
@@ -11,8 +12,9 @@ function initSettings()
 function enableSettings(val)
 {
     settingsMenu.enable(val);
-
     draw.visible = val;
+
+    enabled = val;
 }
 
 function settingsRender()

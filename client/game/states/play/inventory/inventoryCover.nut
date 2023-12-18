@@ -14,12 +14,8 @@ local inv = {
     itemSlots = null
 };
 
-function onInvSlide(el)
+function letCoversTop()
 {
-    if (!Inventory.IsEnabled()) return;
-
-    handleSlideSlots(el);
-
     gold_cover_tex.top();
     gold_lab.top();
     ore_render.top();

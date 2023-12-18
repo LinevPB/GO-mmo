@@ -445,6 +445,5 @@ function focusInteract_NPC()
 {
     if (BOT == -1) return false;
     if (interacting) return false;
-    BOT.interact();
-    return true;
+    return BOT.interact();
 }

@@ -160,7 +160,7 @@ function initPlayerSlots()
 
     myGoldDraw = Draw(0, 0, lang["ORE"][Player.lang]);
     myGoldDraw.setPosition(myInventory.pos.x + 350, myInventory.pos.y + 6 * 900 + 300 - myGoldDraw.height / 2);
-    oreRender = ItemRender(myInventory.pos.x + 250 - myGoldDraw.height, myGoldDraw.getPosition().y - 125, myGoldDraw.height * 2, myGoldDraw.height * 2, "ItMi_Nugget");
+    oreRender = ItemRender(myInventory.pos.x + 250 - myGoldDraw.height, myGoldDraw.getPosition().y - 100, myGoldDraw.height * 2, myGoldDraw.height * 2, "ItMi_Nugget");
 
     myGoldAmountDraw = Draw(0, 0, Player.gold);
     myGoldAmountDraw.setColor(0, 150, 255);

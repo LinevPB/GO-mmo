@@ -37,17 +37,14 @@ Inventory.Init <- function()
 {
     setupInventoryMenu();
 
-    setupInventorySlots();
-
     setupCoverTextures();
 
     setupCharacterSetup();
 
-    initializeInventorySlots();
-
     setupItemSlider();
 
-    initializeItemRenders();
+    setupInventorySlots();
+    initializeInventorySlots();
 
     lastCamPos = Camera.getPosition();
     lastCamRot = Camera.getRotation();
@@ -82,11 +79,6 @@ Inventory.Enable <- function(val, soft = false)
 
     if (val == true)
     {
-        foreach (v in Player.items)
-        {
-            getItemSlots()[v.slot].setRender(v.instance, v.amount);
-            getItemSlots()[v.slot].setAlpha(true);
-        }
         lastCamPos = Camera.getPosition();
         lastCamRot = Camera.getRotation();
 
@@ -95,6 +87,11 @@ Inventory.Enable <- function(val, soft = false)
 
         enableCharacterSetup();
         enableCover();
+
+        foreach (v in Player.items)
+        {
+            getItemSlots()[v.slot].setRender(v.instance, v.amount);
+        }
 
         updateDraws();
         updateGoldDraws();
@@ -119,6 +116,12 @@ Inventory.Enable <- function(val, soft = false)
 
         disableCharacterSetup();
         disableCover();
+
+        if (isClicked)
+        {
+            holdedRender.visible = false;
+            isClicked = false;
+        }
     }
 }
 

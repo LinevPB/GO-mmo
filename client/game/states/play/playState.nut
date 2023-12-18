@@ -18,8 +18,6 @@ function initPlayState()
     EscMenu.Init();
     initDeathDraw();
     disableLogicalKey(GAME_INVENTORY, true);
-    setPlayerPosition(Player.helper, 38086, 4681, 44551);
-    setPlayerAngle(Player.helper, 250);
     Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);
     Sky.setPlanetColor(PLANET_SUN, 220, 140, 20, 200);
     Sky.setCloudsColor(220, 140, 20);
@@ -86,6 +84,23 @@ function onSlidePlay(el)
     onTradeSlide(el);
 }
 
+function watchHelperPosition()
+{
+    if (Player.gameState != GameState.PLAY) return;
+
+    local pos = getPlayerPosition(Player.helper);
+    if (pos.x != 38086 || pos.y != 4681 || pos.z != 44551)
+    {
+        setPlayerPosition(Player.helper, 38086, 4681, 44551);
+    }
+
+    local ang = getPlayerAngle(Player.helper);
+    if (ang != 250)
+    {
+        setPlayerAngle(Player.helper, 250);
+    }
+}
+
 function onRenderP(currentTime, lastTime)
 {
     globalNpcRender();
@@ -96,6 +111,8 @@ function onRenderP(currentTime, lastTime)
     gi_render();
     statisticsRender();
     escMenuRender();
+
+    watchHelperPosition();
 }
 
 local isInAction = false;
@@ -115,25 +132,16 @@ function handleAction(key)
             chatAction(key);
         break;
 
-        // inventory opened
+        // escape menu opened :)
         case 2:
-            inventoryAction(key);
-        break;
-
-        // map opened
-        case 3:
-            mapAction(key);
+            escMenuAction(key);
         break;
 
         // npc interaction
-        case 4:
+        case 3:
             interactionAction(key);
         break;
 
-        // escape menu opened :)
-        case 5:
-            escMenuAction(key);
-        break;
     }
 }
 addEventHandler("onKey", handleAction);
@@ -141,6 +149,12 @@ addEventHandler("onKey", handleAction);
 function resetAction()
 {
     actionType = 0;
+}
+
+function launchFree()
+{
+    actionType = 0;
+    enableQA(true);
 }
 
 function freeAction(key)
@@ -156,12 +170,13 @@ function freeAction(key)
         case KEY_I:
             actionType = 2;
             enableQA(false);
-            Inventory.Enable(true);
+            EscMenu.Enable(true, 2);
         break;
 
         case KEY_M:
-            actionType = 3;
-            enableMap(true);
+            actionType = 2;
+            enableQA(false);
+            EscMenu.Enable(true, 1);
         break;
 
         case KEY_LCONTROL:
@@ -169,12 +184,12 @@ function freeAction(key)
             local result = focusInteract_NPC();
             if (result == true)
             {
-                actionType = 4;
+                actionType = 3;
             }
         break;
 
         case KEY_X:
-            actionType = 5;
+            actionType = 2;
             enableQA(false);
             EscMenu.Enable(true);
         break;
@@ -212,9 +227,7 @@ function inventoryAction(key)
         case KEY_TAB:
         case KEY_I:
         case KEY_ESCAPE:
-            resetAction();
-            Inventory.Enable(false);
-            enableQA(true);
+            escMenuAction(KEY_ESCAPE);
         break;
     }
 }
@@ -224,10 +237,59 @@ function mapAction(key)
     switch(key)
     {
         case KEY_M:
-            resetAction();
-            enableMap(false);
+            escMenuAction(KEY_ESCAPE);
         break;
     }
+}
+
+function statisticsAction(key)
+{
+    local camPos = Camera.getPosition();
+    local camRot = Camera.getRotation();
+    switch(key)
+    {
+        case KEY_W:
+            Camera.setPosition(camPos.x - 10, camPos.y, camPos.z);
+        break;
+
+        case KEY_S:
+            Camera.setPosition(camPos.x + 10, camPos.y, camPos.z);
+        break;
+
+        case KEY_A:
+            Camera.setPosition(camPos.x, camPos.y, camPos.z - 10);
+        break;
+
+        case KEY_D:
+            Camera.setPosition(camPos.x, camPos.y, camPos.z + 10);
+        break;
+
+        case KEY_J:
+            Camera.setRotation(camRot.x, camRot.y - 10, camRot.z);
+        break;
+
+        case KEY_L:
+            Camera.setRotation(camRot.x, camRot.y + 10, camRot.z);
+        break;
+
+        case KEY_V:
+            print(camPos.x + " " + camPos.y + " " + camPos.z);
+            print(camRot.x + " " + camRot.y + " " + camRot.z);
+        break;
+
+        case KEY_I:
+            Camera.setPosition(camPos.x, camPos.y - 10, camPos.z);
+        break;
+
+        case KEY_K:
+            Camera.setPosition(camPos.x, camPos.y + 10, camPos.z);
+        break;
+    }
+}
+
+function settingsAction(key)
+{
+
 }
 
 function escMenuAction(key)
@@ -239,6 +301,31 @@ function escMenuAction(key)
             resetAction();
             EscMenu.Enable(false);
             enableQA(true);
+            return;
+        break;
+    }
+
+    local submenu = getCurrentSubmenu();
+    switch(submenu)
+    {
+        case -1: // no submenu
+
+        break;
+
+        case 1: // map
+            mapAction(key)
+        break;
+
+        case 2: // eq
+            inventoryAction(key);
+        break;
+
+        case 3: // stats
+            statisticsAction(key);
+        break;
+
+        case 4: // settings
+            settingsAction(key);
         break;
     }
 }

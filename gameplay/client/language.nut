@@ -281,63 +281,63 @@ lang <- {
     },
 
     ["NAME"] = {
-        ["en"] = "Name: ",
-        ["pl"] = "Imiê: "
+        ["en"] = "Name",
+        ["pl"] = "Imiê"
     },
 
     ["LEVEL"] = {
-        ["en"] = "Level: ",
-        ["pl"] = "Poziom: "
+        ["en"] = "Level",
+        ["pl"] = "Poziom"
     },
 
     ["EXPERIENCE"] = {
-        ["en"] = "Experience: ",
-        ["pl"] = "Doœwiadczenie: "
+        ["en"] = "Experience",
+        ["pl"] = "Doœwiadczenie"
     },
 
     ["HEALTH"] = {
-        ["en"] = "Health: ",
-        ["pl"] = "¯ycie: "
+        ["en"] = "Health",
+        ["pl"] = "¯ycie"
     },
 
     ["MANA"] = {
-        ["en"] = "Mana: ",
-        ["pl"] = "Mana: "
+        ["en"] = "Mana",
+        ["pl"] = "Mana"
     },
 
     ["STRENGTH"] = {
-        ["en"] = "Strength: ",
-        ["pl"] = "Si³a: "
+        ["en"] = "Strength",
+        ["pl"] = "Si³a"
     },
 
     ["DEXTERITY"] = {
-        ["en"] = "Dexterity: ",
-        ["pl"] = "Zwinnoœæ: "
+        ["en"] = "Dexterity",
+        ["pl"] = "Zwinnoœæ"
     },
 
     ["SKILL_1H"] = {
-        ["en"] = "One-handed fight: ",
-        ["pl"] = "Walka broni¹ jednorêczna: "
+        ["en"] = "One-handed fight",
+        ["pl"] = "Walka broni¹ jednorêczna"
     },
 
     ["SKILL_2H"] = {
-        ["en"] = "Two-handed fight: ",
-        ["pl"] = "Walka broni¹ dwurêczn¹: "
+        ["en"] = "Two-handed fight",
+        ["pl"] = "Walka broni¹ dwurêczn¹"
     },
 
     ["SKILL_BOW"] = {
-        ["en"] = "Bow fight: ",
-        ["pl"] = "Walka ³ukiem: "
+        ["en"] = "Bow fight",
+        ["pl"] = "Walka ³ukiem"
     },
 
     ["SKILL_CBOW"] = {
-        ["en"] = "Crossbow fight: ",
-        ["pl"] = "Walka kusz¹: "
+        ["en"] = "Crossbow fight",
+        ["pl"] = "Walka kusz¹"
     },
 
     ["MAGIC_LEVEL"] = {
-        ["en"] = "Magic level: ",
-        ["pl"] = "Kr¹g magii: "
+        ["en"] = "Magic level",
+        ["pl"] = "Kr¹g magii"
     },
 
     ["GUARDIAN"] = {

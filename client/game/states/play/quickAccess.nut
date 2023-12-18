@@ -25,6 +25,8 @@ function initQA()
 
 function enableQA(val)
 {
+    if (coverTex == null) return;
+
     coverTex.visible = val;
     for(local i = 0; i < 4; i++)
     {

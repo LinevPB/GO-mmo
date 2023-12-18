@@ -51,10 +51,11 @@ class NPC
     {
         if (event != null) {
             begin_interact();
-            return;
+            return true;
         }
 
         play_ambient_dialog();
+        return false;
     }
 
     function set_ambient(l)

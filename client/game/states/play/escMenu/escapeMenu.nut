@@ -5,7 +5,7 @@ local tex = null;
 local submenus = null;
 local submenuHeight = 600;
 local submenuSpan = 100;
-local currentSubmenu = 0;
+local currentSubmenu = -1;
 
 class subMenu
 {
@@ -106,11 +106,12 @@ function EscMenu::Init()
     subMenu("Wyjdz");
 
     repositionSubmenus();
-    submenus[0].activate();
 }
 
-function EscMenu::Enable(val)
+function EscMenu::Enable(val, submenu = -1)
 {
+    if (tex == null) return;
+
     setFreeze(val);
     disableControls(val);
     setCursorVisible(val);
@@ -123,22 +124,35 @@ function EscMenu::Enable(val)
         v.enable(val);
     }
 
-    enabled = val;
+    if (submenu != -1)
+    {
+        currentSubmenu = submenu;
+        submenus[submenu].activate();
+        enableSubmenu(val);
+    }
 
     if (val == true)
     {
         setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
-        enableSubmenu(true);
     }
     else
     {
         setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
-        enableSubmenu(false);
+        disableAnyWindow();
     }
+
+    enabled = val;
+}
+
+function getCurrentSubmenu()
+{
+    return currentSubmenu;
 }
 
 function EscMenu::Top()
 {
+    if (tex == null) return;
+
     tex.top();
 
     foreach(v in submenus)
@@ -147,12 +161,45 @@ function EscMenu::Top()
     }
 }
 
+function disableAnyWindow()
+{
+    switch(currentSubmenu)
+    {
+        case 1:
+            enableMap(false);
+        break;
+
+        case 2:
+            Inventory.Enable(false);
+        break;
+
+        case 3:
+            enableStatistics(false);
+        break;
+
+        case 4:
+            enableSettings(false);
+        break;
+    }
+
+    if (currentSubmenu != -1)
+    {
+        submenus[currentSubmenu].deactivate();
+        currentSubmenu = -1;
+    }
+}
+
 function enableSubmenu(val)
 {
     switch(currentSubmenu)
     {
-        case 0: // default
+        case -1: // no submenu
 
+        break;
+
+        case 0: // back
+            EscMenu.Enable(false);
+            launchFree();
         break;
 
         case 1: // map
@@ -168,11 +215,11 @@ function enableSubmenu(val)
         break;
 
         case 4: // settings
-            enableSettings(val)
+            enableSettings(val);
         break;
 
         case 5: // quit
-
+            exitGame();
         break;
     }
 }
@@ -180,6 +227,8 @@ function enableSubmenu(val)
 function escMenuRender()
 {
     if (!enabled) return;
+
+    settingsRender();
 
     foreach(v in submenus)
     {
@@ -199,8 +248,20 @@ function escMenuRender()
 
 function selectSubmenu(i, v)
 {
-    submenus[currentSubmenu].deactivate();
-    enableSubmenu(false);
+    if (currentSubmenu != -1)
+    {
+        submenus[currentSubmenu].deactivate();
+        enableSubmenu(false);
+    }
+
+
+    if (i == currentSubmenu)
+    {
+        currentSubmenu = -1;
+        return;
+    }
+
+    if (i == -1) return;
 
     v.activate();
     currentSubmenu = i;
