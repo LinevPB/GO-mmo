@@ -18,6 +18,7 @@ function initPlayState()
     EscMenu.Init();
     initDeathDraw();
     disableLogicalKey(GAME_INVENTORY, true);
+    disableLogicalKey(GAME_SCREEN_STATUS, true);
     Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);
     Sky.setPlanetColor(PLANET_SUN, 220, 140, 20, 200);
     Sky.setCloudsColor(220, 140, 20);
@@ -166,6 +167,12 @@ function freeAction(key)
             Chat.EnableInput(true);
         break;
 
+        case KEY_C:
+            actionType = 2;
+            enableQA(false);
+            EscMenu.Enable(true, 3);
+        break;
+
         case KEY_TAB:
         case KEY_I:
             actionType = 2;
@@ -244,45 +251,16 @@ function mapAction(key)
 
 function statisticsAction(key)
 {
-    local camPos = Camera.getPosition();
-    local camRot = Camera.getRotation();
     switch(key)
     {
-        case KEY_W:
-            Camera.setPosition(camPos.x - 10, camPos.y, camPos.z);
-        break;
+        case KEY_C:
+            if (!statsCanUseKeys() && getCurrentSubmenu() == 3)
+            {
+                statsCannotUseKeys(key);
+                return;
+            }
 
-        case KEY_S:
-            Camera.setPosition(camPos.x + 10, camPos.y, camPos.z);
-        break;
-
-        case KEY_A:
-            Camera.setPosition(camPos.x, camPos.y, camPos.z - 10);
-        break;
-
-        case KEY_D:
-            Camera.setPosition(camPos.x, camPos.y, camPos.z + 10);
-        break;
-
-        case KEY_J:
-            Camera.setRotation(camRot.x, camRot.y - 10, camRot.z);
-        break;
-
-        case KEY_L:
-            Camera.setRotation(camRot.x, camRot.y + 10, camRot.z);
-        break;
-
-        case KEY_V:
-            print(camPos.x + " " + camPos.y + " " + camPos.z);
-            print(camRot.x + " " + camRot.y + " " + camRot.z);
-        break;
-
-        case KEY_I:
-            Camera.setPosition(camPos.x, camPos.y - 10, camPos.z);
-        break;
-
-        case KEY_K:
-            Camera.setPosition(camPos.x, camPos.y + 10, camPos.z);
+            escMenuAction(KEY_ESCAPE);
         break;
     }
 }
@@ -298,6 +276,12 @@ function escMenuAction(key)
     {
         case KEY_ESCAPE:
         case KEY_X:
+            if (!statsCanUseKeys() && getCurrentSubmenu() == 3)
+            {
+                statsCannotUseKeys(key);
+                return;
+            }
+
             resetAction();
             EscMenu.Enable(false);
             enableQA(true);

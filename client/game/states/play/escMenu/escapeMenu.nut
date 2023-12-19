@@ -275,6 +275,9 @@ function escMenuClickPress(key)
     if (!enabled) return;
     if (key != MOUSE_LMB) return;
 
+    local result = statisticsPress();
+    if (result == true) return;
+
     foreach(i, v in submenus)
     {
         local pos = v.texture.getPosition();
@@ -292,6 +295,9 @@ function escMenuClickRelease(key)
 {
     if (!enabled) return;
     if (key != MOUSE_LMB) return;
+
+    statisticsRelease();
+
     if (pressed == -1) return;
 
     foreach(i, v in submenus)

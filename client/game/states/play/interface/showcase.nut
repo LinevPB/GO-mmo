@@ -78,12 +78,103 @@ function SH_resetRenderSettings()
     SH_render.rotY = 0;
 }
 
+local function SH_calcTexWidth()
+{
+    local minWidth = SH_name.width;
+    foreach(v in SH_draws)
+    {
+        if (v.width > minWidth)
+        {
+            minWidth = v.width;
+        }
+    }
+
+    minWidth += 200;
+
+    local temp = SH_nameCover.getSize().width + 400;
+    if (temp > minWidth) minWidth = temp;
+
+    temp = SH_render.getSize().width;
+    if (temp > minWidth) minWidth = temp;
+
+    return minWidth;
+}
+
+local function SH_calcTexHeight()
+{
+    local totalHeight = SH_nameCover.getSize().height;
+
+    if (SH_render.visible == true)
+    {
+        totalHeight += SH_render.getSize().height;
+    }
+
+    local temp = 0;
+    foreach(i, v in SH_draws)
+    {
+        if (v.text != "" && v.visible)
+        {
+            temp = i;
+        }
+    }
+    totalHeight += (SH_name.height + 50) * (temp + 1);
+    totalHeight += 300;
+
+    return totalHeight;
+}
+
+local function SH_updatePosition()
+{
+    local curs = getCursorPosition();
+    local texWidth = SH_calcTexWidth();
+    local texHeight = SH_calcTexHeight();
+
+    if (curs.x + texWidth > 8192)
+    {
+        curs.x = 8192 - texWidth;
+    }
+
+    if (SH_offsetX != 0)
+    {
+        curs.x += SH_offsetX;
+    }
+
+    if (SH_reverseY)
+    {
+        curs.y -= texHeight;
+    }
+
+    SH_tex.setPosition(curs.x, curs.y);
+    SH_cover.setPosition(curs.x, curs.y);
+    SH_tex.setSize(texWidth, texHeight);
+    SH_cover.setSize(texWidth, texHeight);
+
+    SH_nameCover.setSize(SH_name.width + 100, SH_name.height + 100);
+    SH_nameCover.setPosition(curs.x + texWidth / 2 - SH_nameCover.getSize().width / 2, curs.y);
+    SH_name.setPosition(SH_nameCover.getPosition().x + SH_nameCover.getSize().width / 2 - SH_name.width / 2, SH_nameCover.getPosition().y + SH_nameCover.getSize().height / 2 - SH_name.height / 2);
+    SH_render.setPosition(curs.x + texWidth / 2 - SH_render.getSize().width / 2, SH_nameCover.getPosition().y + SH_nameCover.getSize().height + 100);
+
+    local baseX = curs.x + 100;
+    local baseY = SH_render.getPosition().y + SH_render.getSize().height + 100;
+    local constHeight = SH_name.height + 50;
+    foreach(i, v in SH_draws)
+    {
+        v.setPosition(baseX, baseY + constHeight * i);
+    }
+
+    texHeight = SH_calcTexHeight();
+    SH_tex.setSize(texWidth, texHeight);
+    SH_cover.setSize(texWidth, texHeight);
+}
+
 Showcase.Enable <- function(val, reverseY = false)
 {
     if (val == false && Showcase.IsHidden())
     {
         Showcase.Hide(false);
     }
+
+    SH_updatePosition();
 
     SH_tex.visible = val;
     SH_cover.visible = val;
@@ -202,95 +293,6 @@ Showcase.Update <- function(instance)
 Showcase.IsEnabled <- function()
 {
     return SH_enabled;
-}
-
-local function SH_calcTexWidth()
-{
-    local minWidth = SH_name.width;
-    foreach(v in SH_draws)
-    {
-        if (v.width > minWidth)
-        {
-            minWidth = v.width;
-        }
-    }
-
-    minWidth += 200;
-
-    local temp = SH_nameCover.getSize().width + 400;
-    if (temp > minWidth) minWidth = temp;
-
-    temp = SH_render.getSize().width;
-    if (temp > minWidth) minWidth = temp;
-
-    return minWidth;
-}
-
-local function SH_calcTexHeight()
-{
-    local totalHeight = SH_nameCover.getSize().height;
-
-    if (SH_render.visible == true)
-    {
-        totalHeight += SH_render.getSize().height;
-    }
-
-    local temp = 0;
-    foreach(i, v in SH_draws)
-    {
-        if (v.text != "" && v.visible)
-        {
-            temp = i;
-        }
-    }
-    totalHeight += (SH_name.height + 50) * (temp + 1);
-    totalHeight += 300;
-
-    return totalHeight;
-}
-
-local function SH_updatePosition()
-{
-    local curs = getCursorPosition();
-    local texWidth = SH_calcTexWidth();
-    local texHeight = SH_calcTexHeight();
-
-    if (curs.x + texWidth > 8192)
-    {
-        curs.x = 8192 - texWidth;
-    }
-
-    if (SH_offsetX != 0)
-    {
-        curs.x += SH_offsetX;
-    }
-
-    if (SH_reverseY)
-    {
-        curs.y -= texHeight;
-    }
-
-    SH_tex.setPosition(curs.x, curs.y);
-    SH_cover.setPosition(curs.x, curs.y);
-    SH_tex.setSize(texWidth, texHeight);
-    SH_cover.setSize(texWidth, texHeight);
-
-    SH_nameCover.setSize(SH_name.width + 100, SH_name.height + 100);
-    SH_nameCover.setPosition(curs.x + texWidth / 2 - SH_nameCover.getSize().width / 2, curs.y);
-    SH_name.setPosition(SH_nameCover.getPosition().x + SH_nameCover.getSize().width / 2 - SH_name.width / 2, SH_nameCover.getPosition().y + SH_nameCover.getSize().height / 2 - SH_name.height / 2);
-    SH_render.setPosition(curs.x + texWidth / 2 - SH_render.getSize().width / 2, SH_nameCover.getPosition().y + SH_nameCover.getSize().height + 100);
-
-    local baseX = curs.x + 100;
-    local baseY = SH_render.getPosition().y + SH_render.getSize().height + 100;
-    local constHeight = SH_name.height + 50;
-    foreach(i, v in SH_draws)
-    {
-        v.setPosition(baseX, baseY + constHeight * i);
-    }
-
-    texHeight = SH_calcTexHeight();
-    SH_tex.setSize(texWidth, texHeight);
-    SH_cover.setSize(texWidth, texHeight);
 }
 
 Showcase.Render <- function()

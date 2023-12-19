@@ -6,12 +6,10 @@
 
     <import src="npc/npc.xml" type="client" />
 
+    <import src="escMenu/escMenu.xml" type="client" />
+
     <script src="groundItem.nut" type="client" />
     <script src="quickAccess.nut" type="client" />
-
-    <script src="escMenu/statistics.nut" type="client" />
-    <script src="escMenu/settings.nut" type="client" />
-    <script src="escMenu/escapeMenu.nut" type="client" />
 
     <script src="playState.nut" type="client" />
 

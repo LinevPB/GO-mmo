@@ -6,18 +6,18 @@ local height = 3000;
 
 local tex1 = Texture(0, 600, 8192, 400, "BACKGROUND_GRAY.TGA"); // top
 local tex2 = Texture(0, 600 + height, 8192, 6192, "BACKGROUND_GRAY.TGA"); // bottom
-local tex3 = Texture(0, 600, 250, height, "BACKGROUND_GRAY.TGA"); // left
-local tex4 = Texture(250 + width, 600, 8192 - 250 - width, height, "BACKGROUND_GRAY.TGA"); // right
+local tex3 = Texture(0, 600, 1000, height, "BACKGROUND_GRAY.TGA"); // left
+local tex4 = Texture(1000 + width, 600, 8192 - 250 - width, height, "BACKGROUND_GRAY.TGA"); // right
 local statFrame = Texture(0, 600, 8192, 7592, "WINDOW_FRAME.TGA");
-local avatarFrame = Texture(250, 1000, width, height - 400, "WINDOW_FRAME.TGA");
-local nameFrame = Texture(250, 600 + height - 300, width, 300, "TEXTBOX_BACKGROUND.TGA");
+local avatarFrame = Texture(1000, 1000, width, height - 400, "WINDOW_FRAME.TGA");
+local nameFrame = Texture(1000, 600 + height - 300, width, 300, "TEXTBOX_BACKGROUND.TGA");
 local nameDraw = Draw(0, 0, "My name");
 
-local healthTex = Texture(250, 600 + height, width, 150, "SR_BLANK.TGA");
-local healthCover = Texture(250, 600 + height, width, 150, "WINDOW_FRAME.TGA");
+local healthTex = Texture(1000, 600 + height, width, 150, "SR_BLANK.TGA");
+local healthCover = Texture(1000, 600 + height, width, 150, "WINDOW_FRAME.TGA");
 
-local manaTex = Texture(250, 600 + height + 150, width, 150, "SR_BLANK.TGA");
-local manaCover = Texture(250, 600 + height + 150, width, 150, "WINDOW_FRAME.TGA");
+local manaTex = Texture(1000, 600 + height + 150, width, 150, "SR_BLANK.TGA");
+local manaCover = Texture(1000, 600 + height + 150, width, 150, "WINDOW_FRAME.TGA");
 
 local paddingLR = 100;
 local paddingTB = 50;
@@ -26,6 +26,24 @@ local lastCamPos = null;
 local lastCamRot = null;
 
 local statsContainers = null;
+local charDesc = null;
+local canUseKeys = true;
+
+function statsCanUseKeys()
+{
+    return canUseKeys;
+}
+
+function setStatCanUseKeys(val)
+{
+    canUseKeys = val;
+}
+
+function statsCannotUseKeys(key)
+{
+    if (key != KEY_ESCAPE && key != KEY_RETURN) return;
+    textAreaEsc();
+}
 
 function updateDraws()
 {
@@ -73,174 +91,10 @@ function updateDraws()
 
     nameDraw.text = getPlayerName(heroId);
     nameFrame.setSize(nameDraw.width + 200, nameDraw.height + 100);
-    nameFrame.setPosition(250 + width / 2 - nameFrame.getSize().width / 2, 600 + height - nameFrame.getSize().height);
+    nameFrame.setPosition(1000 + width / 2 - nameFrame.getSize().width / 2, 600 + height - nameFrame.getSize().height);
     nameDraw.setPosition(nameFrame.getPosition().x + nameFrame.getSize().width / 2 - nameDraw.width / 2, nameFrame.getPosition().y + nameFrame.getSize().height / 2 - nameDraw.height / 2);
 
     setupStatsPositions();
-}
-
-class Stat
-{
-    statNameFrame = null;
-    statNameDraw = null;
-    valFrame = null;
-    valDraw = null;
-    pos = null;
-    parent = null;
-
-    constructor(x, y, name, val)
-    {
-        pos = { x = x, y = y };
-
-        statNameDraw = Draw(pos.x, pos.y, name);
-        statNameFrame = Texture(pos.x, pos.y, statNameDraw.width, statNameDraw.height, "TEXTBOX_BACKGROUND.TGA");
-        valDraw = Draw(pos.x, pos.y, val);
-        valFrame = Texture(pos.x, pos.y, statNameDraw.width, statNameDraw.height, "TEXTBOX_BACKGROUND.TGA");
-    }
-
-    function updatePosition(x, y, nameWidth, valWidth, height)
-    {
-        pos.x = x;
-        pos.y = y;
-
-        statNameFrame.setPosition(x, y);
-        statNameFrame.setSize(nameWidth + paddingLR * 2, height);
-
-        valFrame.setPosition(x + nameWidth + paddingLR * 2, y);
-        valFrame.setSize(valWidth + paddingLR * 2, height);
-
-        statNameDraw.setPosition(valFrame.getPosition().x - paddingLR - statNameDraw.width, y + height / 2 - statNameDraw.height / 2);
-        valDraw.setPosition(valFrame.getPosition().x + valFrame.getSize().width / 2 - valDraw.width / 2, y + height / 2 - valDraw.height / 2);
-    }
-
-    function updateName(val)
-    {
-        statNameDraw.text = val;
-    }
-
-    function updateVal(val)
-    {
-        valDraw.text = val;
-    }
-
-    function enable(val)
-    {
-        statNameFrame.visible = val;
-        valFrame.visible = val;
-
-        statNameDraw.visible = val;
-        valDraw.visible = val;
-    }
-}
-
-
-class StatsContainer
-{
-    tex = null;
-    draw = null;
-    drawCover = null;
-    pos = null;
-    size = null;
-    nameWidth = null;
-    valWidth = null;
-
-    statsContainer = null;
-
-    constructor(x, y, width, height, name)
-    {
-        statsContainer = [];
-        pos = { x = x, y = y };
-        size = { width = width, height = height };
-
-        tex = Texture(x, y, width, height, "WINDOW_BACKGROUND.TGA");
-        draw = Draw(x, y, name);
-        drawCover = Texture(x, y, draw.width + 200, draw.height + 100, "TEXTBOX_BACKGROUND.TGA");
-        nameWidth = 0;
-        valWidth = 0;
-
-        statsContainers.append(this);
-    }
-
-    function getContainer()
-    {
-        return statsContainer;
-    }
-
-    function attach(val)
-    {
-        statsContainer.append(val);
-        updateElementsPosition();
-    }
-
-    function setNameWidth(val)
-    {
-        nameWidth = val;
-    }
-
-    function setValWidth(val)
-    {
-        valWidth = val;
-    }
-
-    function setPosition(x, y)
-    {
-        pos.x = x;
-        pos.y = y;
-
-        tex.setPosition(x, y);
-
-        updateElementsPosition();
-
-        if (statsContainer.len() == 0) return;
-
-        local temp = statsContainer[statsContainer.len() - 1];
-
-        if (tex.getPosition().y + tex.getSize().height < temp.statNameFrame.getPosition().y + temp.statNameFrame.getSize().height + 200)
-        {
-            tex.setSize(temp.statNameFrame.getSize().width + temp.valFrame.getSize().width + paddingLR * 2, temp.pos.y - tex.getPosition().y + temp.statNameFrame.getSize().height + 200);
-            size = tex.getSize();
-        }
-
-        refreshNamePosition();
-    }
-
-    function refresh()
-    {
-        setPosition(pos.x, pos.y);
-    }
-
-    function updateElementsPosition()
-    {
-        foreach(i, v in statsContainer)
-        {
-            v.updatePosition(pos.x + paddingLR, drawCover.getPosition().y + drawCover.getSize().height + 200 + 400 * i, nameWidth, valWidth, 400);
-        }
-    }
-
-    function updateName(val)
-    {
-        draw.text = val;
-        refreshNamePosition();
-    }
-
-    function refreshNamePosition()
-    {
-        drawCover.setSize(draw.width + 200, draw.height + 100);
-        drawCover.setPosition(pos.x + tex.getSize().width / 2 - drawCover.getSize().width / 2, pos.y - drawCover.getSize().height / 4);
-        draw.setPosition(drawCover.getPosition().x + drawCover.getSize().width / 2 - draw.width / 2, drawCover.getPosition().y + drawCover.getSize().height / 2 - draw.height / 2);
-    }
-
-    function enable(val)
-    {
-        tex.visible = val;
-        drawCover.visible = val;
-        draw.visible = val;
-
-        foreach (v in statsContainer)
-        {
-            v.enable(val);
-        }
-    }
 }
 
 local function calcY(posY, argheight)
@@ -250,8 +104,6 @@ local function calcY(posY, argheight)
 
 function setupStatistics()
 {
-    statsContainers = [];
-
     local progress = StatsContainer(0, 0, width + 1300, 1700, "Progress");
     progress.attach(Stat(0, 0, "Level", "20"));
     progress.attach(Stat(0, 0, "Experience", "1944"));
@@ -284,8 +136,12 @@ function setupStatistics()
     healthTex.setColor(255, 0, 0);
     manaTex.setColor(0, 0, 255);
 
+    charDesc = TextArea();
+
     lastCamPos = Camera.getPosition();
     lastCamRot = Camera.getRotation();
+
+    statsContainers = getStatsContainers();
 }
 
 function setupStatsPositions()
@@ -305,8 +161,8 @@ function enableStatistics(val)
         lastCamPos = Camera.getPosition();
         lastCamRot = Camera.getRotation();
 
-        Camera.setPosition(37930, 4700, 44480);
-        Camera.setRotation(0, 100, 0);
+        Camera.setPosition(37925, 4700, 44486);
+        Camera.setRotation(0, 95, 0);
     }
     else
     {
@@ -331,6 +187,8 @@ function enableStatistics(val)
     healthCover.visible = val;
     manaCover.visible = val;
 
+    charDesc.enable(val);
+
     foreach(v in statsContainers)
     {
         v.enable(val);
@@ -352,6 +210,18 @@ function statisticsRender()
         stopAni(Player.helper, "S_RUN");
         playAni(Player.helper, "S_RUN");
     }
+
+    textAreaHoverHandler(charDesc);
+}
+
+function statisticsPress()
+{
+    return textAreaPress(charDesc);
+}
+
+function statisticsRelease()
+{
+    textAreaRelease(charDesc);
 }
 
 local function updateStatisticsDraw(pid, old = 0, new = 1)
