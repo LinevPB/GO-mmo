@@ -3,6 +3,7 @@
     <import src="interface/interface.xml" type="client" />
 
     <import src="inventory/inventory.xml" type="client" />
+
     <import src="npc/npc.xml" type="client" />
 
     <script src="groundItem.nut" type="client" />

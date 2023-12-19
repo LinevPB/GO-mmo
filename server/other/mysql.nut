@@ -9,7 +9,7 @@ mysql <- {
 
 mysql.init <- function()
 {
-    this.handler = mysql_connect("localhost", "root", "", "server");
+    this.handler = mysql_connect("localhost", "root", "", "serv");
 
     if (!this.handler == null) {
         console.error("MySQL failed to connect!");

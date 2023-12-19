@@ -27,6 +27,7 @@ class InventorySlot
     slot = null;
     alpha = null;
     equipped = null;
+    renderHidden = null;
 
     constructor(x, y, width, height, texture, textureActive)
     {
@@ -42,6 +43,7 @@ class InventorySlot
         equipped = false;
         render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, "");
         render.visible = false;
+        renderHidden = false;
     }
 
     function reset()
@@ -81,7 +83,7 @@ class InventorySlot
         {
             render = ItemRender(btn.pos.x, btn.pos.y, btn.size.width, btn.size.height, instance);
             render.lightingswell = true;
-            render.visible = false;
+            render.visible = !renderHidden;
         }
 
         if (render == null) return;
@@ -89,7 +91,7 @@ class InventorySlot
             render.instance = instance;
 
         if (render.visible == false && btn.enabled)
-            render.visible = true;
+            render.visible = !renderHidden;
     }
 
     function updatePos()
@@ -100,6 +102,28 @@ class InventorySlot
             render.setPosition(btn.pos.x, btn.pos.y);
         }
     }
+
+    function isVisible()
+    {
+        return btn.isEnabled();
+    }
+
+    function hideRender()
+    {
+        if(renderHidden) return;
+        render.setPosition(0, 0);
+
+        renderHidden = true;
+        render.visible = false;
+    }
+
+    function showRender()
+    {
+        if (!renderHidden) return;
+
+        renderHidden = false;
+        render.visible = true;
+    }
 }
 
 function handleSlideSlots(el)
@@ -108,16 +132,31 @@ function handleSlideSlots(el)
 
     foreach(v in itemSlots)
     {
-        if ((v.btn.pos.y + v.btn.size.height < invY) || (v.btn.pos.y > 8192 - 392))
+        if (v.btn.pos.y + v.btn.size.height < invY)
         {
             v.enable(false);
+        }
+        else if (v.btn.pos.y > 8192 - 600)
+        {
+            if (v.btn.pos.y > 8192 - 392)
+            {
+                v.enable(false);
+            }
+            else
+            {
+                v.hideRender();
+            }
         }
         else
         {
             v.enable(true);
+            v.showRender();
         }
 
-        v.updatePos();
+        if (v.isVisible())
+        {
+            v.updatePos();
+        }
     }
 }
 
