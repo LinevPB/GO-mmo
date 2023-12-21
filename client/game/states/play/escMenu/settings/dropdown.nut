@@ -126,6 +126,7 @@ class Dropdown
     baseY = null;
     coverTex = null;
     optionsTex = null;
+    optionsTexCover = null;
     visibleOptions = null;
     enabled = null;
     holdingSlider = null;
@@ -137,9 +138,10 @@ class Dropdown
         pos = { x = x, y = y };
         size = { width = width, height = height };
 
-        tex = Texture(x, y, width, height, "TEXTBOX_BACKGROUND.TGA");
+        tex = Texture(x, y, width, height, "DROPDOWN_BACKGROUND.TGA");
         tex.setColor(235, 235, 235);
         optionsTex = Texture(x, y + height, 0, 0, "SR_BLANK.TGA");
+        optionsTexCover = Texture(x, y + height, 0, 0, "WINDOW_FRAME.TGA");
         optionsTex.setColor(20, 20, 20);
         draw = Draw(x, y, defaultText);
         draw.setPosition(x + width / 2 - draw.width / 2, y + height / 2 - draw.height / 2);
@@ -159,6 +161,7 @@ class Dropdown
         coverTex = Texture(pos.x, pos.y + (visibleOptions + 1) * size.height, size.width, size.height / 2, "TEXTBOX_BACKGROUND.TGA");
         coverTex.setColor(235, 235, 235);
         optionsTex.setSize(size.width, size.height * visibleOptions);
+        optionsTexCover.setSize(size.width, size.height * visibleOptions + 100);
     }
 
     function addOption(text, config)
@@ -205,6 +208,7 @@ class Dropdown
             }
 
             local ptY = (calcY - (warY - size.height));
+            ptY -= 10;
             if (ptY < 0) ptY = 0;
 
             v.option.enable(true, x, calcY, size.width - 350, size.height, ptY);
@@ -216,7 +220,11 @@ class Dropdown
         draw.top();
 
         if (slider != null) slider.top();
+
+        optionsTexCover.top();
+
         if (coverTex != null) coverTex.top();
+
     }
 
     function moveOptions(x, y)
@@ -251,6 +259,7 @@ class Dropdown
         if (coverTex != null) coverTex.visible = true;
 
         optionsTex.visible = true;
+        optionsTexCover.visible = true;
 
         local calcY = (slider == null) ? 0 : slider.getValue();
         setOptionsPosition(pos.x, pos.y - calcY);
@@ -271,6 +280,7 @@ class Dropdown
         if (coverTex != null) coverTex.visible = false;
 
         optionsTex.visible = false;
+        optionsTexCover.visible = false;
 
         expanded = false;
     }
@@ -278,6 +288,11 @@ class Dropdown
     function wasHoldingSlider()
     {
         return holdingSlider;
+    }
+
+    function getBottomY()
+    {
+        return (pos.y + size.height);
     }
 }
 

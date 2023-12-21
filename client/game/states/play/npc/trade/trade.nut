@@ -10,7 +10,7 @@ function isTradeEnabled()
 
 function initNpcTrade()
 {
-    mainWindow = Window(0, 0, 8192, 8192, "WINDOW_BACKGROUND_SF.TGA");
+    mainWindow = Window(0, 0, 8192, 8192, "BACKGROUND_BORDERLESS.TGA");
 
     local playerInv = initPlayerWindow();
     local npcInv = initNpcWindow();

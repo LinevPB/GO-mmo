@@ -2,6 +2,10 @@
 
     <script src="dropdown.nut" type="client" />
 
+    <script src="actionButton.nut" type="client" />
+
+    <script src="settingsSlider.nut" type="client" />
+
     <script src="settings.nut" type="client" />
 
 </server>

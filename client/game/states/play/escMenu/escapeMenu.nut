@@ -96,7 +96,7 @@ local function repositionSubmenus()
 function EscMenu::Init()
 {
     submenus = [];
-    tex = Texture(0, 0, 8192, 600, "WINDOW_BACKGROUND_SF.TGA");
+    tex = Texture(0, 0, 8192, 600, "ESC_BAR.TGA");
 
     subMenu("Wroc");
     subMenu("Mapa");

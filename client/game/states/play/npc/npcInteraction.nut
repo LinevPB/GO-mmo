@@ -44,7 +44,7 @@ function initInteraction()
         Draw(8192/2, 6850, "5. ")
     ];
 
-    intWindow = Window(0, 6500, 8192, 8192 - 6500, "TEXTBOX_BACKGROUND.TGA");
+    intWindow = Window(0, 6500, 8192, 8192 - 6500, "DIALOG_BACKGROUND.TGA");
 
     dialogOpt = [
         Button(8192/2 - 2500, 200, 8000/2, 300, "NONE", "", "NONE"),

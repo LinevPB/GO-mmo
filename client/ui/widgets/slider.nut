@@ -127,6 +127,11 @@ class Slider extends Element {
         UI_Elements.append(this);
     }
 
+    function getCenterY()
+    {
+        return mask.pos.y;
+    }
+
     function update()
     {
         if (hasLabel) {
@@ -143,6 +148,11 @@ class Slider extends Element {
         }
 
         return (mask.range * (mask.maskY.tofloat() / (size.height - mask.size.height).tofloat())).tointeger();
+    }
+
+    function getRawValue()
+    {
+        return (mask.range.tofloat() * (mask.maskX.tofloat() / (size.width.tofloat() - mask.size.width.tofloat()))).tointeger();
     }
 
     function enable(val)
@@ -165,11 +175,14 @@ class Slider extends Element {
     function setPosition(x, y) {
         base.setPosition(x, y);
 
-        if (!vertical) {
+        if (hasLabel)
+        {
             draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
             labelu.setPosition(x, mask.pos.y - draw.height - 50);
             textuboxu.setPosition(labelu.pos.x + 50 + labelu.draw.width, labelu.pos.y + draw.height / 2 - textuboxu.size.height / 2);
+        }
 
+        if (!vertical) {
             mask.setPosition(x + mask.maskX, pos.y + size.height / 2 - mask.size.height / 2);
         } else {
             mask.setPosition(pos.x + size.width / 2 - mask.size.width / 2, y + mask.maskY);
