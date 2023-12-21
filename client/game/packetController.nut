@@ -55,7 +55,7 @@ local function onPacket(packet) {
         case PacketType.CHARACTERS_SELECT:
             if (data[0] == -1) return;
             setupPlayer(data[2], data[3], data[4], data[5], data[6]);
-            for(local i = 0; i < 4; i++)
+            for(local i = 0; i < 6; i++)
             {
                 Player.qa[i] = data[i+10];
             }
@@ -69,7 +69,7 @@ local function onPacket(packet) {
 
         case PacketType.CHARACTER_CREATION_CONFIRM:
             setupPlayer(data[2], data[3], data[4], data[5], data[6]);
-            for(local i = 0; i < 4; i++)
+            for(local i = 0; i < 6; i++)
             {
                 Player.qa[i] = "";
             }
@@ -168,6 +168,11 @@ local function onPacket(packet) {
 
         case PacketType.REMOVE_GROUND_ITEM:
             handleRemoveGroundItem(data[0]);
+        break;
+
+        case PacketType.UPDATE_DESC:
+            Player.desc = data[0];
+            updateCharacterDesc();
         break;
     }
 }

@@ -37,6 +37,7 @@ class PlayerStructure
     tradePlayerItems = null;
     tradeNpcItems = null;
     dead = null;
+    char_desc = null;
 
     constructor(playerid)
     {
@@ -73,6 +74,7 @@ class PlayerStructure
         tradePlayerItems = [];
         tradeNpcItems = [];
         dead = false;
+        char_desc = "";
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
@@ -295,6 +297,15 @@ class PlayerStructure
             mysql.squery("UPDATE `characters` SET `gold` = '" + val + "' WHERE `id`='" + charId + "'");
     }
 
+    function setDescription(val, loading = false)
+    {
+        char_desc = val;
+        sendPlayerPacket(id, PacketType.UPDATE_DESC, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `char_desc` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
     function addGold(val)
     {
         setGold(gold + val);
@@ -391,7 +402,7 @@ function removePlayerById(id)
     }
 }
 
-function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold)
+function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, char_desc)
 {
     local player = findPlayer(pid);
 
@@ -409,6 +420,7 @@ function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, stren
     player.setSkillCBow(skill_cbow, true);
     player.setMagicCircle(magic_circle, true);
     player.setGold(gold, true);
+    player.setDescription(char_desc, true);
 }
 
 function GiveItem(pid, instance, amount, loading = false, slot = -1)

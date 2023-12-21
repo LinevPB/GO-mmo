@@ -83,6 +83,7 @@ function onSlidePlay(el)
 {
     onInvSlide(el);
     onTradeSlide(el);
+    onSettingsSlide(el);
 }
 
 function watchHelperPosition()

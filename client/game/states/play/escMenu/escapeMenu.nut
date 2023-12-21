@@ -275,8 +275,10 @@ function escMenuClickPress(key)
     if (!enabled) return;
     if (key != MOUSE_LMB) return;
 
-    local result = statisticsPress();
-    if (result == true) return;
+    statisticsPress();
+    settingsPress();
+    //local result = statisticsPress();
+    //if (result == true) return;
 
     foreach(i, v in submenus)
     {
@@ -297,6 +299,7 @@ function escMenuClickRelease(key)
     if (key != MOUSE_LMB) return;
 
     statisticsRelease();
+    settingsRelease();
 
     if (pressed == -1) return;
 

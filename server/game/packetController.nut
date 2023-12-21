@@ -104,6 +104,10 @@ local function onPacket(pid, packet)
         case PacketType.PICKUP_ITEM:
             handlePickUp(pid, data);
         break;
+
+        case PacketType.SAVE_DESC:
+            saveDescription(pid, data[0]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

@@ -1,12 +1,8 @@
 <server>
 
-    <script src="statistics/statContainer.nut" type="client" />
+    <import src="statistics/statistics.xml" type="client" />
 
-    <script src="statistics/characterDesc.nut" type="client" />
-
-    <script src="statistics/statistics.nut" type="client" />
-
-    <script src="settings.nut" type="client" />
+    <import src="settings/settings.xml" type="client" />
 
     <script src="escapeMenu.nut" type="client" />
 

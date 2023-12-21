@@ -190,7 +190,7 @@ function getInvSlots()
 
 function setupItemSlider()
 {
-    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300,  350, getMainMenu().size.height - invY * 2 - 150, "TEXTBOX_BACKGROUND.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - 12), "", "SLIDER_HANDLE.TGA", true);
+    itemSlider = Slider(Inventory.MAX_COLUMN * Inventory.SIZE + 300,  350, getMainMenu().size.height - invY * 2 - 150, "SLIDER_BACKGROUND_VERTICAL.TGA", Inventory.SIZE * (Inventory.MAX_ITEMS / Inventory.MAX_COLUMN - 12), "", "SLIDER_HANDLE.TGA", true);
     getMainMenu().attach(itemSlider);
 }
 

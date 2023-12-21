@@ -1,0 +1,7 @@
+<server>
+
+    <script src="dropdown.nut" type="client" />
+
+    <script src="settings.nut" type="client" />
+
+</server>

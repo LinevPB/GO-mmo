@@ -1,5 +1,3 @@
-local sliderSize = 200;
-
 class SliderMask extends Element
 {
     range = null;
@@ -79,6 +77,16 @@ class SliderMask extends Element
     {
         base.unhover();
     }
+
+    function top()
+    {
+        base.top();
+    }
+
+    function getWidth()
+    {
+        return size.width;
+    }
 }
 
 class Slider extends Element {
@@ -89,9 +97,11 @@ class Slider extends Element {
     rightBtn = null;
     vertical = null;
     hasLabel = null;
+    sliderSize = null;
 
-    constructor(x, y, width, texture, scope, label="", sliderTex = "MENU_MASKE.TGA", vert = false) {
+    constructor(x, y, width, texture, scope, label="", sliderTex = "MENU_MASKE.TGA", vert = false, slidSize = 200) {
         vertical = vert;
+        sliderSize = slidSize;
 
         if (!vertical)
             base.constructor(x, y, width, sliderSize / 2, texture, "", "NONE");
@@ -182,5 +192,16 @@ class Slider extends Element {
     {
         base.unhover();
         draw.setColor(regularColor.r, regularColor.g, regularColor.b);
+    }
+
+    function top()
+    {
+        base.top();
+        mask.top();
+    }
+
+    function getWidth()
+    {
+        return mask.getWidth();
     }
 }

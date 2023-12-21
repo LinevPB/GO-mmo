@@ -34,6 +34,8 @@ class TextAreaButton
 
     function setActive(val)
     {
+        if (active == val) return;
+
         tex.alpha = (val ? 255 : 125);
         draw.alpha = (val ? 255 : 125);
 
@@ -93,6 +95,8 @@ class TextArea
 
     lastInputPos = null;
     draws = null;
+    text = null;
+    lastText = null;
 
     constructor()
     {
@@ -106,7 +110,7 @@ class TextArea
         descTex.setColor(210, 210, 210);
 
         save_btn = TextAreaButton(492 + width / 2 + 325 - 600, height + 4150, 600, 300, "Save");
-        cancel_btn = TextAreaButton(492 + width / 2 + 675, height + 4150, 600, 300, "Cancel");
+        cancel_btn = TextAreaButton(492 + width / 2 + 675, height + 4150, 600, 300, "Restore");
 
         descHovered = false;
         descEnabled = false;
@@ -114,6 +118,9 @@ class TextArea
         local tpos = descTex.getPosition();
         local tsize = descTex.getSize();
         draws = DrawsSet(tpos.x + 100, tpos.y, tsize.width - 200, tsize.height);
+
+        text = "";
+        lastText = "";
 
         elEnabled = false;
     }
@@ -176,7 +183,15 @@ class TextArea
         if (!descHovered) return;
 
         descHovered = false;
-        descTex.setColor(210, 210, 210);
+
+        if (textAreaOpened)
+        {
+            descTex.setColor(190, 190, 190);
+        }
+        else
+        {
+            descTex.setColor(210, 210, 210);
+        }
     }
 
     function enableCloseArea(val)
@@ -191,6 +206,8 @@ class TextArea
 
         lastInputPos = chatInputGetPosition();
         chatInputSetPosition(0, 8200);
+        lastText = chatInputGetText();
+        chatInputSetText(draws.text);
         chatInputOpen();
         setStatCanUseKeys(false);
     }
@@ -201,14 +218,36 @@ class TextArea
         textAreaHold = null;
         chatInputClose();
         chatInputSetPosition(lastInputPos.x, lastInputPos.y);
+        chatInputSetText(lastText);
         setStatCanUseKeys(true);
         draws.removeSlash();
+        unhover(descTex);
     }
 
     function updateArea()
     {
         local text = chatInputGetText();
         draws.setText(text);
+    }
+
+    function restoreText()
+    {
+        draws.setText(text);
+
+        if (!textAreaOpened) draws.removeSlash();
+    }
+
+    function getText()
+    {
+        return draws.text;
+    }
+
+    function setText(val)
+    {
+        text = val;
+        draws.setText(val);
+
+        if (!textAreaOpened) draws.removeSlash();
     }
 }
 
@@ -311,20 +350,25 @@ class DrawsSet
         }
         isSlash = false;
     }
-
-    function restoreText()
-    {
-
-    }
 }
 
 
 function textAreaHoverHandler(el)
 {
+    if (el.text != el.getText())
+    {
+        el.save_btn.setActive(true);
+        el.cancel_btn.setActive(true);
+    }
+    else
+    {
+        el.save_btn.setActive(false);
+        el.cancel_btn.setActive(false);
+    }
+
     if (textAreaOpened)
     {
         textAreaHold.updateArea();
-        return;
     }
 
     local set = [el.descTex, el.save_btn, el.cancel_btn];
@@ -348,7 +392,6 @@ function textAreaPress(el)
     if (textAreaOpened)
     {
         textAreaHold.closeTextArea();
-        return true;
     }
 
     local set = [el.descTex, el.save_btn, el.cancel_btn];
@@ -378,16 +421,6 @@ function textAreaRelease(el)
     }
 }
 
-function saveDesc(val)
-{
-
-}
-
-function cancelDesc(set)
-{
-    set.restoreText();
-}
-
 function onPressTextArea(set, el)
 {
     switch(el)
@@ -397,11 +430,11 @@ function onPressTextArea(set, el)
         break;
 
         case set.save_btn:
-            saveDesc(set);
+            saveDesc();
         break;
 
         case set.cancel_btn:
-            cancelDesc(set);
+            cancelDesc();
         break;
     }
 }

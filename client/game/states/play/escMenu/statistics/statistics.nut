@@ -144,6 +144,21 @@ function setupStatistics()
     statsContainers = getStatsContainers();
 }
 
+function saveDesc()
+{
+    sendPacket(PacketType.SAVE_DESC, charDesc.getText());
+}
+
+function updateCharacterDesc()
+{
+    charDesc.setText(Player.desc);
+}
+
+function cancelDesc()
+{
+    charDesc.restoreText();
+}
+
 function setupStatsPositions()
 {
     if (statsContainers == null) return;
