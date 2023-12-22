@@ -432,6 +432,8 @@ function GiveItem(pid, instance, amount, loading = false, slot = -1)
 
     if (loading == true) return;
 
+    sendPlayerPacket(pid, PacketType.GIVE_ITEM_NOTIFY, instance, amount);
+
     if (item.val == true)
         mysql.squery("INSERT INTO `items` (`id`, `instance`, `amount`, `slot`, `owner`) VALUES (NULL, '" + item.instance + "', '" + item.amount + "', '" + item.slot + "', '" + player.charId + "')");
     else {

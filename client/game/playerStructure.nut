@@ -67,6 +67,15 @@ Player.manageItem <- function(act, instance, amount, slot)
 
             if (act == 3)
             {
+                for(local i = 0; i < 6; i++)
+                {
+                    if (v.instance.toupper() == Player.qa[i])
+                    {
+                        invUnequip(i + 4, v.instance.toupper());
+                    }
+                }
+
+                RemoveInvSlot(v.instance);
                 Player.items.remove(i);
                 ITEM_CHANGE = true;
                 return;
@@ -141,6 +150,8 @@ Player.refreshQA <- function(id)
         case 2:
         case 3:
         case 4:
+        case 5:
+        case 6:
             sendPacket(PacketType.UPDATE_QA, id, Player.qa[id-1]);
         break;
     }

@@ -150,7 +150,7 @@ function creationConfirmHandler(pid, data)
     setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0]);
 }
 
-local function transformTradeBasket(data)
+function transformTradeBasket(data)
 {
     if (data == 0) return data;
 

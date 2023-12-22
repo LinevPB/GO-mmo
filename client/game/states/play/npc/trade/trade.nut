@@ -178,5 +178,5 @@ function handleTradeResult(data)
     clearPlayerBasket();
     clearNpcBasket();
     refreshPlayerSlots();
-    tradeNotify(lang["TRADE_SUCCESS"][Player.lang]);
+    //tradeNotify(lang["TRADE_SUCCESS"][Player.lang]);
 }

@@ -169,6 +169,10 @@ class Element {
 
         enabled = false;
         draw.visible = false;
+        foreach(v in hoverCovers)
+        {
+            v.visible = false;
+        }
         if (background != null) background.texture.visible = false;
     }
 

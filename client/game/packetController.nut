@@ -137,17 +137,17 @@ local function onPacket(packet) {
 
         case PacketType.ADD_EXPERIENCE:
             local text = lang["ADD_EXPERIENCE"][Player.lang];
-            notify(text + "" + data[0], false, 400, 5000);
+            notify(text + "" + data[0]);
         break;
 
         case PacketType.ADD_GOLD:
             local text = lang["ADD_GOLD"][Player.lang];
-            notify(text + "" + data[0], false, 400, 5000);
+            notify(text + "" + data[0]);
         break;
 
         case PacketType.LEVEL_UP:
             local text = lang["LEVEL_UP"][Player.lang];
-            notify(text, true, 8192/2 - textWidth(text), 4000);
+            notify(text);
         break;
 
         case PacketType.NPC_RESPAWN:
@@ -173,6 +173,10 @@ local function onPacket(packet) {
         case PacketType.UPDATE_DESC:
             Player.desc = data[0];
             updateCharacterDesc();
+        break;
+
+        case PacketType.GIVE_ITEM_NOTIFY:
+            notify(data[1] + "x " + ServerItems.find(data[0]).name[Player.lang]);
         break;
     }
 }

@@ -38,6 +38,8 @@ function enableCharacterSetup()
         if (i == 5) v.setRender(Player.qa[1], 0);
         if (i == 6) v.setRender(Player.qa[2], 0);
         if (i == 7) v.setRender(Player.qa[3], 0);
+        if (i == 8) v.setRender(Player.qa[4], 0);
+        if (i == 9) v.setRender(Player.qa[5], 0);
 
         v.enable(true);
 
@@ -110,7 +112,7 @@ function setupCharacterSetup()
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
     /// quick access
-    qaMenu = Window(armorMenu.pos.x, armorMenu.pos.y + armorMenu.size.height + 200, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, 2200, "WINDOW_BACKGROUND.TGA");
+    qaMenu = Window(armorMenu.pos.x, armorMenu.pos.y + armorMenu.size.height + 200, Inventory.width - Inventory.MAX_COLUMN*Inventory.SIZE - Inventory.SIZE - 92, 3000, "WINDOW_BACKGROUND.TGA");
 
     labs_title.append(Draw(x1, qaMenu.pos.y + 100, lang["INV_QA"][Player.lang]));
     labs.append(InventorySlot(x1 + calw1, qaMenu.pos.y + labs_title[2].height + 200,
@@ -121,8 +123,12 @@ function setupCharacterSetup()
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
     labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, qaMenu.pos.y + 800 + labs_title[2].height + 200,
         Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+    labs.append(InventorySlot(x1 + calw1, qaMenu.pos.y + 1600 + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
+    labs.append(InventorySlot(x1 + calw1 + Inventory.SIZE + 100, qaMenu.pos.y + 1600 + labs_title[2].height + 200,
+        Inventory.SIZE, Inventory.SIZE, "INVENTORY_SLOT_EQUIPPED.TGA", "INVENTORY_SLOT_EQUIPPED_HIGHLIGHTED.TGA"));
 
-    for(local i = 1; i < 5; i++)
+    for(local i = 1; i < 7; i++)
     {
         qa_draws.append(Draw(0, 0, "F"+i));
     }

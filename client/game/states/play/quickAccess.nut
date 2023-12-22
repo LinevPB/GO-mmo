@@ -6,11 +6,11 @@ local QAA_Draws = [];
 
 function initQA()
 {
-    coverTex = Texture(8192/2 - 1400, 8192-1000, 2800, 500, "TEXTBOX_BACKGROUND.TGA");
+    coverTex = Texture(8192/2 - 1800, 8192-1000, 3600, 500, "TEXTBOX_BACKGROUND.TGA");
 
-    for(local i = 0;  i < 4; i++)
+    for(local i = 0;  i < 6; i++)
     {
-        QA_Slots.append(Texture(coverTex.getPosition().x + 700 * i, coverTex.getPosition().y, 700, 500, "INVENTORY_SLOT.TGA"));
+        QA_Slots.append(Texture(coverTex.getPosition().x + 600 * i, coverTex.getPosition().y, 600, 500, "INVENTORY_SLOT.TGA"));
         QA_Renders.append(ItemRender(QA_Slots[i].getPosition().x + 100, QA_Slots[i].getPosition().y, QA_Slots[i].getSize().width - 200, QA_Slots[i].getSize().height, Player.qa[i]));
         QAF_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, "F" + (i + 1)));
         QAA_Draws.append(Draw(QA_Slots[i].getPosition().x, QA_Slots[i].getPosition().y, ""));
@@ -28,7 +28,7 @@ function enableQA(val)
     if (coverTex == null) return;
 
     coverTex.visible = val;
-    for(local i = 0; i < 4; i++)
+    for(local i = 0; i < 6; i++)
     {
         QA_Slots[i].visible = val;
         QA_Renders[i].visible = val;
@@ -41,7 +41,7 @@ function handleQARender()
 {
     if (coverTex == null) return;
 
-    for(local i = 0; i < 4; i++)
+    for(local i = 0; i < 6; i++)
     {
         if (Player.qa[i] != QA_Renders[i].instance)
         {
@@ -108,5 +108,15 @@ function handleQAKey(key)
     if (key == KEY_F4 && Player.qa[3] != "")
     {
         handleUseItem({instance = Player.qa[3]});
+    }
+
+    if (key == KEY_F5 && Player.qa[4] != "")
+    {
+        handleUseItem({instance = Player.qa[4]});
+    }
+
+    if (key == KEY_F6 && Player.qa[5] != "")
+    {
+        handleUseItem({instance = Player.qa[5]});
     }
 }

@@ -435,6 +435,7 @@ function INVplayButtonHandler(id) // release
     }
 }
 
+
 function onElementRender(el)
 {
     if (!Inventory.IsEnabled()) return;
@@ -444,7 +445,15 @@ function onElementRender(el)
     {
         foreach (v in Player.items)
         {
-            getItemSlots()[v.slot].setRender(v.instance, v.amount);
+            print(v.instance + " " + v.amount);
+            if (v.amount <= 0)
+            {
+                getItemSlots()[v.slot].setRender("", 0);
+            }
+            else
+            {
+                getItemSlots()[v.slot].setRender(v.instance, v.amount);
+            }
         }
         ITEM_CHANGE = false;
     }

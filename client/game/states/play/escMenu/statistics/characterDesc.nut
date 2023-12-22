@@ -427,7 +427,10 @@ function onPressTextArea(set, el)
     switch(el)
     {
         case set.descTex:
-            set.openTextArea();
+            if (el.visible)
+            {
+                set.openTextArea();
+            }
         break;
 
         case set.save_btn:

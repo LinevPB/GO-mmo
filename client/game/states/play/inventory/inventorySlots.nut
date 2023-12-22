@@ -126,6 +126,25 @@ class InventorySlot
     }
 }
 
+function findSlotByInstance(inst)
+{
+    foreach(v in itemSlots)
+    {
+        if (v.instance.toupper() == inst.toupper()) return v;
+    }
+
+    return null;
+}
+
+function RemoveInvSlot(inst)
+{
+    local temp = findSlotByInstance(inst);
+    if (temp != null)
+    {
+        temp.setRender("", 0);
+    }
+}
+
 function handleSlideSlots(el)
 {
     itemMenu.setPosition(itemMenu.baseX, itemMenu.baseY - el.getValue());
@@ -326,6 +345,16 @@ function invEquip(slot, instance)
             Player.refreshQA(4);
             return true;
             break;
+        case 8:
+            Player.qa[4] = instance;
+            Player.refreshQA(5);
+            return true;
+            break;
+        case 9:
+            Player.qa[5] = instance;
+            Player.refreshQA(6);
+            return true;
+            break;
     }
 }
 
@@ -372,6 +401,16 @@ function invUnequip(slot, instance)
         case 7:
             Player.qa[3] = "";
             Player.refreshQA(4);
+            return true;
+            break;
+        case 8:
+            Player.qa[4] = "";
+            Player.refreshQA(5);
+            return true;
+            break;
+        case 9:
+            Player.qa[5] = "";
+            Player.refreshQA(6);
             return true;
             break;
     }

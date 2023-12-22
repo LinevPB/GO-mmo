@@ -45,7 +45,8 @@ enum PacketType {
     REMOVE_GROUND_ITEM = 43,
     ADD_GOLD = 44,
     SAVE_DESC = 45,
-    UPDATE_DESC = 46
+    UPDATE_DESC = 46,
+    GIVE_ITEM_NOTIFY = 47
 };
 
 function encode(args)
