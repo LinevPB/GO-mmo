@@ -215,13 +215,14 @@ class TextArea
     function closeTextArea()
     {
         textAreaOpened = false;
+        descHovered = true;
+        unhover(descTex);
         textAreaHold = null;
         chatInputClose();
         chatInputSetPosition(lastInputPos.x, lastInputPos.y);
         chatInputSetText(lastText);
         setStatCanUseKeys(true);
         draws.removeSlash();
-        unhover(descTex);
     }
 
     function updateArea()

@@ -22,6 +22,15 @@ local audioTitle = null;
 
 local windowSlider = null;
 
+local currentRes = null;
+local currentSightFactor = null;
+local currentLODMod = null;
+local currentLODOverr = null;
+local currentSoundVol = null;
+local currentMusicVol = null;
+local somethingChanged = false;
+local selectedResOpt = -1;
+
 function initSettings()
 {
     settingsMenu = Texture(0, 600, 8192, 8192 - 600, "BACKGROUND_BORDERLESS.TGA");
@@ -37,30 +46,60 @@ function initSettings()
 
     initRes();
 
-    sightSlider = settingsSlider(baseX, resDropdown.getBottomY() + 300, 2500, 5);
-    sightSlider.setTitle("Sight render distance");
+    sightSlider = settingsSlider(baseX, resDropdown.getBottomY() + 300, 3000, 5.0, 0.02, 5.0);
+    sightSlider.setTitle("Sight factor");
+    //The player sight factor (in the range between 0.02-5.0).
+    currentSightFactor = getSightFactor();
+    sightSlider.setValue(currentSightFactor);
 
-    renderDetailSlider = settingsSlider(baseX, sightSlider.getBottomY() + 300, 2500, 1);
-    renderDetailSlider.setTitle("Render detail");
+    renderDetailSlider = settingsSlider(baseX, sightSlider.getBottomY() + 300, 3000, 1.0, 0.0, 1.0);
+    renderDetailSlider.setTitle("LODStrengthModifier");
+    //The LOD strength value in range <0.0, 1.0>.
+    currentLODMod = getLODStrengthModifier();
+    renderDetailSlider.setValue(currentLODMod);
 
-    renderOverrideSlider = settingsSlider(baseX, renderDetailSlider.getBottomY() + 300, 2500, 2);
+    renderOverrideSlider = settingsSlider(baseX, renderDetailSlider.getBottomY() + 300, 3000, 2, -1, 1, false, false);
     renderOverrideSlider.setTitle("Detail render distance");
+    //The LOD strength value. - -1 use values stored within mesh. - 0 don't use LOD for mesh. - 1 >= use aggressive LOD
+    currentLODOverr = getLODStrengthOverride();
+    renderOverrideSlider.setValue(currentLODOverr + 1);
 
     audioTitle = Draw(baseX, renderOverrideSlider.getBottomY() + 400, "Audio settings");
     audioTitle.font = "FONT_OLD_20_WHITE_HI.TGA";
 
-    musicSlider = settingsSlider(baseX, audioTitle.getPosition().y + audioTitle.height + 200, 2500, 100);
+    musicSlider = settingsSlider(baseX, audioTitle.getPosition().y + audioTitle.height + 200, 3000, 1.0, 0, 100, true);
     musicSlider.setTitle("Music volume");
+    //volume value in range <0.0, 1.0>.
+    currentMusicVol = getMusicVolume();
+    musicSlider.setValue(currentMusicVol);
 
-    soundSlider = settingsSlider(baseX, musicSlider.getBottomY() + 300, 2500, 100);
+    soundSlider = settingsSlider(baseX, musicSlider.getBottomY() + 300, 3000, 1.0, 0, 100, true);
     soundSlider.setTitle("Sound volume");
+    //volume value in range <0.0, 1.0>.
+    currentSoundVol = getSoundVolume();
+    soundSlider.setValue(currentSoundVol);
 
-    windowSlider = Slider(6192, 900, 6492, "SLIDER_BACKGROUND_VERTICAL.TGA", 1000, "", "SLIDER_HANDLE.TGA", true);
+    windowSlider = Slider(6192, 900, 6492, "SLIDER_BACKGROUND_VERTICAL.TGA", 2000, "", "SLIDER_HANDLE.TGA", true);
+}
+
+function updateSettingsPosition(x, y)
+{
+    videoTitle.setPosition(baseX + x, 900 + y);
+
+    resTitle.setPosition(baseX + x, videoTitle.getPosition().y + videoTitle.height + 300);
+    resDropdown.setPosition(baseX + x, resTitle.height + resTitle.getPosition().y + 100);
+    sightSlider.setPosition(baseX + x, resDropdown.getBottomY() + 300);
+    renderDetailSlider.setPosition(baseX + x, sightSlider.getBottomY() + 300);
+    renderOverrideSlider.setPosition(baseX + x, renderDetailSlider.getBottomY() + 300);
+    audioTitle.setPosition(baseX + x, renderOverrideSlider.getBottomY() + 400);
+    musicSlider.setPosition(baseX + x, audioTitle.getPosition().y + audioTitle.height + 200);
+    soundSlider.setPosition(baseX + x, musicSlider.getBottomY() + 300);
 }
 
 function initRes()
 {
     local res = getResolution();
+    currentRes = res;
 
     resTitle = Draw(baseX, videoTitle.getPosition().y + videoTitle.height + 300, "Resolution");
     resDropdown = Dropdown(baseX, resTitle.height + resTitle.getPosition().y + 100, 2000, 400, res.x + "x" + res.y + "x" + res.bpp);
@@ -76,6 +115,7 @@ function initRes()
         if (v.x == res.x && v.y == res.y)
         {
             resDropdown.selectOption(resDropdown.options.len() - 1);
+            selectedResOpt = resDropdown.selected;
         }
     }
 
@@ -109,17 +149,95 @@ function enableSettings(val)
 
     settingsEnabled = val;
 
+    updateGameSettings();
+
     EscMenu.Top();
+}
+
+function updateGameSettings()
+{
+    currentSightFactor = getSightFactor();
+    currentLODMod = getLODStrengthModifier();
+    currentLODOverr = getLODStrengthOverride();
+    currentMusicVol = getMusicVolume();
+    currentSoundVol = getSoundVolume();
+    currentRes = getResolution();
+}
+
+function resChanged(res1, res2)
+{
+    if (res1.x == res2.x && res1.y == res2.y && res1.bpp == res2.bpp) return false;
+    return true;
+}
+
+function sightFactorChanged()
+{
+    if (currentSightFactor != sightSlider.getValue()) return true;
+    return false;
+}
+
+function LODModChanged()
+{
+    if (currentLODMod != renderDetailSlider.getValue()) return true;
+    return false;
+}
+
+function LODOverrChanged()
+{
+    if (currentLODOverr != renderOverrideSlider.getValue()) return true;
+    return false;
+}
+
+function musicVolChanged()
+{
+    if (currentMusicVol != musicSlider.getValue()) return true;
+    return false;
+}
+
+function soundVolChanged()
+{
+    if (currentSoundVol != soundSlider.getValue()) return true;
+    return false;
+}
+
+function activateChangeButtons()
+{
+    if (somethingChanged) return;
+    somethingChanged = true;
+
+    actionSave.setActive(true);
+    actionCancel.setActive(true);
+}
+
+function deactivateChangeButtons()
+{
+    if (!somethingChanged) return;
+    somethingChanged = false;
+
+    actionSave.setActive(false);
+    actionCancel.setActive(false);
+}
+
+function handleChanges()
+{
+    if (sightFactorChanged() || LODModChanged() || LODOverrChanged() || musicVolChanged() || soundVolChanged() || resChanged(currentRes, resDropdown.getSelectedConfig()))
+    {
+        activateChangeButtons();
+    }
+    else
+    {
+        deactivateChangeButtons();
+    }
 }
 
 function onSlideControls(el)
 {
-    switch(el)
-    {
-        case musicSlider:
 
-        break;
-    }
+}
+
+function onSlideWindow()
+{
+    updateSettingsPosition(0, -windowSlider.getValue());
 }
 
 function onSettingsSlide(el)
@@ -127,13 +245,19 @@ function onSettingsSlide(el)
     if (!settingsEnabled) return;
 
     slidersSlide(el);
-
     dropdownSlide(el);
+
+    if (el == windowSlider)
+    {
+        onSlideWindow();
+    }
 }
 
 function settingsRender()
 {
     if (!settingsEnabled) return;
+
+    handleChanges();
 
     actionButtonsRender();
     dropdownRender();
@@ -142,8 +266,10 @@ function settingsRender()
 function settingsPress()
 {
     if (!settingsEnabled) return;
+    if (getCursorPosition().y <= 600) return;
 
     dropdownPress();
+    actionButtonPress();
 }
 
 function settingsRelease()
@@ -151,4 +277,93 @@ function settingsRelease()
     if (!settingsEnabled) return;
 
     dropdownRelease();
+    actionButtonRelease();
+}
+
+local function restoreAll()
+{
+    deactivateChangeButtons();
+
+    if (sightFactorChanged())
+    {
+        sightSlider.setValue(currentSightFactor);
+    }
+
+    if (LODModChanged())
+    {
+        renderDetailSlider.setValue(currentLODMod);
+    }
+
+    if (LODOverrChanged())
+    {
+        renderOverrideSlider.setValue(currentLODOverr);
+    }
+
+    if (musicVolChanged())
+    {
+        musicSlider.setValue(currentMusicVol);
+    }
+
+    if (soundVolChanged())
+    {
+        soundSlider.setValue(currentSoundVol);
+    }
+
+    if (resChanged(currentRes, resDropdown.getSelectedConfig()))
+    {
+        resDropdown.restore(selectedResOpt);
+    }
+}
+
+local function saveAny()
+{
+    if (sightFactorChanged())
+    {
+        setSightFactor(sightSlider.getValue());
+    }
+
+    if (LODModChanged())
+    {
+        setLODStrengthModifier(renderDetailSlider.getValue())
+    }
+
+    if (LODOverrChanged())
+    {
+        setLODStrengthOverride(renderOverrideSlider.getValue());
+    }
+
+    if (musicVolChanged())
+    {
+        setMusicVolume(musicSlider.getValue());
+    }
+
+    if (soundVolChanged())
+    {
+        setSoundVolume(soundSlider.getValue())
+    }
+
+    if (resChanged(currentRes, resDropdown.getSelectedConfig()))
+    {
+        local res = resDropdown.getSelectedConfig();
+        setResolution(res.x, res.y, res.bpp);
+        selectedResOpt = resDropdown.selected;
+    }
+
+    updateGameSettings();
+    deactivateChangeButtons();
+    saveLogicalKeys();
+}
+
+function onClickActionButton(i)
+{
+    switch(i)
+    {
+        case 0:
+            saveAny();
+        break;
+
+        case 1:
+            restoreAll();
+        break;
+    }
 }

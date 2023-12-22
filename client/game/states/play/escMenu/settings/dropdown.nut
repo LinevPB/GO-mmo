@@ -164,6 +164,22 @@ class Dropdown
         optionsTexCover.setSize(size.width, size.height * visibleOptions + 100);
     }
 
+    function setPosition(x, y)
+    {
+        pos.x = x;
+        pos.y = y;
+
+        slider.setPosition(x + size.width - 200, y + size.height + 100);
+        coverTex.setPosition(x, y + (visibleOptions + 1) * size.height);
+        optionsTex.setPosition(x, y + size.height);
+        optionsTexCover.setPosition(x, y + size.height);
+
+        tex.setPosition(x, y);
+        draw.setPosition(x + size.width / 2 - draw.width / 2, y + size.height / 2 - draw.height / 2);
+
+        EscMenu.Top();
+    }
+
     function addOption(text, config)
     {
         options.append({ option = DropdownOption(text), config = config });
@@ -191,6 +207,11 @@ class Dropdown
         selected = i;
         options[i].option.setActive(true);
         setDropdownText(options[i].option.draw.text);
+    }
+
+    function restore(v)
+    {
+        selectOption(v);
     }
 
     function setOptionsPosition(x, y)
@@ -296,6 +317,7 @@ class Dropdown
     }
 }
 
+
 function dropdownSlide(el)
 {
     foreach(i, v in dropdowns)
@@ -332,17 +354,30 @@ function dropdownPress()
     foreach(i, v in dropdowns)
     {
         if (!v.enabled) continue;
-
-        foreach(j, k in v.options)
+        local collapsed = false;
+        if (v.expanded)
         {
-            if (inSquare(getCursorPosition(), k.option.getPosition(), k.option.getSize()))
+            if (getCursorPosition().y > v.pos.y + v.size.height)
             {
-                pressedOption = j;
-                break;
+                foreach(j, k in v.options)
+                {
+                    if (inSquare(getCursorPosition(), k.option.getPosition(), k.option.getSize()))
+                    {
+                        pressedOption = j;
+                        onPressDropdownOption(v, k, j);
+                        return;
+                    }
+                }
+            }
+
+            if (!inSquare(getCursorPosition(), v.optionsTex.getPosition(), v.optionsTex.getSize()))
+            {
+                v.collapse();
+                collapsed = true;
             }
         }
 
-        if (inSquare(getCursorPosition(), v.pos, { width = v.size.width + 200, height = v.size.height }))
+        if (inSquare(getCursorPosition(), v.pos, { width = v.size.width + 200, height = v.size.height }) && !collapsed)
         {
             pressed = i;
             return;
@@ -354,26 +389,13 @@ function dropdownRelease()
 {
     foreach(i, v in dropdowns)
     {
-        if (pressedOption != -1)
-        {
-            foreach(j, k in v.options)
-            {
-                if (!inSquare(getCursorPosition(), v.optionsTex.getPosition(), v.optionsTex.getSize())) continue;
-
-                if (inSquare(getCursorPosition(), k.option.getPosition(), k.option.getSize()) && j == pressedOption && v.expanded)
-                {
-                    pressedOption = -1;
-                    onPressDropdownOption(v, k, j);
-                    break;
-                }
-            }
-        }
 
         if (pressed == -1)
         {
             if (v.expanded && !inSquare(getCursorPosition(), v.optionsTex.getPosition(), v.optionsTex.getSize()) && v.holdingSlider == false)
             {
                 v.collapse();
+                EscMenu.Top();
             }
             else
             {
@@ -389,6 +411,7 @@ function dropdownRelease()
         if (inSquare(getCursorPosition(), v.pos, v.size))
         {
             v.expand();
+            EscMenu.Top();
             pressed = -1;
             return;
         }
@@ -399,4 +422,5 @@ function onPressDropdownOption(dropdown, option, id)
 {
     dropdown.selectOption(id);
     dropdown.collapse();
+    EscMenu.Top();
 }

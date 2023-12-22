@@ -53,6 +53,28 @@ class SliderMask extends Element
         parent.update();
     }
 
+    function setValue(val)
+    {
+        if (val > range) val = range;
+        if (val < 0) val = 0;
+
+        if (parent.vertical)
+        {
+            maskY = (parent.size.height.tofloat() - size.height) * (val.tofloat()/parent.range.tofloat()).tofloat();
+            if (maskY < 0) maskY = 0;
+            if (val > lengthY) maskY = lengthY;
+            setPosition(parent.pos.x + parent.size.width / 2 - size.width / 2, parent.pos.y + maskY);
+            parent.update();
+            return;
+        }
+
+        maskX = (parent.size.width.tofloat() - size.width) * (val.tofloat()/(parent.range.tofloat())).tofloat();
+        if (maskX < 0) maskX = 0;
+        if (val > lengthX) maskX = lengthX;
+        setPosition(parent.pos.x + maskX, pos.y);
+        parent.update();
+    }
+
     function enable(val)
     {
         base.enable(val);
@@ -98,6 +120,7 @@ class Slider extends Element {
     vertical = null;
     hasLabel = null;
     sliderSize = null;
+    range = null;
 
     constructor(x, y, width, texture, scope, label="", sliderTex = "MENU_MASKE.TGA", vert = false, slidSize = 200) {
         vertical = vert;
@@ -121,6 +144,7 @@ class Slider extends Element {
             hasLabel = false;
         }
 
+        range = scope;
         mask = SliderMask(x, y, sliderSize, sliderTex, scope, width);
         mask.parent = this;
 
@@ -152,7 +176,12 @@ class Slider extends Element {
 
     function getRawValue()
     {
-        return (mask.range.tofloat() * (mask.maskX.tofloat() / (size.width.tofloat() - mask.size.width.tofloat()))).tointeger();
+        return (mask.range.tofloat() * (mask.maskX.tofloat() / (size.width.tofloat() - mask.size.width.tofloat()))).tofloat();
+    }
+
+    function setValue(val)
+    {
+        mask.setValue(val);
     }
 
     function enable(val)

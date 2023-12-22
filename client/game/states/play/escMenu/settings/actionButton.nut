@@ -18,10 +18,38 @@ class actionButton
         draw.setPosition(x + width / 2 - draw.width / 2, y + height / 2 - draw.height / 2);
 
         enabled = false;
-        active = true;
         hovered = false;
 
+        setActive(false);
+
         actionButtons.append(this);
+    }
+
+    function setActive(val)
+    {
+        if (active == val) return;
+
+        if (val == true)
+        {
+            draw.alpha = 255;
+        }
+        else
+        {
+            unhover();
+            draw.alpha = 100;
+        }
+
+        active = val;
+    }
+
+    function getPos()
+    {
+        return pos;
+    }
+
+    function getSize()
+    {
+        return size;
     }
 
     function enable(val)
@@ -49,12 +77,44 @@ function actionButtonsRender()
 {
     foreach(v in actionButtons)
     {
-        if (inSquare(getCursorPosition(), v.pos, v.size))
+        if (inSquare(getCursorPosition(), v.getPos(), v.getSize()) && v.active)
         {
             v.hover();
             continue;
         }
 
         v.unhover();
+    }
+}
+
+local pressed = -1;
+
+function actionButtonPress()
+{
+    foreach(i, v in actionButtons)
+    {
+        if (inSquare(getCursorPosition(), v.pos, v.size))
+        {
+            pressed = i;
+            return;
+        }
+    }
+}
+
+function actionButtonRelease()
+{
+    if (pressed == -1) return;
+
+    foreach(i, v in actionButtons)
+    {
+        if (inSquare(getCursorPosition(), v.pos, v.size))
+        {
+            if (pressed == i)
+            {
+                pressed = -1;
+                onClickActionButton(i);
+                return;
+            }
+        }
     }
 }
