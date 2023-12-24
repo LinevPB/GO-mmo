@@ -106,7 +106,10 @@ local function onReleaseH(key)
 {
     switch(Player.gameState) {
         case GameState.CHARACTER_CREATION: onReleaseC(key); break;
-        case GameState.PLAY: onReleasePlay(key);
+        case GameState.PLAY:
+            rawOnRelease(key);
+            onReleasePlay(key);
+        break;
     }
 }
 addEventHandler("onMouseRelease", onReleaseH);

@@ -195,13 +195,81 @@ function playClickButtonHandler(id) // click
 
 function handleSlotMenu(id, pointer)
 {
-    if (clickTick < 400 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null)
+    if (clickTick < 300 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null)
     {
-        local curs = getCursorPosition();
+
+    }
+    else
+    {
+        slotMenu.enable(false);
+        getItemMenu().frozen = false;
+        slotHolder = null;
+        slotIdHolder = null;
+    }
+}
+
+local alreadyClicked = false;
+local alreadyHolder = null;
+local lastClickTick = 300;
+
+function rawOnRelease(key)
+{
+    if (TradeBox.IsEnabled()) return;
+    if (slotMenu.enabled) return;
+
+    local curs = getCursorPosition();
+
+    if (key == MOUSE_BUTTONLEFT)
+    {
+        local temp = null;
+        foreach(i, v in getItemSlots())
+        {
+            if (!inSquare(curs, v.btn.pos, v.btn.size))
+            {
+                continue;
+            }
+            temp = v;
+        }
+
+        if (temp == null) return;
+
+        if (alreadyClicked && !(getTickCount() - lastClickTick > 400 || alreadyHolder != temp))
+        {
+            handleUseItem(temp);
+            alreadyClicked = false;
+            alreadyHolder = null;
+
+            return;
+        }
+
+        alreadyClicked = true;
+        alreadyHolder = temp;
+        lastClickTick = getTickCount();
+
+        return;
+    }
+
+    if (key != MOUSE_BUTTONRIGHT) return;
+
+    foreach(i, v in getItemSlots())
+    {
+        if (!inSquare(curs, v.btn.pos, v.btn.size))
+        {
+            continue;
+        }
+
+        if (v.instance == "")
+        {
+            return;
+        }
+
+        slotHolder = v;
+        slotIdHolder = i;
 
         getItemMenu().frozen = true;
         slotMenu.enable(true);
         slotMenu.setPosition(curs.x, curs.y);
+
         local item = Daedalus.instance(slotHolder.render.instance);
         if (item.mainflag == 32 || item.mainflag == 128)
         {
@@ -223,14 +291,9 @@ function handleSlotMenu(id, pointer)
             slotMenuButtons.useButton.changeText(lang["INV_NONUSABLE"][Player.lang]);
         }
 
-        pointer.btn.unhover();
-    }
-    else
-    {
-        slotMenu.enable(false);
-        getItemMenu().frozen = false;
-        slotHolder = null;
-        slotIdHolder = null;
+        v.btn.unhover();
+
+        return;
     }
 }
 
@@ -238,12 +301,9 @@ function rawOnClick(key)
 {
     if (TradeBox.IsEnabled()) return;
 
-    if (!slotMenu.enabled)
-    {
-        return;
-    }
+    if (!slotMenu.enabled) return;
 
-    if (!inSquare(getCursorPosition(), slotMenu.pos, slotMenu.size) && !inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
+    if (!inSquare(getCursorPosition(), slotMenu.pos, slotMenu.size))
     {
         slotMenu.enable(false);
         getItemMenu().frozen = false;
@@ -445,7 +505,6 @@ function onElementRender(el)
     {
         foreach (v in Player.items)
         {
-            print(v.instance + " " + v.amount);
             if (v.amount <= 0)
             {
                 getItemSlots()[v.slot].setRender("", 0);
