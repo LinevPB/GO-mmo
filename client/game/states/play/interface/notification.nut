@@ -2,6 +2,9 @@ local draws = [];
 local disappearY = 5500;
 local startY = 6000;
 local updateSpeed = 25;
+local levelup_draw = null;
+local levelup_state = 0;
+local levelup_time = 0;
 
 class Info
 {
@@ -82,7 +85,10 @@ class Info
 
 function initNotifications()
 {
-
+    levelup_draw = Draw(0, 0, "");
+    levelup_draw.font = "FONT_OLD_20_WHITE_HI.TGA";
+    levelup_draw.alpha = 0;
+    levelup_state = 0;
 }
 
 function notify(text)
@@ -112,4 +118,45 @@ function notificationRender()
             draws.remove(i);
         }
     }
+
+    switch(levelup_state)
+    {
+        case 1:
+            local calc = levelup_draw.alpha + 5;
+            if (calc >= 255)
+            {
+                calc = 255;
+                levelup_time = getTickCount() + 2000;
+                levelup_state = 2;
+            }
+            levelup_draw.alpha = calc;
+        break;
+
+        case 2:
+            if (getTickCount() > levelup_time)
+            {
+                levelup_state = 3;
+            }
+        break;
+
+        case 3:
+            local calc = levelup_draw.alpha - 5;
+            if (calc <= 0)
+            {
+                calc = 0;
+                levelup_state = 0;
+                levelup_draw.visible = false;
+            }
+            levelup_draw.alpha = calc;
+        break;
+    }
+}
+
+function levelUp_notify(text)
+{
+    addEffect(heroId, "Spellfx_Palheal");
+    levelup_draw.text = text;
+    levelup_draw.setPosition(8192 / 2 - levelup_draw.width / 2, 8192 / 2);
+    levelup_draw.visible = true;
+    levelup_state = 1;
 }

@@ -147,7 +147,7 @@ local function onPacket(packet) {
 
         case PacketType.LEVEL_UP:
             local text = lang["LEVEL_UP"][Player.lang];
-            notify(text);
+            levelUp_notify(text);
         break;
 
         case PacketType.NPC_RESPAWN:
