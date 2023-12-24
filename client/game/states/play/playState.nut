@@ -136,6 +136,7 @@ function handleAction(key)
 
         // escape menu opened :)
         case 2:
+            rawOnKey(key);
             escMenuAction(key);
         break;
 

@@ -195,11 +195,7 @@ function playClickButtonHandler(id) // click
 
 function handleSlotMenu(id, pointer)
 {
-    if (clickTick < 300 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null)
-    {
-
-    }
-    else
+    if (!(clickTick < 300 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null))
     {
         slotMenu.enable(false);
         getItemMenu().frozen = false;
@@ -377,6 +373,13 @@ function findSlot(instance)
     return null;
 }
 
+function sendDrop(inst, val)
+{
+    sendPacket(PacketType.DROP_ITEM, inst, val);
+
+    TradeBox.Enable(false);
+}
+
 function INVplayButtonHandler(id) // release
 {
     if (id == TradeBox.GetCancelBtn())
@@ -388,10 +391,12 @@ function INVplayButtonHandler(id) // release
     {
         local temp = TradeBox.GetHold();
         local val = TradeBox.GetValue();
+        if (val == "")
+        {
+            return TradeBox.Enable(false);
+        }
 
-        sendPacket(PacketType.DROP_ITEM, temp.instance, val.tointeger());
-
-        return TradeBox.Enable(false);
+        return sendDrop(temp.instance, val.tointeger());
     }
 
     if (id == slotMenuButtons.useButton.id)
@@ -443,16 +448,18 @@ function INVplayButtonHandler(id) // release
             continue;
         }
 
-        if (!inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
+        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
+        {
+            slotPointer = false;
+            break;
+        }
+        else if (i < 4)
         {
             v.render.instance = "";
             slotPointer = false;
 
-            return invUnequip(i, holdedRender.instance);
+            invUnequip(i, holdedRender.instance);
         }
-
-        slotPointer = false;
-        break;
     }
 
     foreach(i, v in getItemSlots())
@@ -489,9 +496,40 @@ function INVplayButtonHandler(id) // release
 
     slotPointer = false;
 
-    if (invEquip(found, holdedRender.instance))
+    local item = ServerItems.find(holdedRender.instance);
+    switch(item.type)
     {
-        temp.render.instance = holdedRender.instance;
+        case ItemType.FOOD:
+        case ItemType.POTION:
+            if (found < 4) return;
+
+            local enu = -1;
+
+            foreach(i, v in getCharacterLabs())
+            {
+                if (v.render.instance == holdedRender.instance)
+                {
+                    enu = i;
+                    v.render.instance = "";
+                    invUnequip(i, holdedRender.instance);
+                }
+            }
+
+            if (temp.render.instance != "")
+            {
+                if (enu != -1)
+                {
+                    print(enu);
+                    getCharacterLabs()[enu].render.instance = temp.render.instance;
+                    invEquip(enu, temp.render.instance);
+                }
+            }
+
+            temp.render.instance = holdedRender.instance;
+            invEquip(found, holdedRender.instance);
+            slotId = -1;
+
+        break;
     }
 }
 
@@ -540,4 +578,13 @@ function handleDropItem(slot)
     TradeBox.Select();
 
     return;
+}
+
+function rawOnKey(key)
+{
+    if (!Inventory.invEnabled) return;
+    if (!TradeBox.IsEnabled()) return;
+    if (key != KEY_RETURN) return;
+
+    INVplayButtonHandler(TradeBox.GetOkBtn());
 }
