@@ -180,6 +180,11 @@ function finalizeTrade(pid)
         return;
     }
 
+    if (player.tradeNpcItems.len() == 0 && player.tradePlayerItems.len() == 0)
+    {
+        return;
+    }
+
     foreach(v in player.tradeNpcItems)
     {
         GiveItem(pid, v.instance, (v.amount).tointeger());

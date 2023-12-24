@@ -7,6 +7,7 @@ class GroundItem
     pos = null;
     instance = null;
     amount = null;
+    timer = null;
     constructor(aPos, aInstance, aAmount = 1)
     {
         pos = aPos;
@@ -15,6 +16,8 @@ class GroundItem
 
         id = gid;
         gid++;
+
+        timer = setTimer(killGroundItem, 60 * 1000, 1, id);
 
         ground_items.append(this);
     }
@@ -37,6 +40,11 @@ function getGroundItem(id)
     }
 }
 
+function killGroundItem(id)
+{
+    deleteGroundItem(id);
+}
+
 function deleteGroundItem(id)
 {
     foreach(i, v in ground_items)
@@ -46,6 +54,12 @@ function deleteGroundItem(id)
             foreach(k in getPlayers())
             {
                 sendPlayerPacket(k.id, PacketType.REMOVE_GROUND_ITEM, id);
+            }
+
+            if (v.timer != null)
+            {
+                killTimer(v.timer);
+                v.timer = null;
             }
 
             ground_items.remove(i);

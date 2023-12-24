@@ -120,6 +120,11 @@ function onRenderP(currentTime, lastTime)
 local isInAction = false;
 local actionType = 0;
 
+function getActionType()
+{
+    return actionType;
+}
+
 function handleAction(key)
 {
     switch(actionType)
@@ -318,12 +323,35 @@ function escMenuAction(key)
 
 function interactionAction(key)
 {
-    tradeKey(key);
+    if (isTradeEnabled())
+    {
+        return tradeKey(key);
+    }
 
     switch(key)
     {
         case KEY_SPACE:
             skip_dial();
+        break;
+
+        case KEY_1:
+            check_dialog(0);
+        break;
+
+        case KEY_2:
+            check_dialog(1);
+        break;
+
+        case KEY_3:
+            check_dialog(2);
+        break;
+
+        case KEY_4:
+            check_dialog(3);
+        break;
+
+        case KEY_5:
+            check_dialog(4);
         break;
     }
 }

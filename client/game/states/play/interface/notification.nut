@@ -87,6 +87,8 @@ function initNotifications()
 
 function notify(text)
 {
+    if (getActionType() != 0) return;
+
     local temp = Info(text);
     temp.enable(true);
 }

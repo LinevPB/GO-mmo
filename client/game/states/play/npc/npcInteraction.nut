@@ -13,6 +13,7 @@ local superTexture = null;
 local mealpha = 0;
 local interacting = false;
 local in_dial = false;
+local dial_menu_open = false;
 
 local dial_func = null;
 local skipping = false;
@@ -170,6 +171,7 @@ function show_dialog_menu(dialogs)
     }
 
     currDial = dialogs;
+    dial_menu_open = true;
 }
 
 function hide_dialog_menu()
@@ -182,6 +184,8 @@ function hide_dialog_menu()
         dialogOpt[i].force_enable(null);
     }
     intWindow.enable(false);
+
+    dial_menu_open = false;
 }
 
 function update_dialog(text)
@@ -210,6 +214,7 @@ function end_dialog()
 
 function check_dialog(id)
 {
+    if (!dial_menu_open) return;
     if (BOT == -1) return;
     if (BOT.holder[id] == null) return;
     hide_dialog_menu();
@@ -416,7 +421,8 @@ function skip_func()
 function skip_dial()
 {
     if (skipping) return;
-    if (!interacting && !exiting && BOT == -1 && !in_dial) return;
+    if (!interacting && !exiting && BOT == -1) return;
+    if (!in_dial) return;
 
     skipping = true;
     killTimer(timer);
