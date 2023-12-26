@@ -3,8 +3,7 @@
 
 	<script src="states/login/loginState.nut" type="client" />
 
-	<script src="states/character/characterSelection.nut" type="client" />
-	<script src="states/character/characterCreation.nut" type="client" />
+	<import src="states/character/character.xml" type="client" />
 
 	<import src="states/play/playState.xml" type="client" />
 

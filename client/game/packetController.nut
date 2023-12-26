@@ -30,7 +30,7 @@ local function onPacket(packet) {
         break;
 
         case PacketType.CHARACTERS_RECEIVE:
-            loadCharacter(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11]);
+            loadCharacter(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12]);
         break;
 
         case PacketType.CHARACTERS_FINISHED:
@@ -48,7 +48,7 @@ local function onPacket(packet) {
 
                 /////////
 
-                if (DEBUG) debug_funcx();
+                //if (DEBUG) debug_funcx();
             }
         break;
 

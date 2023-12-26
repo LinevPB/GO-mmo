@@ -4,21 +4,6 @@ lang <- {
         ["pl"]= "Memory"
     },
 
-    ["BUTTON_MAIN_MENU_LOGIN"] = {
-        ["en"]= "Sign in",
-        ["pl"]= "Zaloguj"
-    },
-
-    ["BUTTON_MAIN_MENU_REGISTER"] = {
-        ["en"]= "Sign up",
-        ["pl"]= "Zarejestruj"
-    },
-
-    ["BUTTON_MAIN_MENU_QUIT"] = {
-        ["en"]= "Quit",
-        ["pl"]= "WyjdŸ"
-    },
-
     ///
     ["LABEL_LOGIN_MENU_USERNAME"] = {
         ["en"]= "Username",
@@ -27,7 +12,7 @@ lang <- {
 
     ["LABEL_LOGIN_MENU_PASSWORD"] = {
         ["en"]= "Password",
-        ["pl"]= "Has³o"
+        ["pl"]= "Hasï¿½o"
     },
 
     ["BUTTON_LOGIN_MENU_OK"] = {
@@ -35,9 +20,9 @@ lang <- {
         ["pl"]= "Ok"
     },
 
-    ["BUTTON_LOGIN_MENU_BACK"] = {
-        ["en"]= "Back",
-        ["pl"]= "Wróæ"
+    ["BUTTON_LOGIN_MENU_QUIT"] = {
+        ["en"]= "Quit",
+        ["pl"]= "WyjdÅº"
     },
 
     ///
@@ -48,12 +33,12 @@ lang <- {
 
     ["LABEL_REGISTER_MENU_PASSWORD"] = {
         ["en"]= "Password",
-        ["pl"]= "Has³o"
+        ["pl"]= "Hasï¿½o"
     },
 
     ["LABEL_REGISTER_MENU_CPASSWORD"] = {
         ["en"]= "Confirm password",
-        ["pl"]= "Powtórz has³o"
+        ["pl"]= "Powtï¿½rz hasï¿½o"
     },
 
     ["BUTTON_REGISTER_MENU_OK"] = {
@@ -63,7 +48,7 @@ lang <- {
 
     ["BUTTON_REGISTER_MENU_BACK"] = {
         ["en"]= "Back",
-        ["pl"]= "Wróæ"
+        ["pl"]= "Wrï¿½ï¿½"
     },
 
     //
@@ -94,7 +79,7 @@ lang <- {
 
     ["BUTTON_CHAR_SELECTION_MENU_CREATE"] = {
         ["en"]= "Create",
-        ["pl"]= "Stwórz"
+        ["pl"]= "Stwï¿½rz"
     },
 
     ["BUTTON_CHAR_SELECTION_MENU_SELECT"] = {
@@ -104,7 +89,7 @@ lang <- {
 
     ["BUTTON_CHAR_SELECTION_MENU_QUIT"] = {
         ["en"]= "Quit",
-        ["pl"]= "WyjdŸ"
+        ["pl"]= "Wyjdï¿½"
     },
 
     //
@@ -115,12 +100,12 @@ lang <- {
 
     ["LABEL_CREATION_NAME"] = {
         ["en"]= "Name:",
-        ["pl"]= "Imiê:"
+        ["pl"]= "Imiï¿½:"
     },
 
     ["LABEL_CREATION_MALE"] = {
         ["en"]= "Male",
-        ["pl"]= "Mê¿czyzna"
+        ["pl"]= "Mï¿½czyzna"
     },
 
     ["LABEL_CREATION_FEMALE"] = {
@@ -130,54 +115,54 @@ lang <- {
 
     ["LABEL_CREATION_SEX"] = {
         ["en"]= "Sex",
-        ["pl"]= "P³eæ"
+        ["pl"]= "Pï¿½eï¿½"
     },
 
     ["LABEL_CREATION_BODYTEX"] = {
         ["en"]= "Body texture",
-        ["pl"]= "Tekstura cia³a"
+        ["pl"]= "Tekstura ciaï¿½a"
     },
 
     ["LABEL_CREATION_HEADMODEL"] = {
         ["en"]= "Head model",
-        ["pl"]= "Model g³owy"
+        ["pl"]= "Model gï¿½owy"
     },
 
     ["LABEL_CREATION_HEADTEX"] = {
         ["en"]= "Head texture",
-        ["pl"]= "Tekstura g³owy"
+        ["pl"]= "Tekstura gï¿½owy"
     },
 
     ["BUTTON_CREATION_OK"] = {
         ["en"]= "Create",
-        ["pl"]= "Stwórz"
+        ["pl"]= "Stwï¿½rz"
     },
 
     ["BUTTON_CREATION_BACK"] = {
         ["en"]= "Back",
-        ["pl"]= "Wróæ"
+        ["pl"]= "Wrï¿½ï¿½"
     },
 
     ///
 
     ["INV_USE"] = {
         ["en"]= "Use",
-        ["pl"]= "U¿yj"
+        ["pl"]= "Uï¿½yj"
     },
 
     ["INV_DROP"] = {
         ["en"]= "Drop",
-        ["pl"]= "Wyrzuæ"
+        ["pl"]= "Wyrzuï¿½"
     },
 
     ["INV_NONUSABLE"] = {
         ["en"]= "Non usable",
-        ["pl"]= "Bezu¿yteczne"
+        ["pl"]= "Bezuï¿½yteczne"
     },
 
     ["INV_EQUIP"] = {
         ["en"]= "Equip",
-        ["pl"]= "Za³ó¿"
+        ["pl"]= "Zaï¿½ï¿½"
     },
 
     ["INV_UNEQUIP"] = {
@@ -192,12 +177,12 @@ lang <- {
 
     ["ADD_EXPERIENCE"] = {
         ["en"]= "Experience +",
-        ["pl"]= "Doœwiadczenie +"
+        ["pl"]= "Doï¿½wiadczenie +"
     },
 
     ["VALUE"] = {
         ["en"]= "Value: ",
-        ["pl"]= "Wartoœæ: "
+        ["pl"]= "Wartoï¿½ï¿½: "
     },
 
     ["SHOP"] = {
@@ -212,7 +197,7 @@ lang <- {
 
     ["MY_INVENTORY"] = {
         ["en"] = "My inventory",
-        ["pl"] = "Mój ekwipunek"
+        ["pl"] = "Mï¿½j ekwipunek"
     },
 
     ["PRICE"] = {
@@ -222,12 +207,12 @@ lang <- {
 
     ["TRADE_SUCCESS"] = {
         ["en"] = "Trade successful",
-        ["pl"] = "Handel pomyœlny"
+        ["pl"] = "Handel pomyï¿½lny"
     },
 
     ["TRADE_LITTLE_ORES"] = {
         ["en"] = "Not enough ores!",
-        ["pl"] = "Za ma³o rudy!"
+        ["pl"] = "Za maï¿½o rudy!"
     },
 
     ["TRADE"] = {
@@ -237,12 +222,12 @@ lang <- {
 
     ["EXIT"] = {
         ["en"] = "Exit",
-        ["pl"] = "WyjdŸ"
+        ["pl"] = "Wyjdï¿½"
     },
 
     ["ENTER_AMOUNT"] = {
         ["en"] = "Enter the amount of",
-        ["pl"] = "WprowadŸ iloœæ"
+        ["pl"] = "Wprowadï¿½ iloï¿½ï¿½"
     },
 
     ["TRADEBOX_OK"] = {
@@ -267,7 +252,7 @@ lang <- {
 
     ["INV_QA"] = {
         ["en"] = "Quick access",
-        ["pl"] = "Szybki dostêp"
+        ["pl"] = "Szybki dostï¿½p"
     },
 
     ["STATISTICS"] = {
@@ -277,12 +262,12 @@ lang <- {
 
     ["ESC_INFO"] = {
         ["en"] = "(ESC) Press to resume",
-        ["pl"] = "(ESC) Wciœnij by powróciæ"
+        ["pl"] = "(ESC) Wciï¿½nij by powrï¿½ciï¿½"
     },
 
     ["NAME"] = {
         ["en"] = "Name",
-        ["pl"] = "Imiê"
+        ["pl"] = "Imiï¿½"
     },
 
     ["LEVEL"] = {
@@ -292,12 +277,12 @@ lang <- {
 
     ["EXPERIENCE"] = {
         ["en"] = "Experience",
-        ["pl"] = "Doœwiadczenie"
+        ["pl"] = "Doï¿½wiadczenie"
     },
 
     ["HEALTH"] = {
         ["en"] = "Health",
-        ["pl"] = "¯ycie"
+        ["pl"] = "ï¿½ycie"
     },
 
     ["MANA"] = {
@@ -307,42 +292,42 @@ lang <- {
 
     ["STRENGTH"] = {
         ["en"] = "Strength",
-        ["pl"] = "Si³a"
+        ["pl"] = "Siï¿½a"
     },
 
     ["DEXTERITY"] = {
         ["en"] = "Dexterity",
-        ["pl"] = "Zwinnoœæ"
+        ["pl"] = "Zwinnoï¿½ï¿½"
     },
 
     ["SKILL_1H"] = {
         ["en"] = "One-handed fight",
-        ["pl"] = "Walka broni¹ jednorêczna"
+        ["pl"] = "Walka broniï¿½ jednorï¿½czna"
     },
 
     ["SKILL_2H"] = {
         ["en"] = "Two-handed fight",
-        ["pl"] = "Walka broni¹ dwurêczn¹"
+        ["pl"] = "Walka broniï¿½ dwurï¿½cznï¿½"
     },
 
     ["SKILL_BOW"] = {
         ["en"] = "Bow fight",
-        ["pl"] = "Walka ³ukiem"
+        ["pl"] = "Walka ï¿½ukiem"
     },
 
     ["SKILL_CBOW"] = {
         ["en"] = "Crossbow fight",
-        ["pl"] = "Walka kusz¹"
+        ["pl"] = "Walka kuszï¿½"
     },
 
     ["MAGIC_LEVEL"] = {
         ["en"] = "Magic level",
-        ["pl"] = "Kr¹g magii"
+        ["pl"] = "Krï¿½g magii"
     },
 
     ["GUARDIAN"] = {
         ["en"] = "Guardian",
-        ["pl"] = "Stra¿nik"
+        ["pl"] = "Straï¿½nik"
     },
 
     ["TRADER"] = {
@@ -352,7 +337,7 @@ lang <- {
 
     ["SCAVENGER"] = {
         ["en"] = "Scavenger",
-        ["pl"] = "Œcierwojad"
+        ["pl"] = "ï¿½cierwojad"
     },
 
     ["CTRL"] = {
@@ -367,17 +352,17 @@ lang <- {
 
     ["TAKE"] = {
         ["en"] = "Take",
-        ["pl"] = "Podnieœ"
+        ["pl"] = "Podnieï¿½"
     },
 
     ["GET_OUT"] = {
         ["en"] = "Get out of here!",
-        ["pl"] = "Spadaj st¹d!"
+        ["pl"] = "Spadaj stï¿½d!"
     },
 
     ["RESPAWN_INFO"] = {
         ["en"] = "You are going to respawn in ",
-        ["pl"] = "Odrodzisz siê za "
+        ["pl"] = "Odrodzisz siï¿½ za "
     },
 
     ["ADD_GOLD"] = {

@@ -38,6 +38,7 @@ class PlayerStructure
     tradeNpcItems = null;
     dead = null;
     char_desc = null;
+    char_amount = null;
 
     constructor(playerid)
     {
@@ -75,6 +76,7 @@ class PlayerStructure
         tradeNpcItems = [];
         dead = false;
         char_desc = "";
+        char_amount = 0;
     }
 
     function addItem(instance, amount, loading = false, slot = -1)

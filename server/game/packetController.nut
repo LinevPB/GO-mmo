@@ -108,6 +108,10 @@ local function onPacket(pid, packet)
         case PacketType.SAVE_DESC:
             saveDescription(pid, data[0]);
         break;
+
+        case PacketType.DAMAGE_DO:
+            handlePlayerDamage(pid, data[0]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

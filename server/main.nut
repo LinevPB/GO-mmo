@@ -17,12 +17,13 @@ function onDisconnect(pid, reason)
     local player = findPlayer(pid);
     if (player == -1) return;
     if (!player.logged) return;
-    if (player.gameState != GameState.PLAY) return;
+    if (player.gameState == GameState.PLAY)
+    {
+        local pos = getPlayerPosition(pid);
+        mysql.squery("UPDATE `characters` SET `x` = '" + pos.x + "', `y` = '" + pos.y + "', `z` = '" + pos.z + "' WHERE `id`='" + player.charId + "'");
+    }
 
-    local pos = getPlayerPosition(pid);
-    mysql.squery("UPDATE `characters` SET `x` = '" + pos.x + "', `y` = '" + pos.y + "', `z` = '" + pos.z + "' WHERE `id`='" + player.charId + "'");
-
-    removePlayer(player);
+    removePlayerById(pid);
 }
 addEventHandler("onPlayerDisconnect", onDisconnect);
 
@@ -38,3 +39,4 @@ function onTick()
     lastTime = 0;
 }
 addEventHandler("onTick", onTick);
+

@@ -127,6 +127,11 @@ function getActionType()
 
 function handleAction(key)
 {
+    if (key == KEY_Z)
+    {
+        exitGame();
+    }
+
     switch(actionType)
     {
         // free gaming :)
@@ -206,10 +211,6 @@ function freeAction(key)
             actionType = 2;
             enableQA(false);
             EscMenu.Enable(true);
-        break;
-
-        case KEY_Z:
-            exitGame();
         break;
 
         default:

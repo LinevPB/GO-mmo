@@ -5,8 +5,8 @@ function onInit()
 
     ChangeGameState(GameState.LOGIN);
 
-    if (DEBUG) {
-        debug_func();
+    if (DEBUG)
+    {
         setTimer(RunDebug, 500, 1);
     }
 }

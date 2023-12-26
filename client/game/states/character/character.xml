@@ -1,0 +1,10 @@
+<server>
+
+    <script src="buttonInterface.nut" type="client" />
+    <script src="charSlot.nut" type="client" />
+    <script src="charStruct.nut" type="client" />
+
+    <script src="characterSelection.nut" type="client" />
+	<script src="characterCreation.nut" type="client" />
+
+</server>

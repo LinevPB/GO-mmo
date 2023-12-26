@@ -46,6 +46,11 @@ function ChangeGameState(state)
     }
 }
 
+function logOut()
+{
+    ChangeGameState(GameState.LOGIN);
+}
+
 function onPressButton(id)
 {
     switch(Player.gameState) {
@@ -93,6 +98,7 @@ addEventHandler("onRender", onRenderH);
 local function onClickH(key)
 {
     switch(Player.gameState) {
+        case GameState.CHARACTER_SELECTION: onClickS(key); break;
         case GameState.CHARACTER_CREATION: onClickC(key); break;
         case GameState.PLAY:
             rawOnClick(key);
@@ -105,6 +111,7 @@ addEventHandler("onMouseClick", onClickH);
 local function onReleaseH(key)
 {
     switch(Player.gameState) {
+        case GameState.CHARACTER_SELECTION: onReleaseS(key); break;
         case GameState.CHARACTER_CREATION: onReleaseC(key); break;
         case GameState.PLAY:
             rawOnRelease(key);
@@ -127,21 +134,22 @@ function setupPlayer(name, bodyMod, bodyTex, headMod, headTex)
 function onSlide(el)
 {
     switch(Player.gameState) {
-        case GameState.CHARACTER_CREATION: onSlideChar(el);
-        case GameState.PLAY: onSlidePlay(el);
+        case GameState.CHARACTER_SELECTION: onSlideSelection(el); break;
+        case GameState.CHARACTER_CREATION: onSlideChar(el); break;
+        case GameState.PLAY: onSlidePlay(el); break;
     }
 }
 
 function onHover(el)
 {
     switch(Player.gameState) {
-        case GameState.PLAY: invHover(el);
+        case GameState.PLAY: invHover(el); break;
     }
 }
 
 function onUnhover(el)
 {
     switch(Player.gameState) {
-        case GameState.PLAY: invUnhover(el);
+        case GameState.PLAY: invUnhover(el); break;
     }
 }

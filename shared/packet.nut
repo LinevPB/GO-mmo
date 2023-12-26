@@ -46,7 +46,8 @@ enum PacketType {
     ADD_GOLD = 44,
     SAVE_DESC = 45,
     UPDATE_DESC = 46,
-    GIVE_ITEM_NOTIFY = 47
+    GIVE_ITEM_NOTIFY = 47,
+    DAMAGE_DO = 48
 };
 
 function encode(args)

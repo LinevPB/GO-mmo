@@ -203,6 +203,8 @@ function onPlayerHit(kid, pid, desc)
             return;
         }
     }
+
+    sendPacket(PacketType.DAMAGE_DO, pid);
 }
 addEventHandler("onPlayerHit", onPlayerHit);
 
