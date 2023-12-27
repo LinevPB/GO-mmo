@@ -135,7 +135,7 @@ class Slider extends Element {
 
         if (label != "")
         {
-            textuboxu = NumericBox(x, y, 250, 250, "MENU_CHOICE_BACK.TGA", scope);
+            textuboxu = NumericBox(x, y, 250, 250, "TEXTBOX_BACKGROUND.TGA", scope);
             labelu = Label(x, y, label);
             hasLabel = true;
         }

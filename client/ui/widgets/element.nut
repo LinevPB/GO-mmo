@@ -59,6 +59,7 @@ class Element {
         }
 
         draw = Draw(x, y, "Ab# sVt uIo PE# ### ### ###");
+        draw.setPosition(x, y + height / 2 - draw.height / 2);
         letterWidth = draw.width / 27;
         draw.text = title;
         draw.visible = false;
@@ -67,7 +68,7 @@ class Element {
         leftClicked = false;
 
         regularColor = { r = 255, g = 255, b = 255 };
-        hoverColor = { r = 230, g = 170, b = 170 };
+        hoverColor = { r = 230, g = 200, b = 200 };
         hovered = false;
 
         baseX = x;

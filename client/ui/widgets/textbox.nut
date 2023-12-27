@@ -5,18 +5,26 @@ class Textbox extends Element {
     placeholder = "";
     span = 100;
     numericOnly = null;
+    centered = null;
 
-    constructor(x, y, width, height, texture, placeholderTitle = "", hoverTexture = "DLG_CONVERSATION.TGA", hash = false) {
-        if (hoverTexture == null) {
+    constructor(x, y, width, height, texture, placeholderTitle = "", hoverTexture = "DLG_CONVERSATION.TGA", hash = false)
+    {
+        if (hoverTexture == null)
+        {
             hoverTexture = "DLG_CONVERSATION.TGA";
         }
 
         base.constructor(x, y, width, height, texture, placeholderTitle, hoverTexture);
         elementType = ElementType.TEXTBOX;
-        UI_Elements.append(this);
+
         hashed = hash;
         placeholder = placeholderTitle;
         numericOnly = false;
+        centered = false;
+
+        setPosition(x, y);
+
+        UI_Elements.append(this);
     }
 
     function reset()
@@ -27,6 +35,11 @@ class Textbox extends Element {
         active = false;
         placeholder = "";
         span = 100;
+    }
+
+    function setCentered(val)
+    {
+        centered = val;
     }
 
     function setDefaultValue(val)
@@ -49,8 +62,17 @@ class Textbox extends Element {
         return value;
     }
 
-    function setPosition(x, y) {
+    function setPosition(x, y)
+    {
         base.setPosition(x, y);
+
+        if (centered)
+        {
+            draw.setPosition(pos.x + size.width / 2 - draw.width / 2, pos.y + size.height / 2 - draw.height / 2);
+
+            return;
+        }
+
         draw.setPosition(span + pos.x, pos.y + size.height / 2 - draw.height / 2);
     }
 

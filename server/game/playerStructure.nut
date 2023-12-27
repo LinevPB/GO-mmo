@@ -39,6 +39,8 @@ class PlayerStructure
     dead = null;
     char_desc = null;
     char_amount = null;
+    fat = null;
+    overlay = null;
 
     constructor(playerid)
     {
@@ -77,6 +79,8 @@ class PlayerStructure
         dead = false;
         char_desc = "";
         char_amount = 0;
+        overlay = "NORMAL";
+        fat = 0.0;
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
@@ -297,6 +301,24 @@ class PlayerStructure
 
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `gold` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setFatness(val, loading=false)
+    {
+        fat = val;
+        setPlayerFatness(id, val.tofloat());
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `fat` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setOverlay(val, loading=false)
+    {
+        overlay = getOverlayById(val);
+        applyPlayerOverlay(id, Mds.id(overlay));
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `overlay` = '" + val + "' WHERE `id`='" + charId + "'");
     }
 
     function setDescription(val, loading = false)

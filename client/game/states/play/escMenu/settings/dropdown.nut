@@ -322,6 +322,7 @@ function dropdownSlide(el)
 {
     foreach(i, v in dropdowns)
     {
+        if (!v.enabled) continue;
         if (el != v.slider) continue;
 
         v.holdingSlider = true;
@@ -333,6 +334,7 @@ function dropdownRender()
 {
     foreach(v in dropdowns)
     {
+        if (!v.enabled) continue;
         if (v.options.len() == 0) continue;
         if (!v.expanded) continue;
 
@@ -389,7 +391,7 @@ function dropdownRelease()
 {
     foreach(i, v in dropdowns)
     {
-
+        if (!v.enabled) continue;
         if (pressed == -1)
         {
             if (v.expanded && !inSquare(getCursorPosition(), v.optionsTex.getPosition(), v.optionsTex.getSize()) && v.holdingSlider == false)
@@ -423,4 +425,15 @@ function onPressDropdownOption(dropdown, option, id)
     dropdown.selectOption(id);
     dropdown.collapse();
     EscMenu.Top();
+    onSelectDropdown(dropdown, option, id);
+}
+
+function destroyDropdown(dropd)
+{
+    foreach(i, v in dropdowns)
+    {
+        if (v != dropd) continue;
+
+        return dropdowns.remove(i);
+    }
 }

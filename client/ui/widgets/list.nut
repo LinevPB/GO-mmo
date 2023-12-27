@@ -5,9 +5,12 @@ class ListElement extends Element {
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
         elementType = ElementType.LIST_ELEMENT;
-        UI_Elements.append(this);
         selected = false;
         unchanged = true;
+
+        background.texture.setColor(240, 240, 240);
+
+        UI_Elements.append(this);
     }
 
     function setPosition(x, y) {
@@ -51,7 +54,7 @@ class ListElement extends Element {
     function hover()
     {
         if (selected) {
-            draw.setColor(255, 190, 120);
+            draw.setColor(220, 220, 255);
             draw.alpha = 255;
         } else {
             draw.alpha = 255;

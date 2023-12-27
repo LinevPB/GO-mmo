@@ -239,9 +239,9 @@ function onSelectSlot(id, forced = false)
     }
 }
 
-function loadCharacter(index, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId, eqWeapon2h, level)
+function loadCharacter(index, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqWeapon, eqArmor, slotId, eqWeapon2h, level, fat)
 {
-    local char = CharStruct(slotId, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, eqWeapon2h, level);
+    local char = CharStruct(slotId, charId, ownerId, charName, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, eqWeapon2h, level, fat);
     local slot = charSlot(300, 1000 + 800 * slots.len(), charName, level);
     slot.setStruct(char);
     slots.append(slot);
@@ -255,6 +255,7 @@ function changeVisual(slot)
     Player.cHeadTexture = slot.headTex;
     Player.updateVisual(Player.helper);
     Player.updateEquipped(slot.eqArmor, slot.eqWeapon, slot.eqWeapon2h);
+    setPlayerFatness(Player.helper, slot.fatness);
 }
 
 function isInFrame()
@@ -292,5 +293,10 @@ function buttonInterfaceHandler(btn)
 
 function debug_funcx()
 {
-    sendPacket(PacketType.CHARACTERS_SELECT, slotSelected);
+    //sendPacket(PacketType.CHARACTERS_CREATE, 0);
+    //sendPacket(PacketType.CHARACTERS_SELECT, slotSelected);
 }
+
+// addEventHandler("onRender", function(){
+//     print(getPlayerAni(heroId));
+// });

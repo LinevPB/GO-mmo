@@ -63,3 +63,12 @@ function characterButtonHandler(id)
     }
 }
 
+function destroyButtonInterface(btn)
+{
+    foreach(i, v in buttons)
+    {
+        if (v != btn) continue;
+
+        return buttons.remove(i);
+    }
+}

@@ -82,14 +82,14 @@ function charactersHandler(pid, data)
     local temp = findPlayer(pid);
     if (temp.logged)
     {
-        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, slotId, eqWeapon2h, level FROM characters WHERE pid='" + temp.dbId + "'");
+        local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, eqArmor, eqWeapon, slotId, eqWeapon2h, level, fat FROM characters WHERE pid='" + temp.dbId + "'");
         if (result[0] != null)
         {
             foreach(i, v in result)
             {
                 if (v[1].tointeger() != temp.dbId) continue;
 
-                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11]);
+                sendPlayerPacket(pid, PacketType.CHARACTERS_RECEIVE, i, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11], v[12]);
             }
 
             temp.char_amount = result.len();
@@ -110,12 +110,12 @@ function selectHandler(pid, data)
 
     local temp = findPlayer(pid);
 
-    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqArmor, eqWeapon, eqWeapon2h, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, x, y, z, qa1, qa2, qa3, qa4, qa5, qa6, char_desc FROM characters WHERE slotId='" + slotId + "' AND pid='" + temp.dbId + "'");
+    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqArmor, eqWeapon, eqWeapon2h, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, x, y, z, qa1, qa2, qa3, qa4, qa5, qa6, char_desc, fat, overlay FROM characters WHERE slotId='" + slotId + "' AND pid='" + temp.dbId + "'");
     local v = result[0];
 
     if (v == null) return sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, -1);
 
-    setupChar(pid, v[2], v[9], v[8], v[9], v[10], v[0]);
+    setupChar(pid, v[2], v[9], v[8], v[9], v[10], v[0], v[35], v[36]);
     sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[8], v[9], v[7], v[28], v[29], v[30], v[31], v[32], v[33]);
     updatePlayer(pid, v[11], v[12], v[13], v[14], v[15], v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23], v[24], v[34]);
     setPlayerPosition(pid, v[25], v[26], v[27]);
@@ -131,7 +131,7 @@ function createHandler(pid, data)
     ChangeGameState(pid, GameState.CHARACTER_CREATION);
 }
 
-function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId)
+function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId, fat, overlay)
 {
     local temp = findPlayer(pid);
     temp.charName = name;
@@ -141,6 +141,8 @@ function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId)
     EquipArmor(pid, eqArmor);
     EquipWeapon(pid, eqWeapon);
     EquipWeapon2h(pid, eqWeapon2h);
+    temp.setFatness(fat);
+    temp.setOverlay(overlay);
 }
 
 function creationConfirmHandler(pid, data)
@@ -151,18 +153,20 @@ function creationConfirmHandler(pid, data)
     local headMod = data[3];
     local headTex = data[4];
     local slotId = data[5];
+    local fat = data[6];
+    local overlay = getOverlayId(data[7]);
     local player = findPlayer(pid);
     local dbId = player.dbId;
 
-    local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`) VALUES (NULL,'" +
-    dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1')");
+    local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`, `fat`, `overlay`) VALUES (NULL,'" +
+    dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1', '" + fat + "', '" + overlay + "')");
     local result1 = mysql.gquery("SELECT id FROM characters WHERE pid='" + dbId + "' AND slotId='" + slotId + "'");
     player.charId = result1[0];
     player.charName = name;
 
-    sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex);
+    sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex, fat, overlay);
 
-    setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0]);
+    setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0], fat, overlay);
 }
 
 function transformTradeBasket(data)

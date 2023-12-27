@@ -15,8 +15,9 @@ class CharStruct
     eqArmor = null;
 
     level = null;
+    fatness = null;
 
-    constructor(charSlota, charIda, ownerIda, namea, bodyModela, bodyTexa, headModela, headTexa, eqArmora, eqWeapona, eqWeapon2ha, lvl)
+    constructor(charSlota, charIda, ownerIda, namea, bodyModela, bodyTexa, headModela, headTexa, eqArmora, eqWeapona, eqWeapon2ha, lvl, fat)
     {
         name = namea;
         charSlot = charSlota;
@@ -33,5 +34,6 @@ class CharStruct
         eqWeapon2h = eqWeapon2ha;
 
         level = lvl;
+        fatness = fat;
     }
 }

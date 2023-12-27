@@ -21,7 +21,9 @@ Player <- {
     level = 0,
     experience = 0,
     qa = ["", "", "", "", "", ""],
-    desc = ""
+    desc = "",
+    overlay = "NORMAL",
+    fat = 0
 };
 
 ITEM_CHANGE <- false;

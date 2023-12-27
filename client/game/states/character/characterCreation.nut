@@ -1,14 +1,3 @@
-local makeupMenu = {
-    window = null,
-    characterList = null,
-    nickTextbox = null,
-    bodySlider = null,
-    headSlider = null,
-    headTexSlider = null,
-    ok = null,
-    quit = null
-};
-
 local control = {
     lclicked = false,
     lastCursX = 0,
@@ -18,17 +7,131 @@ local control = {
 
 local tex1 = null;
 local tex2 = null;
+local nameTextbox = null;
+local createBtn = null;
+local cancelBtn = null;
+
+local leftMenu = null;
+local sexList = null;
+local walkingDropdown = null;
+local fatSlider = null;
+
+local rightMenu = null;
+local bodySlider = null;
+local headSlider = null;
+local headTexSlider = null;
+
+local lastMds = null;
+
+function initCharacterCreation()
+{
+    setCursorVisible(true);
+
+    setPlayerPosition(Player.helper, 37730, 4660, 44830);
+    setPlayerAngle(Player.helper, 230);
+
+    Camera.setPosition(37520, 4680, 44655);
+    Camera.setRotation(0, 50, 0);
+
+    // arrows
+    tex1 = Texture(8192/2 - 1000, 6300, 150, 200, "R.TGA");
+    tex1.rotation = 180;
+    tex2 = Texture(8192/2 + 850, 6300, 150, 200, "R.TGA");
+
+    nameTextbox = Textbox(8192 / 2 - 1000, 6700, 2000, 400, "TEXTBOX_BACKGROUND.TGA", "Character name", "TEXTBOX_BACKGROUND.TGA", false);
+    nameTextbox.addHoverCover(Texture(8192 / 2 - 1000, 6700, 2000, 400, "TEXTBOX_SHADOW.TGA"));
+
+    createBtn = buttonInterface(8192 / 2 - 600, 7300, 1200, 500, "Create");
+    cancelBtn = buttonInterface(400, 7300, 1200, 500, "Go back");
+
+    // reset player visual
+    Player.cBodyModel = 0;
+    Player.cBodyTexture = 0;
+    Player.cHeadModel = 0;
+    Player.cHeadTexture = 0;
+    Player.updateVisual(Player.helper);
+    setPlayerVisualAlpha(Player.helper, 1.0);
+    setPlayerFatness(Player.helper, 0.0);
+    Player.updateEquipped("-1", "-1", "-1");
+
+    // left menu
+    leftMenu = Window(400, 8192 / 2 - 2500, 2500, 4000, "WINDOW_BACKGROUND_SF.TGA");
+
+    local temp = Label(150, 800, lang["LABEL_CREATION_SEX"][Player.lang]);
+    temp.move(0, -(temp.height() + 100));
+    leftMenu.attach(temp);
+    temp = null;
+
+    sexList = List(250, 800, 2250, 400, "", [lang["LABEL_CREATION_MALE"][Player.lang], lang["LABEL_CREATION_FEMALE"][Player.lang]], 1000, 400, 1250, 0, "TEXTBOX_BACKGROUND.TGA", "MENU_CHOICE_BACK.TGA");
+    leftMenu.attach(sexList);
+    sexList.center();
+    sexList.selectFirstAsDefault();
+
+    temp = Label(150, 1900, "Walking style");
+    temp.move(0, -(temp.height() + 100));
+    leftMenu.attach(temp);
+
+    walkingDropdown = Dropdown(leftMenu.pos.x + 150, 1900 + leftMenu.pos.y, 2200, 400, "Default");
+
+    walkingDropdown.addOption("Default", "NORMAL");
+    walkingDropdown.addOption("Arrogance", "HumanS_Arrogance.mds");
+    walkingDropdown.addOption("Babe", "Humans_Babe.mds");
+    walkingDropdown.addOption("Flee", "HumanS_Flee.mds");
+    walkingDropdown.addOption("Mage", "Humans_Mage.mds");
+    walkingDropdown.addOption("Militia", "HumanS_Militia.mds");
+    walkingDropdown.addOption("Relaxed", "HumanS_Relaxed.mds");
+    walkingDropdown.addOption("Tired", "Humans_Tired.mds");
+
+    walkingDropdown.selectOption(0);
+    walkingDropdown.createSlider();
+
+    fatSlider = Slider(150, 3200, 2200, "TEXTBOX_BACKGROUND.TGA", 5, "Fatness", "SLIDER_HANDLE.TGA");
+    leftMenu.attach(fatSlider);
+
+    // right menu
+    rightMenu = Window(8192 - 400 - 2500, 8192 / 2 - 2500, 2500, 4000, "WINDOW_BACKGROUND_SF.TGA");
+
+    bodySlider = Slider(150, 800, 2200, "TEXTBOX_BACKGROUND.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "SLIDER_HANDLE.TGA");
+    rightMenu.attach(bodySlider);
+
+    headSlider = Slider(150, 2000, 2200, "TEXTBOX_BACKGROUND.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "SLIDER_HANDLE.TGA");
+    rightMenu.attach(headSlider);
+
+    headTexSlider = Slider(150, 3200, 2200, "TEXTBOX_BACKGROUND.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "SLIDER_HANDLE.TGA");
+    rightMenu.attach(headTexSlider);
+
+    enableCreation(true);
+}
+
+function enableCreation(val)
+{
+    tex1.visible = val;
+    tex2.visible = val;
+
+    nameTextbox.enable(val);
+    createBtn.enable(val);
+
+    cancelBtn.enable(val);
+
+    leftMenu.enable(val);
+    walkingDropdown.enable(val);
+
+    rightMenu.enable(val);
+}
 
 function creationButtonHandler(id)
 {
-    switch(id) {
-        case makeupMenu.quit.id:
-            sendPacket(PacketType.CHARACTER_CREATION_BACK, 1);
-            break;
+    switch(id)
+    {
+        case createBtn.btn.id:
+            sendPacket(PacketType.CHARACTER_CREATION_CONFIRM, nameTextbox.getValue(), Player.cBodyModel, Player.cBodyTexture, Player.cHeadModel, Player.cHeadTexture, Player.charSlot, Player.fat, Player.overlay);
+            resetTempAni();
+        break;
 
-        case makeupMenu.ok.id:
-            sendPacket(PacketType.CHARACTER_CREATION_CONFIRM, makeupMenu.nickTextbox.getValue(), Player.cBodyModel, Player.cBodyTexture, Player.cHeadModel, Player.cHeadTexture, Player.charSlot);
-            break;
+        case cancelBtn.btn.id:
+            sendPacket(PacketType.CHARACTER_CREATION_BACK, 1);
+            resetTempAni();
+        break;
     }
 }
 
@@ -38,92 +141,135 @@ function creationListHandler(el)
     Player.updateVisual(Player.helper);
 }
 
-function initCharacterCreation()
+function onSlideChar(el)
 {
-    setCursorVisible(true);
+    switch(el.id)
+    {
+        case bodySlider.id:
+            Player.cBodyTexture = bodySlider.getValue();
+            Player.updateVisual(Player.helper);
+            break;
 
-    local wW = 2000;
-    local wH = 6000;
-    makeupMenu.window = Window(8192 - wW - 400, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND.TGA");
+        case headSlider.id:
+            Player.cHeadModel = headSlider.getValue();
+            Player.updateVisual(Player.helper);
+            break;
 
-    local temp = Label(0, 100, lang["LABEL_CREATION_TITLE"][Player.lang]);
-    temp.setFont("Font_Old_20_White_Hi.TGA");
-    temp.setColor(255, 180, 0);
-    makeupMenu.window.attach(temp);
-    temp.center();
-    temp = null;
+        case headTexSlider.id:
+            Player.cHeadTexture = headTexSlider.getValue();
+            Player.updateVisual(Player.helper);
+            break;
 
-    temp = Label(wW / 2 - 850, 800, lang["LABEL_CREATION_NAME"][Player.lang]);
-    temp.move(0, -(temp.height() + 25));
-    makeupMenu.window.attach(temp);
-    temp = null;
-    makeupMenu.nickTextbox = Textbox(wW / 2 - 850, 800, 1700, 300, "TEXTBOX_BACKGROUND.TGA", "", "TEXTBOX_BACKGROUND.TGA", false);
-    makeupMenu.nickTextbox.addHoverCover(Texture(0, 0, 1700, 300, "TEXTBOX_SHADOW.TGA"));
-    makeupMenu.window.attach(makeupMenu.nickTextbox);
+        case fatSlider.id:
+            local calc = (((fatSlider.getRawValue() * 10).tointeger()).tofloat() / 10.0);
+            setPlayerFatness(Player.helper, calc);
+            Player.fat = calc;
+            fatSlider.textuboxu.updateRaw(calc);
+        break;
+    }
 
-    temp = Label(wW / 2 - 850, 1500, lang["LABEL_CREATION_SEX"][Player.lang]);
-    temp.move(0, -(temp.height() + 25));
-    makeupMenu.window.attach(temp);
-    temp = null;
-    makeupMenu.characterList = List(wW/2, 1500, 1700, 300, "DLG_CONVERSATION.TGA", [lang["LABEL_CREATION_MALE"][Player.lang], lang["LABEL_CREATION_FEMALE"][Player.lang]], 800, 300, 900, 0, "MENU_CHOICE_BACK.TGA", "INV_TITEL.TGA");
-    makeupMenu.window.attach(makeupMenu.characterList);
-    makeupMenu.characterList.center();
-    makeupMenu.characterList.selectFirstAsDefault();
+    dropdownSlide(el);
+}
 
-    makeupMenu.bodySlider = Slider(wW / 2 - 850, 2500, 1700, "TEXTBOX_BACKGROUND.TGA", 12, lang["LABEL_CREATION_BODYTEX"][Player.lang], "SLIDER_HANDLE.TGA");
-    makeupMenu.window.attach(makeupMenu.bodySlider);
+function playTempAni(mds)
+{
+    lastMds = mds;
 
-    makeupMenu.headSlider = Slider(wW / 2 - 850, 3500, 1700, "TEXTBOX_BACKGROUND.TGA", 6, lang["LABEL_CREATION_HEADMODEL"][Player.lang], "SLIDER_HANDLE.TGA");
-    makeupMenu.window.attach(makeupMenu.headSlider);
+    if (mds != "NORMAL")
+    {
+        applyPlayerOverlay(Player.helper, mds);
+    }
 
-    makeupMenu.headTexSlider = Slider(wW / 2 - 850, 4500, 1700, "TEXTBOX_BACKGROUND.TGA", 163, lang["LABEL_CREATION_HEADTEX"][Player.lang], "SLIDER_HANDLE.TGA");
-    makeupMenu.window.attach(makeupMenu.headTexSlider);
+    playAni(Player.helper, "S_WALKL");
+}
 
-    makeupMenu.ok = Button(300, 5400, 600, 400, "BUTTON_BACKGROUND.TGA", lang["BUTTON_CREATION_OK"][Player.lang], "BUTTON_BACKGROUND.TGA");
-    makeupMenu.ok.setBackgroundRegularColor(200, 20, 20);
-    makeupMenu.ok.setBackgroundHoverColor(150, 20, 20);
+function resetTempAni()
+{
+    if (lastMds == null) return;
 
-    makeupMenu.quit = Button(1100, 5400, 600, 400, "BUTTON_BACKGROUND.TGA", lang["BUTTON_CREATION_BACK"][Player.lang], "BUTTON_BACKGROUND.TGA");
-    makeupMenu.quit.setBackgroundRegularColor(200, 20, 20);
-    makeupMenu.quit.setBackgroundHoverColor(150, 20, 20);
+    if (lastMds != "NORMAL")
+    {
+        removePlayerOverlay(Player.helper, lastMds);
+    }
 
-    makeupMenu.window.attach(makeupMenu.ok);
-    makeupMenu.window.attach(makeupMenu.quit);
+    stopAni(Player.helper, "S_WALKL");
 
-    makeupMenu.window.enable(true);
+    lastMds = null;
+}
 
-    Player.cBodyModel = 0;
-    Player.cBodyTexture = 0;
-    Player.cHeadModel = 0;
-    Player.cHeadTexture = 0;
-    Player.updateVisual(Player.helper);
-    setPlayerVisualAlpha(Player.helper, 1.0);
-    Player.updateEquipped("", "", "", Player.helper)
+function onSelectDropdown(dropdown, option, id)
+{
+    if (dropdown != walkingDropdown) return
 
-    tex1 = Texture(7192/2 - 200, 7200, 150, 200, "L.TGA");
-    tex2 = Texture(7192/2 + 1400, 7200, 150, 200, "R.TGA");
-    tex1.visible = true;
-    tex2.visible = true;
+    local config = dropdown.getSelectedConfig();
+    Player.overlay = config;
+
+    if (config == "NORMAL")
+    {
+        playTempAni(config);
+        return;
+    }
+
+    playTempAni(Mds.id(config));
+}
+
+function onClickC(key)
+{
+    local curs = getCursorPosition();
+    if (key == MOUSE_BUTTONLEFT && !inSquare(curs, leftMenu.pos, leftMenu.size) && !inSquare(curs, rightMenu.pos, rightMenu.size))
+    {
+        control.lclicked = true;
+        control.lastCursX = curs.x;
+    }
+
+    if ((inSquare(curs, leftMenu.pos, leftMenu.size) || inSquare(curs, rightMenu.pos, rightMenu.size)))
+    {
+        resetTempAni();
+    }
+
+    dropdownPress();
+}
+
+function onReleaseC(key)
+{
+    control.lclicked = false;
+
+    dropdownRelease();
+}
+
+function onRenderC()
+{
+    local currentTime = getTickCount();
+    if (currentTime - control.lastTime < 20) return;
+
+    control.lastTime = currentTime;
+
+    local curs = getCursorPosition();
+    if (control.lclicked && control.lastCursX != curs.x)
+    {
+        setPlayerAngle(Player.helper, getPlayerAngle(Player.helper) + (control.lastCursX - curs.x) / 20);
+        control.lastCursX = curs.x;
+    }
+
+    local pos = getPlayerPosition(Player.helper);
+    if (pos.x != 37730 || pos.z != 44830)
+    {
+        setPlayerPosition(Player.helper, 37730, pos.y, 44830);
+    }
+
+    dropdownRender();
 }
 
 function deinitCharacterCreation()
 {
-    destroy(makeupMenu.window);
-    tex1.visible = false;
-    tex2.visible = false;
-    tex1 = null;
-    tex2 = null;
+    enableCreation(false);
 
-    makeupMenu = {
-        window = null,
-        characterList = null,
-        nickTextbox = null,
-        bodySlider = null,
-        headSlider = null,
-        headTexSlider = null,
-        ok = null,
-        quit = null
-    };
+    destroy(leftMenu);
+    destroy(rightMenu);
+    destroy(nameTextbox);
+    destroyDropdown(walkingDropdown);
+    destroyButtonInterface(createBtn);
+    destroyButtonInterface(cancelBtn);
 
     control = {
         lclicked = false,
@@ -131,96 +277,22 @@ function deinitCharacterCreation()
         lastTime = getTickCount(),
         cursX = 0
     };
+
+    tex1 = null;
+    tex2 = null;
+    nameTextbox = null;
+    createBtn = null;
+    cancelBtn = null;
+
+    leftMenu = null;
+    sexList = null;
+    walkingDropdown = null;
+    fatSlider = null;
+
+    rightMenu = null;
+    bodySlider = null;
+    headSlider = null;
+    headTexSlider = null;
+
+    lastMds = null;
 }
-
-function onSlideChar(el)
-{
-    switch(el.id)
-    {
-        case makeupMenu.bodySlider.id:
-            Player.cBodyTexture = makeupMenu.bodySlider.getValue();
-            Player.updateVisual(Player.helper);
-            break;
-
-        case makeupMenu.headSlider.id:
-            Player.cHeadModel = makeupMenu.headSlider.getValue();
-            Player.updateVisual(Player.helper);
-            break;
-
-        case makeupMenu.headTexSlider.id:
-            Player.cHeadTexture = makeupMenu.headTexSlider.getValue();
-            Player.updateVisual(Player.helper);
-            break;
-    }
-}
-
-function onClickC(key)
-{
-    if (key == MOUSE_BUTTONLEFT && !inSquare(getCursorPosition(), makeupMenu.window.pos, makeupMenu.window.size)) {
-        control.lclicked = true;
-        control.lastCursX = getCursorPosition().x;
-    }
-}
-
-function onReleaseC(key)
-{
-    control.lclicked = false;
-}
-
-function onRenderC()
-{
-    local currentTime = getTickCount();
-    if (currentTime - control.lastTime < 20) return;
-    control.lastTime = currentTime;
-
-    if (control.lclicked && control.lastCursX != getCursorPosition().x) {
-        setPlayerAngle(Player.helper, getPlayerAngle(Player.helper) + (control.lastCursX - getCursorPosition().x) / 20);
-        control.lastCursX = getCursorPosition().x;
-    }
-}
-
-// addEventHandler("onKey", function(key) {
-//     local camPos = Camera.getPosition();
-//     local camRot = Camera.getRotation();
-
-//     switch(key)
-//     {
-//         case KEY_W:
-//             Camera.setPosition(camPos.x - 10, camPos.y, camPos.z);
-//         break;
-
-//         case KEY_S:
-//             Camera.setPosition(camPos.x + 10, camPos.y, camPos.z);
-//         break;
-
-//         case KEY_A:
-//             Camera.setPosition(camPos.x, camPos.y, camPos.z - 10);
-//         break;
-
-//         case KEY_D:
-//             Camera.setPosition(camPos.x, camPos.y, camPos.z + 10);
-//         break;
-
-//         case KEY_J:
-//             Camera.setRotation(camRot.x, camRot.y - 10, camRot.z);
-//         break;
-
-//         case KEY_L:
-//             Camera.setRotation(camRot.x, camRot.y + 10, camRot.z);
-//         break;
-
-//         case KEY_V:
-//             print(camPos.x + " " + camPos.y + " " + camPos.z);
-//             print(camRot.x + " " + camRot.y + " " + camRot.z);
-//         break;
-
-//         case KEY_I:
-//             Camera.setPosition(camPos.x, camPos.y - 10, camPos.z);
-//         break;
-
-//         case KEY_K:
-//             Camera.setPosition(camPos.x, camPos.y + 10, camPos.z);
-//             escMenuAction(KEY_ESCAPE);
-//         break;
-//     }
-// });
