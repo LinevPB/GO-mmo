@@ -14,9 +14,9 @@ enum PacketType {
     EQUIP_ARMOR = 12,
     EQUIP_MELEE = 13,
     EQUIP_RANGED = 14,
-    TEST = 15,
-    TEST_PACKET = 16,
-    QUEST = 17,
+    GIVE_ITEM_NOTIFY = 15,
+    DAMAGE_DO = 16,
+    LOG_OUT = 17
     UPDATE_LEVEL = 18,
     UPDATE_EXPERIENCE = 19,
     UPDATE_GOLD = 20,
@@ -45,9 +45,7 @@ enum PacketType {
     REMOVE_GROUND_ITEM = 43,
     ADD_GOLD = 44,
     SAVE_DESC = 45,
-    UPDATE_DESC = 46,
-    GIVE_ITEM_NOTIFY = 47,
-    DAMAGE_DO = 48
+    UPDATE_DESC = 46
 };
 
 function encode(args)

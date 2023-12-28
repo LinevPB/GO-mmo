@@ -294,9 +294,5 @@ function buttonInterfaceHandler(btn)
 function debug_funcx()
 {
     //sendPacket(PacketType.CHARACTERS_CREATE, 0);
-    //sendPacket(PacketType.CHARACTERS_SELECT, slotSelected);
+    sendPacket(PacketType.CHARACTERS_SELECT, 0);
 }
-
-// addEventHandler("onRender", function(){
-//     print(getPlayerAni(heroId));
-// });

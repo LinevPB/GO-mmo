@@ -49,6 +49,7 @@ function ChangeGameState(state)
 function logOut()
 {
     ChangeGameState(GameState.LOGIN);
+    sendPacket(PacketType.LOG_OUT, 1);
 }
 
 function onPressButton(id)

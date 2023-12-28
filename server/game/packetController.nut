@@ -66,19 +66,6 @@ local function onPacket(pid, packet)
             ManageQA(pid, data[0], data[1]);
         break;
 
-        case PacketType.TEST:
-            local pos = getPlayerPosition(pid);
-            local angle = getPlayerAngle(pid);
-            local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";
-            local myfile = file("pos.txt", "r+");
-            local xd = myfile.read("a");
-            myfile.close();
-            myfile = file("pos.txt", "w+");
-            res += "\n" + xd;
-            myfile.write(res);
-            myfile.close();
-        break;
-
         case PacketType.TRADE_PLAYER_BASKET:
             local transform = (data[0] == 0) ? data : transformTradeBasket(data);
             handleTrade(pid, transform, 0);
@@ -97,10 +84,6 @@ local function onPacket(pid, packet)
             handleNpcDamage(pid, data[0]);
         break;
 
-        case PacketType.QUEST:
-            handleSpawnGround(Vec3(0, 300, 0), "ITAR_GOVERNOR");
-        break;
-
         case PacketType.PICKUP_ITEM:
             handlePickUp(pid, data);
         break;
@@ -112,6 +95,23 @@ local function onPacket(pid, packet)
         case PacketType.DAMAGE_DO:
             handlePlayerDamage(pid, data[0]);
         break;
+
+        case PacketType.LOG_OUT:
+            removePlayerById(pid);
+        break;
+
+        // case PacketType.TEST:
+        //     local pos = getPlayerPosition(pid);
+        //     local angle = getPlayerAngle(pid);
+        //     local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";
+        //     local myfile = file("pos.txt", "r+");
+        //     local xd = myfile.read("a");
+        //     myfile.close();
+        //     myfile = file("pos.txt", "w+");
+        //     res += "\n" + xd;
+        //     myfile.write(res);
+        //     myfile.close();
+        // break;
     }
 }
 addEventHandler("onPacket", onPacket);
