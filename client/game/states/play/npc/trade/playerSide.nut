@@ -166,8 +166,7 @@ function initPlayerSlots()
     myGoldAmountDraw.setColor(0, 150, 255);
     myGoldAmountDraw.setPosition(myGoldDraw.getPosition().x + myGoldDraw.width, myGoldDraw.getPosition().y);
 
-    itemSlider = Slider(3 * 600 + 400, 600 + 50, 8 * 600 - 100, "LOG_PAPER.TGA", 600 * (90 / 3 - 8), "", "SLIDER_HANDLE.TGA", true);
-    itemSlider.setBackgroundColor(255, 255, 0);
+    itemSlider = Slider(3 * 600 + 400, 600 + 50, 8 * 600 - 150, "SLIDER_BACKGROUND_VERTICAL.TGA", 600 * (90 / 3 - 8), "", "SLIDER_HANDLE.TGA", true);
     myInventory.attach(itemSlider);
 
     myItemsCover = Texture(myInventory.pos.x + 200, myInventory.pos.y + 600, 600 * 3, 600*8, "WINDOW_BACKGROUND.TGA");

@@ -1,7 +1,7 @@
 lang <- {
     ["SERVER_NAME"] = {
         ["en"] = "Memory",
-        ["pl"] = "Pamiêæ"
+        ["pl"] = "Memory"
     },
 
     ["LABEL_LOGIN_MENU_USERNAME"] = {

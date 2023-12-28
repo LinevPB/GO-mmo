@@ -181,6 +181,7 @@ function creationConfirmHandler(pid, data)
 
     sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex, fat, overlay);
 
+    ChangeGameState(pid, GameState.CHARACTER_SELECTION);
     setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0], fat, overlay);
 }
 
