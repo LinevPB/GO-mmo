@@ -21,7 +21,7 @@ class charSlot
         tex = Texture(x, y, 2400, 800, "TEXTBOX_BACKGROUND.TGA");
         nameDraw = Draw(x + 100, y + 100, name);
         nameDraw.setColor(200, 200, 255);
-        levelDraw = Draw(x + 100, y + 100 + nameDraw.height + 100, "Level " + level);
+        levelDraw = Draw(x + 100, y + 100 + nameDraw.height + 100, lang["LEVEL"][Player.lang] + " " + level);
 
         id = slot_id;
         slot_id++;

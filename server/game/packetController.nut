@@ -100,6 +100,10 @@ local function onPacket(pid, packet)
             removePlayerById(pid);
         break;
 
+        case PacketType.ASK_FOR_REMEMBERED:
+            handleRemembered(pid);
+        break;
+
         // case PacketType.TEST:
         //     local pos = getPlayerPosition(pid);
         //     local angle = getPlayerAngle(pid);

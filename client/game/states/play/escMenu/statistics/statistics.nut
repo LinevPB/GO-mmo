@@ -57,7 +57,7 @@ function updateDraws()
     statsContainers[0].getContainer()[1].updateName(lang["EXPERIENCE"][Player.lang]);
     statsContainers[0].getContainer()[1].updateVal(Player.experience);
 
-    statsContainers[0].getContainer()[2].updateName("Next level");
+    statsContainers[0].getContainer()[2].updateName(lang["NEXT_LEVEL"][Player.lang]);
     statsContainers[0].getContainer()[2].updateVal(calcNextLevelExperience(Player.level));
 
     // attributes
@@ -104,7 +104,7 @@ local function calcY(posY, argheight)
 
 function setupStatistics()
 {
-    local progress = StatsContainer(0, 0, width + 1300, 1700, "Progress");
+    local progress = StatsContainer(0, 0, width + 1300, 1700, lang["PROGRESS"][Player.lang]);
     progress.attach(Stat(0, 0, "Level", "20"));
     progress.attach(Stat(0, 0, "Experience", "1944"));
     progress.attach(Stat(0, 0, "Next level", "2137"));
@@ -112,7 +112,7 @@ function setupStatistics()
     progress.setValWidth(800);
     progress.setPosition(4000, calcY(200, 500));
 
-    local attributes = StatsContainer(0, 0, width + 1300, 2000, "Attributes");
+    local attributes = StatsContainer(0, 0, width + 1300, 2000, lang["ATTRIBUTES"][Player.lang]);
     attributes.attach(Stat(0, 0, "Strength", "1950/2000"));
     attributes.attach(Stat(0, 0, "Dexterity", "1950/2000"));
     attributes.attach(Stat(0, 0, "Health", "1950/2000"));
@@ -121,7 +121,7 @@ function setupStatistics()
     attributes.setValWidth(800);
     attributes.setPosition(4000, calcY(progress.pos.y, progress.size.height));
 
-    local skills = StatsContainer(0, 0, width + 1000, 2400, "Skills");
+    local skills = StatsContainer(0, 0, width + 1000, 2400, lang["SKILLS"][Player.lang]);
     skills.attach(Stat(0, 0, "Skill 1h", "0"));
     skills.attach(Stat(0, 0, "Skill 2h", "0"));
     skills.attach(Stat(0, 0, "Skill Bow", "0"));

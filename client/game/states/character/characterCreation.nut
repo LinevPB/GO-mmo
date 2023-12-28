@@ -38,11 +38,11 @@ function initCharacterCreation()
     tex1.rotation = 180;
     tex2 = Texture(8192/2 + 850, 6300, 150, 200, "R.TGA");
 
-    nameTextbox = Textbox(8192 / 2 - 1000, 6700, 2000, 400, "TEXTBOX_BACKGROUND.TGA", "Character name", "TEXTBOX_BACKGROUND.TGA", false);
+    nameTextbox = Textbox(8192 / 2 - 1000, 6700, 2000, 400, "TEXTBOX_BACKGROUND.TGA", lang["PLACEHOLDER_CHARNAME"][Player.lang], "TEXTBOX_BACKGROUND.TGA", false);
     nameTextbox.addHoverCover(Texture(8192 / 2 - 1000, 6700, 2000, 400, "TEXTBOX_SHADOW.TGA"));
 
-    createBtn = buttonInterface(8192 / 2 - 600, 7300, 1200, 500, "Create");
-    cancelBtn = buttonInterface(400, 7300, 1200, 500, "Go back");
+    createBtn = buttonInterface(8192 / 2 - 600, 7300, 1200, 500, lang["BUTTON_CREATION_OK"][Player.lang]);
+    cancelBtn = buttonInterface(400, 7300, 1200, 500, lang["BUTTON_CREATION_BACK"][Player.lang]);
 
     // reset player visual
     Player.cBodyModel = 0;
@@ -67,25 +67,25 @@ function initCharacterCreation()
     sexList.center();
     sexList.selectFirstAsDefault();
 
-    temp = Label(150, 1900, "Walking style");
+    temp = Label(150, 1900, lang["LABEL_CREATION_WALKINGSTYLE"][Player.lang]);
     temp.move(0, -(temp.height() + 100));
     leftMenu.attach(temp);
 
     walkingDropdown = Dropdown(leftMenu.pos.x + 150, 1900 + leftMenu.pos.y, 2200, 400, "Default");
 
-    walkingDropdown.addOption("Default", "NORMAL");
-    walkingDropdown.addOption("Arrogance", "HumanS_Arrogance.mds");
-    walkingDropdown.addOption("Babe", "Humans_Babe.mds");
-    walkingDropdown.addOption("Flee", "HumanS_Flee.mds");
-    walkingDropdown.addOption("Mage", "Humans_Mage.mds");
-    walkingDropdown.addOption("Militia", "HumanS_Militia.mds");
-    walkingDropdown.addOption("Relaxed", "HumanS_Relaxed.mds");
-    walkingDropdown.addOption("Tired", "Humans_Tired.mds");
+    walkingDropdown.addOption(lang["DEFAULT"][Player.lang], "NORMAL");
+    walkingDropdown.addOption(lang["ARROGANCE"][Player.lang], "HumanS_Arrogance.mds");
+    walkingDropdown.addOption(lang["BABE"][Player.lang], "Humans_Babe.mds");
+    walkingDropdown.addOption(lang["FLEE"][Player.lang], "HumanS_Flee.mds");
+    walkingDropdown.addOption(lang["MAGE"][Player.lang], "Humans_Mage.mds");
+    walkingDropdown.addOption(lang["MILITIA"][Player.lang], "HumanS_Militia.mds");
+    walkingDropdown.addOption(lang["RELAXED"][Player.lang], "HumanS_Relaxed.mds");
+    walkingDropdown.addOption(lang["TIRED"][Player.lang], "Humans_Tired.mds");
 
     walkingDropdown.selectOption(0);
     walkingDropdown.createSlider();
 
-    fatSlider = Slider(150, 3200, 2200, "TEXTBOX_BACKGROUND.TGA", 5, "Fatness", "SLIDER_HANDLE.TGA");
+    fatSlider = Slider(150, 3200, 2200, "TEXTBOX_BACKGROUND.TGA", 5, lang["LABEL_CREATION_FATNESS"][Player.lang], "SLIDER_HANDLE.TGA");
     leftMenu.attach(fatSlider);
 
     // right menu
@@ -258,6 +258,15 @@ function onRenderC()
     }
 
     dropdownRender();
+
+    if (nameTextbox.getValue().len() < 3)
+    {
+        createBtn.setActive(false);
+    }
+    else
+    {
+        createBtn.setActive(true);
+    }
 }
 
 function deinitCharacterCreation()

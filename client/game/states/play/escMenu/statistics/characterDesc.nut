@@ -102,15 +102,15 @@ class TextArea
     {
         tex = Texture(492, height + 1300, width + 1000, 3400, "WINDOW_BACKGROUND.TGA");
 
-        titleDraw = Draw(0, 0, "Character description");
+        titleDraw = Draw(0, 0, lang["CHAR_DESC"][Player.lang]);
         titleTex = Texture(0, 0, 200, 200, "TEXTBOX_BACKGROUND.TGA");
         updateTitlePosition();
 
         descTex = Texture(492 + 250, height + 1700, width + 500, 2300, "WINDOW_BACKGROUND_SF.TGA");
         descTex.setColor(210, 210, 210);
 
-        save_btn = TextAreaButton(492 + width / 2 + 325 - 600, height + 4150, 600, 300, "Save");
-        cancel_btn = TextAreaButton(492 + width / 2 + 675, height + 4150, 600, 300, "Restore");
+        save_btn = TextAreaButton(492 + width / 2 + 325 - 600, height + 4150, 600, 300, lang["SAVE"][Player.lang]);
+        cancel_btn = TextAreaButton(492 + width / 2 + 675, height + 4150, 600, 300, lang["RESTORE"][Player.lang]);
 
         descHovered = false;
         descEnabled = false;

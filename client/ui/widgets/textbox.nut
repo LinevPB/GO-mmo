@@ -113,9 +113,16 @@ class Textbox extends Element {
         chatInputSetText(value);
     }
 
-    function updateValue(slash = "|")
+    function setForceValue(val)
     {
-        if (!chatInputIsOpen()) return;
+        open();
+        setInputText(val);
+        close();
+    }
+
+    function updateValue(slash = "|", forced = false)
+    {
+        if (!chatInputIsOpen() && forced == false) return;
 
         if (value == chatInputGetText() && slash)
         {

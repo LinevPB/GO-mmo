@@ -4,6 +4,7 @@ class Button extends Element {
     my_pos = null;
     outer_release = null;
     forced = null;
+    active = null;
 
     constructor(x, y, width, height, texture, title, hover_texture = "DLG_CONVERSATION.TGA") {
         base.constructor(x, y, width, height, texture, title, hover_texture);
@@ -13,6 +14,7 @@ class Button extends Element {
         my_pos = { x = x, y = y };
         outer_release = false;
         align_left = false;
+        active = true;
     }
 
     function setPosition(x, y) {
@@ -65,8 +67,28 @@ class Button extends Element {
         elementType = null;
     }
 
+    function setActive(val)
+    {
+        if (active == val) return;
+
+        if (val == true)
+        {
+            background.texture.alpha = 255;
+            draw.alpha = 255;
+        }
+        else
+        {
+            background.texture.alpha = 100;
+            draw.alpha = 100;
+        }
+
+        active = val;
+    }
+
     function hover()
     {
+        if (!active) return;
+
         base.hover();
         draw.setColor(hoverColor.r, hoverColor.g, hoverColor.b);
     }

@@ -81,7 +81,7 @@ function enableCover()
     gold_cover_tex.setSize(goldWidth, gold_lab.height + 100);
 
     coverTex3.visible = true;
-    itemAmountDraw.text = ("Items: " + getUniqueItemsAmount() + "/" + Inventory.MAX_ITEMS);
+    itemAmountDraw.text = (lang["ITEMS"][Player.lang] + ": " + getUniqueItemsAmount() + "/" + Inventory.MAX_ITEMS);
     itemAmountDraw.setPosition(250, 8192-392 + 392/2 - itemAmountDraw.height / 2);
     itemAmountDraw.visible = true;
 }

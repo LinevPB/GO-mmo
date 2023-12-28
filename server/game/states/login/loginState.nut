@@ -1,6 +1,7 @@
 function logIn(username, password)
 {
     if (username == "" || password == "") return false;
+
     local result = mysql.gquery("SELECT password, id FROM players WHERE username='" + username + "'");
     if(!result) return false;
     if (result[0] == null) return false;
@@ -13,6 +14,11 @@ function signUp(username, password, cpassword)
 {
     if (username == "" || password == "" || cpassword == "") return -2;
     if (password != cpassword) return -1;
+    if (username.len() > 30 || username.len() < 3) return -2;
+    if (password.len() > 50 || password.len() < 3) return -2;
+
+    username = filter_sql(username);
+    password = filter_sql(password);
 
     local result = mysql.gquery("SELECT id FROM players WHERE username='" + username + "'");
     if (result[0] != null) return 0;
@@ -51,14 +57,20 @@ function loginFailed(pid, msg = false)
 
 function registerSuccessful(pid, nickname, msg)
 {
-    // local newPlayer = PlayerStructure(pid);
-    // newPlayer.setNickname(nickname);
-    // newPlayer.setStatus(true);
-    // newPlayer.dbId = id;
-    // addPlayer(newPlayer);
-    console.log(msg);
+    local uid = getPlayerUID(pid);
+    local result = mysql.gquery("SELECT banned FROM unique_ids WHERE uid='" + uid + "'");
+    if (result[0] == null)
+    {
+        nickname = filter_sql(nickname);
+        result = mysql.squery(
+            "INSERT INTO `unique_ids` (`uid`, `remember`, `remember_name`, `banned`) VALUES ('" + uid + "', '" +
+            false + "', '" +
+            nickname + "', '" +
+            false + "');"
+        );
+    }
 
-    //sendPlayerPacket(pid, PacketType.REGISTER, 1);
+    console.log(msg);
 }
 
 function registerFailed(pid, errId, errMsg = false)

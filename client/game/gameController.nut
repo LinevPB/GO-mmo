@@ -90,6 +90,7 @@ local function onRenderH()
         lastTime = currentTime;
 
     switch(Player.gameState) {
+        case GameState.CHARACTER_SELECTION: onRenderS(); break;
         case GameState.CHARACTER_CREATION: onRenderC(); break;
         case GameState.PLAY: onRenderP(currentTime, lastTime); break;
     }

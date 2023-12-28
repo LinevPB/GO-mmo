@@ -3,6 +3,8 @@ class buttonInterface
 {
     btn = null;
     enabled = null;
+    active = null;
+    coverTex = null;
 
     constructor(x, y, width, height, text)
     {
@@ -11,7 +13,11 @@ class buttonInterface
         btn.setBackgroundHoverColor(150, 20, 20);
         btn.rehover();
 
+        coverTex = Texture(x, y, width, height, "SR_BLANK.TGA");
+        coverTex.setColor(50, 50, 50);
+
         enabled = false;
+        active = true;
 
         buttons.append(this);
     }
@@ -19,6 +25,11 @@ class buttonInterface
     function enable(val)
     {
         btn.enable(val);
+
+        if (val == true && !active)
+        {
+            coverTex.visible = true;
+        }
 
         enabled = val;
     }
@@ -48,6 +59,16 @@ class buttonInterface
     {
         btn.setBackgroundHoverColor(r, g, b);
         btn.rehover();
+    }
+
+    function setActive(val)
+    {
+        if (active == val) return;
+
+        coverTex.visible = !val;
+        btn.top();
+        btn.setActive(val);
+        active = val;
     }
 }
 

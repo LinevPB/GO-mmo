@@ -86,3 +86,8 @@ mysql.squery <- function(query)
 
     return true;
 }
+
+function filter_sql(val)
+{
+    return val;
+}

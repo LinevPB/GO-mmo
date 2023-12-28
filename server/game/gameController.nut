@@ -27,12 +27,23 @@ addEventHandler("onConnect", onConnect);
 
 function loginHandler(pid, data)
 {
-    local result = logIn(data[0], data[1]);
-    if (!result)
-        return loginFailed(pid, "Player " + data[0] + " failed to log in.");
+    local username = data[0];
+    local pass = data[1];
+    local remember = data[2];
 
-    loginSuccessful(pid, data[0], "Player " + data[0] + " logged in.", result);
+    local result = logIn(username, pass);
+
+    if (!result)
+        return loginFailed(pid, "Player " + username + " failed to log in.");
+
+    loginSuccessful(pid, username, "Player " + username + " logged in.", result);
     ChangeGameState(pid, GameState.CHARACTER_SELECTION);
+
+    if (remember == 1)
+    {
+        local uid = getPlayerUID(pid);
+        mysql.squery("UPDATE `unique_ids` SET `remember` = '" + remember + "', `remember_name` = '" + username + "' WHERE `uid`='" + uid + "'");
+    }
 }
 
 function registerHandler(pid, data)
@@ -57,7 +68,7 @@ function registerHandler(pid, data)
 
         default:
             registerSuccessful(pid, result, "Player " + data[0] + " signed up.");
-            loginHandler(pid, [data[0], data[1]]);
+            loginHandler(pid, [data[0], data[1], data[3]]);
             break;
     }
 }
@@ -148,6 +159,10 @@ function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId, f
 function creationConfirmHandler(pid, data)
 {
     local name = data[0];
+    name = filter_sql(name);
+
+    if (name.len() > 20 || name.len() < 3) return;
+
     local bodyMod = data[1];
     local bodyTex = data[2];
     local headMod = data[3];
@@ -294,8 +309,17 @@ function saveDescription(pid, val)
     player.setDescription(val);
 }
 
+function handleRemembered(pid)
+{
+    local uid = getPlayerUID(pid);
+    local result = mysql.gquery("SELECT remember, remember_name FROM unique_ids WHERE uid='" + uid + "'");
+
+    if (result[0] == null) return;
+
+    sendPlayerPacket(pid, PacketType.ASK_FOR_REMEMBERED, result[0][1], result[0][0]);
+}
+
 function handlePlayerDamage(pid, kid)
 {
 
 }
-

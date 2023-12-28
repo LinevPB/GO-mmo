@@ -23,10 +23,11 @@ class settingsSlider
 
         draw = Draw(0, 0, "100%");
         draw.setPosition(x + width - 400, y + height / 2 - draw.height / 2);
-        draw.setColor(0, 255, 0);
+        draw.setColor(180, 180, 255);
 
         background = Texture(x, y, width, height, "SR_BLANK.TGA");
         background.setColor(40, 40, 40);
+        background.alpha = 200;
 
         limiter = limit;
         limiterRight = limitr;

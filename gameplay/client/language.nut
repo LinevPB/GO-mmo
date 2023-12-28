@@ -25,6 +25,21 @@ lang <- {
         ["pl"]= "Wyjdź"
     },
 
+    ["CHECKBOX_LOGIN_REMEMBER"] = {
+        ["en"] = "Remember me",
+        ["pl"] = "Zapamiętaj mnie"
+    },
+
+    ["DONT_HAVE_ACCOUNT"] = {
+        ["en"] = "Don't have an account?",
+        ["pl"] = "Nie masz konta?"
+    },
+
+    ["REGISTER_YOURSELF"] = {
+        ["en"] = "Create account",
+        ["pl"] = "Zarejestruj się"
+    },
+
     ///
     ["LABEL_REGISTER_MENU_USERNAME"] = {
         ["en"]= "Username",
@@ -73,8 +88,8 @@ lang <- {
     },
 
     ["BUTTON_CHAR_SELECTION_MENU_OK"] = {
-        ["en"]= "Ok",
-        ["pl"]= "Ok"
+        ["en"]= "Play",
+        ["pl"]= "Graj"
     },
 
     ["BUTTON_CHAR_SELECTION_MENU_CREATE"] = {
@@ -87,9 +102,19 @@ lang <- {
         ["pl"]= "Wybierz"
     },
 
+    ["BUTTON_CHAR_SELECTION_MENU_LOGOUT"] = {
+        ["en"]= "Log out",
+        ["pl"]= "Wyloguj"
+    },
+
     ["BUTTON_CHAR_SELECTION_MENU_QUIT"] = {
         ["en"]= "Quit",
         ["pl"]= "Wyjd�"
+    },
+
+    ["BUTTON_CHAR_SELECTION_MENU_NEWCHAR"] = {
+        ["en"]= "+ New character",
+        ["pl"]= "+ Nowa postać"
     },
 
     //
@@ -133,14 +158,29 @@ lang <- {
         ["pl"]= "Tekstura g�owy"
     },
 
+    ["LABEL_CREATION_FATNESS"] = {
+        ["en"]= "Fatness",
+        ["pl"]= "Otyłość"
+    },
+
+    ["LABEL_CREATION_WALKINGSTYLE"] = {
+        ["en"]= "Walking style",
+        ["pl"]= "Styl chodzenia"
+    },
+
     ["BUTTON_CREATION_OK"] = {
         ["en"]= "Create",
         ["pl"]= "Stw�rz"
     },
 
     ["BUTTON_CREATION_BACK"] = {
-        ["en"]= "Back",
+        ["en"]= "Go back",
         ["pl"]= "Wr��"
+    },
+
+    ["PLACEHOLDER_CHARNAME"] = {
+        ["en"] = "Character name",
+        ["pl"] = "Imię postaci"
     },
 
     ///
@@ -368,5 +408,135 @@ lang <- {
     ["ADD_GOLD"] = {
         ["en"] = "Ore +",
         ["pl"] = "Ruda +"
+    },
+
+    ["DEFAULT"] = {
+        ["en"] = "Default",
+        ["pl"] = "Domyślny"
+    },
+
+    ["ARROGANCE"] = {
+        ["en"] = "Arrogance",
+        ["pl"] = "Arogancki"
+    },
+
+    ["BABE"] = {
+        ["en"] = "Babe",
+        ["pl"] = "Kobiecy"
+    },
+
+    ["FLEE"] = {
+        ["en"] = "Flee",
+        ["pl"] = "Pospieszny"
+    },
+
+    ["MAGE"] = {
+        ["en"] = "Mage",
+        ["pl"] = "Mag"
+    },
+
+    ["MILITIA"] = {
+        ["en"] = "Militia",
+        ["pl"] = "Żołnierski"
+    },
+
+    ["RELAXED"] = {
+        ["en"] = "Relaxed",
+        ["pl"] = "Wyluzowany"
+    },
+
+    ["TIRED"] = {
+        ["en"] = "Tired",
+        ["pl"] = "Zmęczony"
+    },
+
+    ["PROGRESS"] = {
+        ["en"] = "Progress",
+        ["pl"] = "Postęp"
+    },
+
+    ["ATTRIBUTES"] = {
+        ["en"] = "Attributes",
+        ["pl"] = "Atrybuty"
+    },
+
+    ["SKILLS"] = {
+        ["en"] = "Skills",
+        ["pl"] = "Umiejętności"
+    },
+
+    ["SAVE"] = {
+        ["en"] = "Save",
+        ["pl"] = "Zapisz"
+    },
+
+    ["RESTORE"] = {
+        ["en"] = "Restore",
+        ["pl"] = "Przywróc"
+    },
+
+    ["CHAR_DESC"] = {
+        ["en"] = "Character description",
+        ["pl"] = "Opis postaci"
+    },
+
+    ["NEXT_LEVEL"] = {
+        ["en"] = "Next level",
+        ["pl"] = "Następny poziom"
+    },
+
+    ["APPLY"] = {
+        ["en"] = "Apply",
+        ["pl"] = "Zatwierdź"
+    },
+
+    ["CANCEL"] = {
+        ["en"] = "Cancel",
+        ["pl"] = "Anuluj"
+    },
+
+    ["VIDEO_SETTINGS"] = {
+        ["en"] = "Video settings",
+        ["pl"] = "Ustawienia wideo"
+    },
+
+    ["SIGHT_FACTOR"] = {
+        ["en"] = "Sight factor",
+        ["pl"] = "Zasięg widzenia"
+    },
+
+    ["LOD_STRENGTH_MODIFIER"] = {
+        ["en"] = "Level of detail",
+        ["pl"] = "Poziom detali"
+    },
+
+    ["DETAIL_RENDER_DISTANCE"] = {
+        ["en"] = "Level of detail modifier",
+        ["pl"] = "Modyfikator poziomu detali"
+    },
+
+    ["AUDIO_SETTINGS"] = {
+        ["en"] = "Audio settings",
+        ["pl"] = "Ustawienia dźwięku"
+    },
+
+    ["MUSIC_VOLUME"] = {
+        ["en"] = "Music volume",
+        ["pl"] = "Głośność muzyki"
+    },
+
+    ["SOUND_VOLUME"] = {
+        ["en"] = "Sound volume",
+        ["pl"] = "Głośność dźwięku"
+    },
+
+    ["RESOLUTION"] = {
+        ["en"] = "Resolution",
+        ["pl"] = "Rozdzielczość"
+    },
+
+    ["ITEMS"] = {
+        ["en"] = "Items",
+        ["pl"] = "Przedmioty"
     }
 };

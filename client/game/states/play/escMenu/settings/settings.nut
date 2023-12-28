@@ -38,43 +38,43 @@ function initSettings()
 
     actionMenu = Texture(0, 7692, 8192, 500, "WINDOW_BACKGROUND_SF.TGA");
 
-    actionSave = actionButton(6192, 7692, 1000, 500, "Apply");
-    actionCancel = actionButton(7192, 7692, 1000, 500, "Cancel");
+    actionSave = actionButton(6192, 7692, 1000, 500, lang["APPLY"][Player.lang]);
+    actionCancel = actionButton(7192, 7692, 1000, 500, lang["CANCEL"][Player.lang]);
 
-    videoTitle = Draw(baseX, 900, "Video settings");
+    videoTitle = Draw(baseX, 900, lang["VIDEO_SETTINGS"][Player.lang]);
     videoTitle.font = "FONT_OLD_20_WHITE_HI.TGA";
 
     initRes();
 
     sightSlider = settingsSlider(baseX, resDropdown.getBottomY() + 300, 3000, 5.0, 0.02, 5.0);
-    sightSlider.setTitle("Sight factor");
+    sightSlider.setTitle(lang["SIGHT_FACTOR"][Player.lang]);
     //The player sight factor (in the range between 0.02-5.0).
     currentSightFactor = getSightFactor();
     sightSlider.setValue(currentSightFactor);
 
     renderDetailSlider = settingsSlider(baseX, sightSlider.getBottomY() + 300, 3000, 1.0, 0.0, 1.0);
-    renderDetailSlider.setTitle("LODStrengthModifier");
+    renderDetailSlider.setTitle(lang["LOD_STRENGTH_MODIFIER"][Player.lang]);
     //The LOD strength value in range <0.0, 1.0>.
     currentLODMod = getLODStrengthModifier();
     renderDetailSlider.setValue(currentLODMod);
 
     renderOverrideSlider = settingsSlider(baseX, renderDetailSlider.getBottomY() + 300, 3000, 2, -1, 1, false, false);
-    renderOverrideSlider.setTitle("Detail render distance");
+    renderOverrideSlider.setTitle(lang["DETAIL_RENDER_DISTANCE"][Player.lang]);
     //The LOD strength value. - -1 use values stored within mesh. - 0 don't use LOD for mesh. - 1 >= use aggressive LOD
     currentLODOverr = getLODStrengthOverride();
     renderOverrideSlider.setValue(currentLODOverr + 1);
 
-    audioTitle = Draw(baseX, renderOverrideSlider.getBottomY() + 400, "Audio settings");
+    audioTitle = Draw(baseX, renderOverrideSlider.getBottomY() + 400, lang["AUDIO_SETTINGS"][Player.lang]);
     audioTitle.font = "FONT_OLD_20_WHITE_HI.TGA";
 
     musicSlider = settingsSlider(baseX, audioTitle.getPosition().y + audioTitle.height + 200, 3000, 1.0, 0, 100, true);
-    musicSlider.setTitle("Music volume");
+    musicSlider.setTitle(lang["MUSIC_VOLUME"][Player.lang]);
     //volume value in range <0.0, 1.0>.
     currentMusicVol = getMusicVolume();
     musicSlider.setValue(currentMusicVol);
 
     soundSlider = settingsSlider(baseX, musicSlider.getBottomY() + 300, 3000, 1.0, 0, 100, true);
-    soundSlider.setTitle("Sound volume");
+    soundSlider.setTitle(lang["SOUND_VOLUME"][Player.lang]);
     //volume value in range <0.0, 1.0>.
     currentSoundVol = getSoundVolume();
     soundSlider.setValue(currentSoundVol);
@@ -101,7 +101,7 @@ function initRes()
     local res = getResolution();
     currentRes = res;
 
-    resTitle = Draw(baseX, videoTitle.getPosition().y + videoTitle.height + 300, "Resolution");
+    resTitle = Draw(baseX, videoTitle.getPosition().y + videoTitle.height + 300, lang["RESOLUTION"][Player.lang]);
     resDropdown = Dropdown(baseX, resTitle.height + resTitle.getPosition().y + 100, 2000, 400, res.x + "x" + res.y + "x" + res.bpp);
 
     local allRes = getAvailableResolutions();

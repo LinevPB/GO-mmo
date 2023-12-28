@@ -43,7 +43,7 @@ class subMenu
     {
         if (hovered) return;
 
-        draw.setColor(255, 150, 0);
+        draw.setColor(0, 200, 255);
 
         hovered = true;
     }
@@ -53,7 +53,7 @@ class subMenu
         if (!hovered) return;
 
         if (active)
-            draw.setColor(5, 150, 0);
+            draw.setColor(0, 180, 255);
         else
             draw.setColor(255, 255, 255);
 
@@ -63,7 +63,7 @@ class subMenu
     function activate()
     {
         if (active) return;
-        draw.setColor(5, 150, 0);
+        draw.setColor(0, 180, 255);
         active = true;
     }
 

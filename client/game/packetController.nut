@@ -178,6 +178,10 @@ local function onPacket(packet) {
         case PacketType.GIVE_ITEM_NOTIFY:
             notify(data[1] + "x " + ServerItems.find(data[0]).name[Player.lang]);
         break;
+
+        case PacketType.ASK_FOR_REMEMBERED:
+            handleRemembered(data[0], data[1]);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

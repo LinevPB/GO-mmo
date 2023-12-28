@@ -94,7 +94,7 @@ function initSelectionWindow()
 {
     charMenu = Texture(0, 0, 3000, 8192, "BACKGROUND_GRAY.TGA");
 
-    menuTitle = Draw(0, 0, "Characters");
+    menuTitle = Draw(0, 0, lang["LABEL_CHAR_SELECTION_MENU_CHARACTERS"][Player.lang]);
     menuTitle.font = "FONT_OLD_20_WHITE_HI.TGA";
     menuTitle.setColor(230, 230, 255);
     menuTitle.setPosition(1500 - menuTitle.width / 2, 400 - menuTitle.height / 2);
@@ -107,13 +107,13 @@ function initSelectionWindow()
 
     menuShadow = Texture(0, 0, 3000, 8192, "BACKGROUND_SHADOW.TGA");
 
-    newCharBtn = buttonInterface(900, 900, 1200, 500, "+ New character");
+    newCharBtn = buttonInterface(900, 900, 1200, 500, lang["BUTTON_CHAR_SELECTION_MENU_NEWCHAR"][Player.lang]);
     newCharBtn.setColor(160, 160, 255);
     newCharBtn.setHoverColor(130, 130, 255);
 
-    logout_btn = buttonInterface(400, 7300, 1000, 400, "Log out");
-    quit_btn = buttonInterface(1600, 7300, 1000, 400, "Quit");
-    play_btn = buttonInterface(3000 + (8192-3000) / 2 - 600, 7250, 1200, 500, "Play");
+    logout_btn = buttonInterface(400, 7300, 1000, 400, lang["BUTTON_CHAR_SELECTION_MENU_LOGOUT"][Player.lang]);
+    quit_btn = buttonInterface(1600, 7300, 1000, 400, lang["BUTTON_CHAR_SELECTION_MENU_QUIT"][Player.lang]);
+    play_btn = buttonInterface(3000 + (8192-3000) / 2 - 600, 7250, 1200, 500, lang["BUTTON_CHAR_SELECTION_MENU_OK"][Player.lang]);
 
     nameBigDraw = Draw(0, 0, "Sample name");
     nameBigDraw.setColor(200, 200, 255);
@@ -290,9 +290,13 @@ function buttonInterfaceHandler(btn)
     }
 }
 
+function onRenderS()
+{
+
+}
 
 function debug_funcx()
 {
     //sendPacket(PacketType.CHARACTERS_CREATE, 0);
-    sendPacket(PacketType.CHARACTERS_SELECT, 0);
+    //sendPacket(PacketType.CHARACTERS_SELECT, 0);
 }

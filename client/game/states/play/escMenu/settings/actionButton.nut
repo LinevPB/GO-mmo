@@ -62,7 +62,7 @@ class actionButton
     {
         if (!active) return;
 
-        draw.setColor(255, 255, 0);
+        draw.setColor(170, 170, 255);
     }
 
     function unhover()
