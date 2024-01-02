@@ -103,8 +103,8 @@ local function onClickH(key)
         case GameState.CHARACTER_SELECTION: onClickS(key); break;
         case GameState.CHARACTER_CREATION: onClickC(key); break;
         case GameState.PLAY:
-            rawOnClick(key);
             onClickPlay(key);
+            rawOnClick(key);
         break;
     }
 }

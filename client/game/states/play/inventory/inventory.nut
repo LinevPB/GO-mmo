@@ -6,9 +6,9 @@ Inventory.MAX_ITEMS <- 90;
 Inventory.width <- 8192 / 2;
 Inventory.height <- 8192;
 Inventory.invEnabled <- false;
+invY <- 600;
 
 local mainMenu = null;
-invY <- 600;
 local slotMenu = null;
 local slotMenuButtons = {
     useButton = null,
@@ -27,6 +27,10 @@ local slotPointer = false;
 
 local lastCamPos = null;
 local lastCamRot = null;
+
+local alreadyClicked = false;
+local alreadyHolder = null;
+local lastClickTick = 300;
 
 function getMainMenu()
 {
@@ -147,6 +151,7 @@ function playClickButtonHandler(id) // click
 {
     if (!Inventory.invEnabled) return;
     if (TradeBox.IsEnabled()) return;
+    if (slotMenu.enabled) return;
 
     local temp = null;
 
@@ -193,59 +198,87 @@ function playClickButtonHandler(id) // click
     return;
 }
 
+function INVplayButtonHandler(id) // release
+{
+    switch(id)
+    {
+        case TradeBox.GetCancelBtn():
+            TradeBox.Enable(false);
+            return true;
+        break;
+
+        case TradeBox.GetOkBtn():
+            local temp = TradeBox.GetHold();
+            local val = TradeBox.GetValue();
+
+            if (val == "")
+            {
+                TradeBox.Enable(false);
+                return true;
+            }
+
+            sendDrop(temp.instance, val.tointeger());
+            return true;
+        break;
+
+        case slotMenuButtons.useButton.id:
+            handleUseItem(slotHolder);
+
+            return true;
+        break;
+
+        case slotMenuButtons.dropButton.id:
+            handleDropItem(slotHolder);
+
+            return true;
+        break;
+    }
+
+    return false;
+}
+
+function disableSlotMenu()
+{
+    slotMenu.enable(false);
+    getItemMenu().frozen = false;
+}
+
 function handleSlotMenu(id, pointer)
 {
     if (!(clickTick < 300 && !slotMenu.enabled && pointer.instance != "" && pointer.instance != null))
     {
-        slotMenu.enable(false);
-        getItemMenu().frozen = false;
         slotHolder = null;
         slotIdHolder = null;
     }
 }
 
-local alreadyClicked = false;
-local alreadyHolder = null;
-local lastClickTick = 300;
-
 function rawOnRelease(key)
 {
     if (TradeBox.IsEnabled()) return;
-    if (slotMenu.enabled) return;
 
-    local curs = getCursorPosition();
-
-    if (key == MOUSE_BUTTONLEFT)
+    switch(key)
     {
-        local temp = null;
-        foreach(i, v in getItemSlots())
-        {
-            if (!inSquare(curs, v.btn.pos, v.btn.size))
-            {
-                continue;
-            }
-            temp = v;
-        }
+        case MOUSE_BUTTONLEFT:
+            handleInvLeftClick();
+            handleItemRelease();
+        break;
 
-        if (temp == null) return;
+        case MOUSE_BUTTONRIGHT:
+            handleInvRightClick();
+        break;
+    }
+}
 
-        if (alreadyClicked && !(getTickCount() - lastClickTick > 400 || alreadyHolder != temp))
-        {
-            handleUseItem(temp);
-            alreadyClicked = false;
-            alreadyHolder = null;
-
-            return;
-        }
-
-        alreadyClicked = true;
-        alreadyHolder = temp;
-        lastClickTick = getTickCount();
-
+function handleInvLeftClick()
+{
+    if (slotMenu.enabled)
+    {
+        disableSlotMenu();
         return;
     }
 
-    if (key != MOUSE_BUTTONRIGHT) return;
+    local curs = getCursorPosition();
+    local temp = null;
 
     foreach(i, v in getItemSlots())
     {
@@ -254,10 +287,195 @@ function rawOnRelease(key)
             continue;
         }
 
-        if (v.instance == "")
+        temp = v;
+    }
+
+    if (temp == null) return;
+
+    if (alreadyClicked && !(getTickCount() - lastClickTick > 400 || alreadyHolder != temp))
+    {
+        handleUseItem(temp);
+        alreadyClicked = false;
+        alreadyHolder = null;
+
+        if (holdedRender.visible)
         {
-            return;
+            holdedRender.visible = false;
         }
+
+        return;
+    }
+
+    alreadyClicked = true;
+    alreadyHolder = temp;
+    lastClickTick = getTickCount();
+}
+
+function scanSetup()
+{
+    local temp = null;
+    local found = -1;
+
+    foreach(i, v in getCharacterLabs())
+    {
+        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
+        {
+            temp = v;
+            found = i;
+
+            break;
+        }
+
+        if (!slotPointer) continue;
+        if (v.btn.id != slotPointer.btn.id) continue;
+
+        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
+        {
+            slotPointer = false;
+            break;
+        }
+        else if (i < 4)
+        {
+            v.render.instance = "";
+            slotPointer = false;
+
+            invUnequip(i, holdedRender.instance);
+        }
+    }
+
+    return { temp = temp, found = found };
+}
+
+function scanSlots()
+{
+    local temp = null;
+    local found = -1;
+
+    foreach(i, v in getItemSlots())
+    {
+        if (!inSquare(getCursorPosition(), v.btn.pos, v.btn.size)) continue;
+
+        if (slotId != i)
+        {
+            moveItems(v, i, slotPointer, slotId);
+        }
+        else
+        {
+            handleSlotMenu(slotIdHolder, slotHolder);
+        }
+
+        slotPointer = null;
+        slotId = -1;
+
+        break;
+    }
+
+    return { temp = temp, found = found };
+}
+
+function handleItemRelease()
+{
+    if (!isClicked) return;
+
+    holdedRender.visible = false;
+    isClicked = false;
+
+    local result = scanSetup();
+
+    if (result.temp == null)
+    {
+        result = scanSlots();
+    }
+
+    if (result.temp == null) return;
+    if (!result.temp.btn.enabled) return;
+
+    slotPointer = false;
+
+    handleItemDropOnSetup(result.found, result.temp);
+}
+
+function helperEquip(id, inst, inst2)
+{
+    if ((inst != "" && inst != "-1"))
+    {
+        invUnequip(id, inst);
+    }
+
+    invEquip(id, inst2);
+}
+
+function handleItemDropOnSetup(found, temp)
+{
+    if (holdedRender.instance == "") return;
+
+    local item = ServerItems.find(holdedRender.instance);
+    switch(item.type)
+    {
+        case ItemType.WEAPON:
+            if (found == 0)
+            {
+                helperEquip(found, Player.eqWeapon, temp.render.instance);
+            }
+            else if (found == 1)
+            {
+                helperEquip(found, Player.eqWeapon2h, temp.render.instance);
+            }
+        break;
+
+        case ItemType.ARMOR:
+            if (found != 2) return;
+
+            helperEquip(found, Player.eqArmor, temp.render.instance);
+        break;
+
+        case ItemType.FOOD:
+        case ItemType.POTION:
+            if (found < 4) return;
+
+            local enu = -1;
+
+            foreach(i, v in getCharacterLabs())
+            {
+                if (v.render.instance == holdedRender.instance)
+                {
+                    enu = i;
+                    v.render.instance = "";
+                    invUnequip(i, holdedRender.instance);
+                }
+            }
+
+            if (temp.render.instance != "")
+            {
+                if (enu != -1)
+                {
+                    getCharacterLabs()[enu].render.instance = temp.render.instance;
+                    invEquip(enu, temp.render.instance);
+                }
+            }
+
+            temp.render.instance = holdedRender.instance;
+            invEquip(found, holdedRender.instance);
+            slotId = -1;
+
+        break;
+    }
+}
+
+function handleInvRightClick()
+{
+    if (slotMenu.enabled)
+    {
+        disableSlotMenu();
+        return;
+    }
+
+    local curs = getCursorPosition();
+
+    foreach(i, v in getItemSlots())
+    {
+        if (!inSquare(curs, v.btn.pos, v.btn.size)) continue;
+        if (v.instance == "") return;
 
         slotHolder = v;
         slotIdHolder = i;
@@ -296,15 +514,7 @@ function rawOnRelease(key)
 function rawOnClick(key)
 {
     if (TradeBox.IsEnabled()) return;
-
     if (!slotMenu.enabled) return;
-
-    if (!inSquare(getCursorPosition(), slotMenu.pos, slotMenu.size))
-    {
-        slotMenu.enable(false);
-        getItemMenu().frozen = false;
-        return;
-    }
 }
 
 function handleUseItem(slot)
@@ -370,6 +580,7 @@ function findSlot(instance)
             return v;
         }
     }
+
     return null;
 }
 
@@ -380,195 +591,51 @@ function sendDrop(inst, val)
     TradeBox.Enable(false);
 }
 
-function INVplayButtonHandler(id) // release
+function handleItemChange()
 {
-    if (id == TradeBox.GetCancelBtn())
+    if (!ITEM_CHANGE) return;
+
+    foreach (v in Player.items)
     {
-        return TradeBox.Enable(false);
-    }
-
-    if (id == TradeBox.GetOkBtn())
-    {
-        local temp = TradeBox.GetHold();
-        local val = TradeBox.GetValue();
-        if (val == "")
+        if (v.amount <= 0)
         {
-            return TradeBox.Enable(false);
-        }
-
-        return sendDrop(temp.instance, val.tointeger());
-    }
-
-    if (id == slotMenuButtons.useButton.id)
-    {
-        if (!inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
-        {
-            slotMenu.enable(false);
-            getItemMenu().frozen = false;
-        }
-
-        handleUseItem(slotHolder);
-    }
-    else if (id == slotMenuButtons.dropButton.id)
-    {
-        if (!inSquare(getCursorPosition(), getItemMenu().pos, getItemMenu().size))
-        {
-            slotMenu.enable(false);
-            getItemMenu().frozen = false;
-        }
-
-        handleDropItem(slotHolder);
-    }
-
-    if (!Inventory.invEnabled) return;
-    if (!isClicked) return;
-
-    holdedRender.visible = false;
-    isClicked = false;
-
-    local temp = null;
-    local found = -1;
-
-    foreach(i, v in getCharacterLabs())
-    {
-        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
-        {
-            temp = v;
-            found = i;
-            break;
-        }
-
-        if (!slotPointer)
-        {
+            getItemSlots()[v.slot].setRender("", 0);
             continue;
         }
 
-        if (v.btn.id != slotPointer.btn.id)
-        {
-            continue;
-        }
-
-        if (inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
-        {
-            slotPointer = false;
-            break;
-        }
-        else if (i < 4)
-        {
-            v.render.instance = "";
-            slotPointer = false;
-
-            invUnequip(i, holdedRender.instance);
-        }
+        getItemSlots()[v.slot].setRender(v.instance, v.amount);
     }
 
-    foreach(i, v in getItemSlots())
-    {
-        if (!inSquare(getCursorPosition(), v.btn.pos, v.btn.size))
-        {
-            continue;
-        }
-
-        if (slotId != i)
-        {
-            moveItems(v, i, slotPointer, slotId);
-        }
-        else
-        {
-            handleSlotMenu(slotIdHolder, slotHolder);
-        }
-
-        slotPointer = null;
-        slotId = -1;
-
-        return;
-    }
-
-    if (temp == null)
-    {
-        return;
-    }
-
-    if (!temp.btn.enabled)
-    {
-        return;
-    }
-
-    slotPointer = false;
-
-    local item = ServerItems.find(holdedRender.instance);
-    switch(item.type)
-    {
-        case ItemType.FOOD:
-        case ItemType.POTION:
-            if (found < 4) return;
-
-            local enu = -1;
-
-            foreach(i, v in getCharacterLabs())
-            {
-                if (v.render.instance == holdedRender.instance)
-                {
-                    enu = i;
-                    v.render.instance = "";
-                    invUnequip(i, holdedRender.instance);
-                }
-            }
-
-            if (temp.render.instance != "")
-            {
-                if (enu != -1)
-                {
-                    print(enu);
-                    getCharacterLabs()[enu].render.instance = temp.render.instance;
-                    invEquip(enu, temp.render.instance);
-                }
-            }
-
-            temp.render.instance = holdedRender.instance;
-            invEquip(found, holdedRender.instance);
-            slotId = -1;
-
-        break;
-    }
+    ITEM_CHANGE = false;
 }
-
 
 function onElementRender(el)
 {
     if (!Inventory.IsEnabled()) return;
     if (TradeBox.IsEnabled()) return;
 
-    if (ITEM_CHANGE)
+    if (isClicked)
     {
-        foreach (v in Player.items)
-        {
-            if (v.amount <= 0)
-            {
-                getItemSlots()[v.slot].setRender("", 0);
-            }
-            else
-            {
-                getItemSlots()[v.slot].setRender(v.instance, v.amount);
-            }
-        }
-        ITEM_CHANGE = false;
+        clickTick += 20;
     }
 
+    handleItemChange();
     handleItemMenuRender();
 
     if (!Inventory.invEnabled) return;
 
     showcaseRender();
-
-    if (isClicked)
-    {
-        local curs = getCursorPosition();
-
-        holdedRender.setPosition(curs.x - renderOffsetX, curs.y - renderOffsetY);
-        clickTick += 20;
-    }
 }
+
+function handleHoldedRender()
+{
+    if (!isClicked || holdedRender == null) return;
+
+    local curs = getCursorPosition();
+
+    holdedRender.setPosition(curs.x - renderOffsetX, curs.y - renderOffsetY);
+}
+addEventHandler("onRender", handleHoldedRender);
 
 function handleDropItem(slot)
 {

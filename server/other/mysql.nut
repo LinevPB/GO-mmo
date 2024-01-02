@@ -11,7 +11,7 @@ mysql.init <- function()
 {
     this.handler = mysql_connect("localhost", "root", "", "serv");
 
-    if (!this.handler == null) {
+    if (this.handler == null) {
         console.error("MySQL failed to connect!");
         return false;
     }
@@ -61,23 +61,6 @@ mysql.gquery <- function(query)
 
     return tbl;
 }
-
-// mysql.gquery <- function(query)
-// {
-//     local result = mysql_query(this.handler, query);
-
-//     if (result) {
-//         local temp = [];
-//         foreach(v in result)
-//             temp.append(v);
-
-//         mysql_free_result(result);
-//         return result;
-//     }
-
-//     console.error(mysql_errno(this.handler) + " : " + mysql_error(handler));
-//     return false;
-// }
 
 mysql.squery <- function(query)
 {
