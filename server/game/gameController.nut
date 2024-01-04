@@ -307,6 +307,13 @@ function saveDescription(pid, val)
 {
     local player = findPlayer(pid);
 
+    val = filter_sql(val);
+
+    if (val.len() > 128)
+    {
+        val = val.slice(0, 127);
+    }
+
     player.setDescription(val);
 }
 
