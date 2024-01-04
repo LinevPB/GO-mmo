@@ -98,12 +98,12 @@ function EscMenu::Init()
     submenus = [];
     tex = Texture(0, 0, 8192, 600, "ESC_BAR.TGA");
 
-    subMenu("Wroc");
-    subMenu("Mapa");
-    subMenu("Ekwipunek");
-    subMenu("Statystyki");
-    subMenu("Ustawienia");
-    subMenu("Wyjdz");
+    subMenu(lang["RESUME"][Player.lang]);
+    subMenu(lang["MAP"][Player.lang]);
+    subMenu(lang["INVENTORY"][Player.lang]);
+    subMenu(lang["CHARACTER"][Player.lang]);
+    subMenu(lang["SETTINGS"][Player.lang]);
+    subMenu(lang["QUIT"][Player.lang]);
 
     repositionSubmenus();
 }

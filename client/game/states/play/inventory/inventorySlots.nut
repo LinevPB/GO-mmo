@@ -254,6 +254,8 @@ function initializeInventorySlots()
 
 function moveItems(btn1, id1, btn2, id2)
 {
+    if (itemSlots[id1].instance == "" && itemSlots[id2].instance == "") return;
+
     local temp1 = itemSlots[id1].instance;
     local temp2 = itemSlots[id1].amount;
 

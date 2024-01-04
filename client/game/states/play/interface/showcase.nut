@@ -245,6 +245,8 @@ Showcase.SetOffsetX <- function(val)
 
 Showcase.Update <- function(instance)
 {
+    if (instance == "") return;
+
     if (SH_wasPriceOnly)
     {
         SH_wasPriceOnly = false;

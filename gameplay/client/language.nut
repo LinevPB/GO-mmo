@@ -532,5 +532,35 @@ lang <- {
     ["ITEMS"] = {
         ["en"] = "Items",
         ["pl"] = "Przedmioty"
+    },
+
+    ["RESUME"] = {
+        ["en"] = "Resume",
+        ["pl"] = "Wznów"
+    },
+
+    ["MAP"] = {
+        ["en"] = "Map",
+        ["pl"] = "Mapa"
+    },
+
+    ["INVENTORY"] = {
+        ["en"] = "Inventory",
+        ["pl"] = "Ekwipunek"
+    },
+
+    ["CHARACTER"] = {
+        ["en"] = "Character",
+        ["pl"] = "Postaæ"
+    },
+
+    ["SETTINGS"] = {
+        ["en"] = "Settings",
+        ["pl"] = "Ustawienia"
+    },
+
+    ["QUIT"] = {
+        ["en"] = "Quit",
+        ["pl"] = "WyjdŸ"
     }
 };

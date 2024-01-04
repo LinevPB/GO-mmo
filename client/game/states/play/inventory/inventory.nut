@@ -32,6 +32,10 @@ local alreadyClicked = false;
 local alreadyHolder = null;
 local lastClickTick = 300;
 
+local lastSetupTick = 0;
+local lastId = -1;
+local setupClicked = false;
+
 function getMainMenu()
 {
     return mainMenu;
@@ -355,8 +359,11 @@ function scanSlots()
     {
         if (!inSquare(getCursorPosition(), v.btn.pos, v.btn.size)) continue;
 
-        if (slotId != i)
+        if (slotId != i && slotPointer != null && slotId != -1)
         {
+            if (slotPointer == false) continue;
+            if (slotPointer.btn.id >= 36 && slotPointer.btn.id <= 41) continue;
+
             moveItems(v, i, slotPointer, slotId);
         }
         else
@@ -373,6 +380,43 @@ function scanSlots()
     return { temp = temp, found = found };
 }
 
+function handleDoubleClickSetup(id)
+{
+    local tickDiff = getTickCount() - lastSetupTick;
+
+    if (setupClicked && (id != lastId || tickDiff > 350))
+    {
+        setupClicked = false;
+    }
+
+    if (!setupClicked)
+    {
+        lastSetupTick = getTickCount();
+        lastId = id;
+        setupClicked = true;
+
+        return true;
+    }
+
+    handleUnequipFromSetup(id);
+    setupClicked = false;
+
+    return false;
+}
+
+function handleUnequipFromSetup(id)
+{
+    if (holdedRender.instance == "") return;
+
+    if (id >= 4)
+    {
+        return unequipFromQA(holdedRender.instance);
+    }
+
+    slotHolder.render.instance = "";
+    return invUnequip(id, holdedRender.instance);
+}
+
 function handleItemRelease()
 {
     if (!isClicked) return;
@@ -387,6 +431,32 @@ function handleItemRelease()
         result = scanSlots();
     }
 
+    if (result.found == -1)
+    {
+        if (slotPointer == null && slotHolder == null)
+        {
+            unequipFromQA(holdedRender.instance);
+        }
+        else
+        {
+            if (slotHolder.btn.id >= 36 && slotHolder.btn.id <= 41)
+            {
+                unequipFromQA(holdedRender.instance);
+            }
+        }
+    }
+    if (result.found == -1 && slotPointer == slotHolder)
+    {
+
+    }
+
+    if (result.found >= 0 && result.found <= 9)
+    {
+        local res = handleDoubleClickSetup(result.found);
+
+        if (!res) return;
+    }
+
     if (result.temp == null) return;
     if (!result.temp.btn.enabled) return;
 
@@ -395,13 +465,15 @@ function handleItemRelease()
     handleItemDropOnSetup(result.found, result.temp);
 }
 
-function helperEquip(id, inst, inst2)
+function helperEquip(id, inst, inst2, render)
 {
+    if (inst == inst2) return;
     if ((inst != "" && inst != "-1"))
     {
         invUnequip(id, inst);
     }
 
+    render.instance = inst2;
     invEquip(id, inst2);
 }
 
@@ -415,18 +487,18 @@ function handleItemDropOnSetup(found, temp)
         case ItemType.WEAPON:
             if (found == 0)
             {
-                helperEquip(found, Player.eqWeapon, temp.render.instance);
+                helperEquip(found, Player.eqWeapon, holdedRender.instance, temp.render);
             }
             else if (found == 1)
             {
-                helperEquip(found, Player.eqWeapon2h, temp.render.instance);
+                helperEquip(found, Player.eqWeapon2h, holdedRender.instance, temp.render);
             }
         break;
 
         case ItemType.ARMOR:
             if (found != 2) return;
 
-            helperEquip(found, Player.eqArmor, temp.render.instance);
+            helperEquip(found, Player.eqArmor, holdedRender.instance, temp.render);
         break;
 
         case ItemType.FOOD:
@@ -457,6 +529,21 @@ function handleItemDropOnSetup(found, temp)
             temp.render.instance = holdedRender.instance;
             invEquip(found, holdedRender.instance);
             slotId = -1;
+
+        break;
+    }
+}
+
+function unequipFromQA(inst, id = -1)
+{
+    foreach(i, v in getCharacterLabs())
+    {
+        if (i < 4) continue;
+        if (v.render.instance != inst) continue;
+
+        v.render.instance = "";
+        v.instance = "";
+        invUnequip(i, inst);
 
         break;
     }
@@ -519,6 +606,8 @@ function rawOnClick(key)
 
 function handleUseItem(slot)
 {
+    if (slot.instance == "") return;
+
     local item = Daedalus.instance(slot.instance);
     if (item.mainflag == 32 || item.mainflag == 128)
     {
@@ -559,10 +648,6 @@ function handleUseItem(slot)
                 getCharacterLabs()[found].render.instance = slot.instance;
             }
         }
-    }
-    else
-    {
-        //slotMenuButtons.useButton.changeText("Non usable");
     }
 }
 
@@ -627,16 +712,6 @@ function onElementRender(el)
     showcaseRender();
 }
 
-function handleHoldedRender()
-{
-    if (!isClicked || holdedRender == null) return;
-
-    local curs = getCursorPosition();
-
-    holdedRender.setPosition(curs.x - renderOffsetX, curs.y - renderOffsetY);
-}
-addEventHandler("onRender", handleHoldedRender);
-
 function handleDropItem(slot)
 {
     TradeBox.Enable(true);
@@ -655,3 +730,24 @@ function rawOnKey(key)
 
     INVplayButtonHandler(TradeBox.GetOkBtn());
 }
+
+function handleHoldedRender()
+{
+    if (!isClicked || holdedRender == null) return;
+
+    local curs = getCursorPosition();
+
+    local calcX = curs.x - renderOffsetX;
+    local calcY = curs.y - renderOffsetY;
+
+    if (calcX < 0) calcX = 0;
+    if (calcY < 0) calcY = 0;
+
+    local size = holdedRender.getSize();
+
+    if (calcX + size.width >= 8191) calcX = 8191 - size.width;
+    if (calcY + size.height >= 8191) calcY = 8191 - size.height;
+
+    holdedRender.setPosition(calcX, calcY);
+}
+addEventHandler("onRender", handleHoldedRender);
