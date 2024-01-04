@@ -42,7 +42,7 @@ class ChatLineDraw
 
     function enable(val)
     {
-        draw.visible = true;
+        draw.visible = val;
     }
 }
 
@@ -104,9 +104,9 @@ class ChatLine
 local function addChatLine(...)
 {
     local chatLine = ChatLine(Chat.Lines[Chat.Lines.len() - 1].position.y + totalSpace, false, vargv);
-    Chat.Lines.append(chatLine);
     chatLine.enable(Chat.Visible);
     chatLine.alpha(0);
+    Chat.Lines.append(chatLine);
 
     foreach(v in Chat.Lines)
         v.desiredY -= totalSpace;
@@ -114,7 +114,9 @@ local function addChatLine(...)
 
 function chatRender()
 {
-    foreach(i, v in Chat.Lines) {
+    print(Chat.Visible);
+    foreach(i, v in Chat.Lines)
+    {
         if (v.position.y == v.desiredY)
             continue;
 
@@ -155,10 +157,12 @@ Chat.Init <- function()
 
 Chat.Enable <- function(val)
 {
-    Chat.Visible = val;
-    foreach(v in Chat.Lines) {
+    foreach(v in Chat.Lines)
+    {
         v.enable(val);
     }
+
+    Chat.Visible = val;
 }
 
 Chat.EnableInput <- function(val)
@@ -189,6 +193,7 @@ Chat.Send <- function()
 
 Chat.Add <- addChatLine;
 
-Chat.IsEnabled <- function() {
-    return chatInputIsOpen();
+Chat.IsEnabled <- function()
+{
+    return Chat.Visible;
 }

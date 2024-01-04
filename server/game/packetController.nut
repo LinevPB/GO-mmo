@@ -58,6 +58,10 @@ local function onPacket(pid, packet)
             UseItem(pid, data[0], data[1]);
         break;
 
+        case PacketType.OPEN_ITEM:
+            OpenItem(pid, data[0], data[1]);
+        break;
+
         case PacketType.DROP_ITEM:
             DropItem(pid, data[0], data[1]);
         break;

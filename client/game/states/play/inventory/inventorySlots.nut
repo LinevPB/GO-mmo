@@ -138,6 +138,24 @@ function findSlotByInstance(inst)
 
 function RemoveInvSlot(inst)
 {
+    switch(inst)
+    {
+        case Player.eqWeapon:
+            getCharacterLabs()[0].render.instance = "";
+            invUnequip(0, inst.toupper());
+        break;
+
+        case Player.eqWeapon2h:
+            getCharacterLabs()[1].render.instance = "";
+            invUnequip(1, inst.toupper());
+        break;
+
+        case Player.eqArmor:
+            getCharacterLabs()[2].render.instance = "";
+            invUnequip(2, inst.toupper());
+        break;
+    }
+
     local temp = findSlotByInstance(inst);
     if (temp != null)
     {

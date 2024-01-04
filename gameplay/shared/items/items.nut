@@ -1,5 +1,6 @@
 ItemType <-
 {
+    OPENABLE = 0,
     OTHER = 1, // other not usable items
     WEAPON = 2, // 1h melee and 2h melee weapon
     RANGED = 4, // bow and crossbow
@@ -79,12 +80,12 @@ local function weaponInfoPolish(item)
     result.append("Wymagany poziom: " + item.levelRequired);
 
     if (item.damage.physical > 0)
-        result.append("Obra¿enia fizyczne: " + item.damage.physical);
+        result.append("Obraï¿½enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("Obra¿enia magiczne: " + item.damage.magical);
+        result.append("Obraï¿½enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -155,7 +156,7 @@ function armorInfoPolish(item)
         result.append("");
 
     if (item.bonusStats.strength != null)
-        result.append("Bonus do si³y: " + item.bonusStats.strength);
+        result.append("Bonus do siï¿½y: " + item.bonusStats.strength);
     else
         result.append("");
 
@@ -208,15 +209,15 @@ function ammoInfoPolish(item)
 {
     local result = [];
 
-    result.append("Amunicja do broni dalekosiê¿nej");
+    result.append("Amunicja do broni dalekosiï¿½nej");
 
     if (item.damage.physical > 0)
-        result.append("Obra¿enia fizyczne: " + item.damage.physical);
+        result.append("Obraï¿½enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("Obra¿enia magiczne: " + item.damage.magical);
+        result.append("Obraï¿½enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -278,17 +279,17 @@ function magicInfoPolish(item)
     local result = [];
 
     if (item.magicLevelRequired == 0)
-        result.append("Zwój")
+        result.append("Zwï¿½j")
     else
-        result.append("Wymagany kr¹g magii: " + item.magicLevelRequired);
+        result.append("Wymagany krï¿½g magii: " + item.magicLevelRequired);
 
     if (item.damage.physical > 0)
-        result.append("Obra¿enia fizyczne: " + item.damage.physical);
+        result.append("Obraï¿½enia fizyczne: " + item.damage.physical);
     else
         result.append("");
 
     if (item.damage.magical > 0)
-        result.append("Obra¿enia magiczne: " + item.damage.magical);
+        result.append("Obraï¿½enia magiczne: " + item.damage.magical);
     else
         result.append("");
 
@@ -343,16 +344,16 @@ function foodInfoPolish(item)
 {
     local result = [];
 
-    result.append("Mo¿na spo¿yæ");
+    result.append("Moï¿½na spoï¿½yï¿½");
     result.append("");
 
     if (item.restores.health > 0)
-        result.append("Odnawia ¿ycie: " + item.restores.health);
+        result.append("Odnawia ï¿½ycie: " + item.restores.health);
     else
         result.append("");
 
     if (item.restores.mana > 0)
-        result.append("Odnawia manê: " + item.restores.mana);
+        result.append("Odnawia manï¿½: " + item.restores.mana);
     else
         result.append("");
 
@@ -401,16 +402,16 @@ function potionInfoPolish(item)
 {
     local result = [];
 
-    result.append("Mo¿na spo¿yæ");
+    result.append("Moï¿½na spoï¿½yï¿½");
     result.append("");
 
     if (item.restores.health > 0)
-        result.append("Odnawia ¿ycie: " + item.restores.health);
+        result.append("Odnawia ï¿½ycie: " + item.restores.health);
     else
         result.append("");
 
     if (item.restores.mana > 0)
-        result.append("Odnawia manê: " + item.restores.mana);
+        result.append("Odnawia manï¿½: " + item.restores.mana);
     else
         result.append("");
 
@@ -472,6 +473,48 @@ function handleOtherInfo(item, lang = "en")
 
         case "pl":
             result = otherInfoPolish(item);
+        break;
+    }
+
+    return result;
+}
+
+function openableInfoEnglish(item)
+{
+    local result = [];
+
+    result.append("Can be opened");
+    result.append("");
+    result.append("");
+    result.append("");
+
+    return result;
+}
+
+function openableInfoPolish(item)
+{
+    local result = [];
+
+    result.append("MoÅ¼na otworzyÄ‡");
+    result.append("");
+    result.append("");
+    result.append("");
+
+    return result;
+}
+
+function handleOpenableInfo(item, lang = "en")
+{
+    local result = null;
+
+    switch(lang)
+    {
+        case "en":
+            result = openableInfoEnglish(item);
+        break;
+
+        case "pl":
+            result = openableInfoPolish(item);
         break;
     }
 

@@ -50,7 +50,8 @@ enum PacketType {
     SHOW_MESSAGE = 48,
     CHAT_CLEAR_MESSAGE = 49,
     CHAT_OOC = 50,
-    CHAT_CRY = 51
+    CHAT_CRY = 51,
+    OPEN_ITEM = 52
 };
 
 function encode(args)

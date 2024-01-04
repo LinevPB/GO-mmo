@@ -141,19 +141,24 @@ class PlayerStructure
         {
             if (v.instance.toupper() == instance.toupper())
             {
+                local temp = v.amount;
                 v.amount -= amount;
+
                 if (v.amount <= 0)
                 {
                     v.amount = 0;
                     sendPlayerPacket(id, PacketType.UPDATE_ITEM, 3, v.instance, v.amount, v.slot);
-                    return {removed = true, more = items.remove(i)};
+
+                    return { removed = true, more = items.remove(i), amount = temp };
                 }
+
                 sendPlayerPacket(id, PacketType.UPDATE_ITEM, 2, v.instance, v.amount, v.slot);
-                return {removed = false, more = v};
+
+                return { removed = false, more = v, amount = amount };
             }
         }
 
-        return {removed = 2137};
+        return { removed = 2137 };
     }
 
     function getItems()
@@ -481,6 +486,8 @@ function RemoveItem(pid, instance, amount)
         mysql.squery("UPDATE `items` SET `amount` = '" + item.more.amount + "' WHERE `owner`='" + findPlayer(pid).charId + "' AND `instance`='" + item.more.instance + "'");
     else
         mysql.squery("DELETE FROM `items` WHERE `owner`='" + player.charId + "' AND `instance`='" + item.more.instance + "'");
+
+    return item;
 }
 
 function LoadItems(pid, heroId)
@@ -620,18 +627,10 @@ function MoveItems(pid, fid1, fid2)
         mysql.squery("UPDATE `items` SET `slot` = '" + fid2 + "' WHERE `id`=" + id1[0][0]);
         mysql.squery("UPDATE `items` SET `slot` = '" + fid1 + "' WHERE `id`=" + id2[0][0]);
     }
-
-    if (id1[0] == null && id2[0] == null)
-    {
-        print("???");
-    }
 }
 
 function UseItem(pid, instance, amount)
 {
-    //
-        // need to add use mechanic
-    //
     local item = ServerItems.find(instance);
     local player = findPlayer(pid);
 
@@ -651,12 +650,30 @@ function UseItem(pid, instance, amount)
     RemoveItem(pid, instance, amount);
 }
 
-function DropItem(pid, instance, amount)
+function OpenItem(pid, instance, amount)
 {
     RemoveItem(pid, instance, amount);
 
+    local item = ServerItems.find(instance);
+    local player = findPlayer(pid);
+
+    foreach(v in item.box)
+    {
+        GiveItem(pid, v.instance, v.amount);
+    }
+
+    if (item.gold)
+    {
+        player.addGold(item.gold);
+    }
+}
+
+function DropItem(pid, instance, amount)
+{
+    local item = RemoveItem(pid, instance, amount);
     local pos = getPlayerPosition(pid);
-    handleSpawnGround(pos, instance, amount);
+
+    handleSpawnGround(pos, item.more.instance, item.amount);
 }
 
 function ManageQA(pid, id, instance)

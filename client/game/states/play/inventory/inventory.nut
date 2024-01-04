@@ -227,12 +227,14 @@ function INVplayButtonHandler(id) // release
 
         case slotMenuButtons.useButton.id:
             handleUseItem(slotHolder);
+            disableSlotMenu();
 
             return true;
         break;
 
         case slotMenuButtons.dropButton.id:
             handleDropItem(slotHolder);
+            disableSlotMenu();
 
             return true;
         break;
@@ -571,25 +573,39 @@ function handleInvRightClick()
         slotMenu.enable(true);
         slotMenu.setPosition(curs.x, curs.y);
 
-        local item = Daedalus.instance(slotHolder.render.instance);
-        if (item.mainflag == 32 || item.mainflag == 128)
+        local item = ServerItems.find(slotHolder.render.instance);
+
+        switch(item.type)
         {
-            slotMenuButtons.useButton.changeText(lang["INV_USE"][Player.lang]);
-        }
-        else if (item.mainflag == 2 || item.mainflag == 4 || item.mainflag == 16)
-        {
-            if (slotHolder.render.instance.toupper() == Player.eqWeapon || slotHolder.render.instance.toupper() == Player.eqWeapon2h || slotHolder.render.instance.toupper() == Player.eqArmor)
-            {
-                slotMenuButtons.useButton.changeText(lang["INV_UNEQUIP"][Player.lang]);
-            }
-            else
-            {
-                slotMenuButtons.useButton.changeText(lang["INV_EQUIP"][Player.lang]);
-            }
-        }
-        else
-        {
-            slotMenuButtons.useButton.changeText(lang["INV_NONUSABLE"][Player.lang]);
+            case ItemType.WEAPON:
+            case ItemType.RANGED:
+            case ItemType.ARMOR:
+                slotMenuButtons.useButton.setActive(true);
+                if (slotHolder.render.instance.toupper() == Player.eqWeapon || slotHolder.render.instance.toupper() == Player.eqWeapon2h || slotHolder.render.instance.toupper() == Player.eqArmor)
+                {
+                    slotMenuButtons.useButton.changeText(lang["INV_UNEQUIP"][Player.lang]);
+                }
+                else
+                {
+                    slotMenuButtons.useButton.changeText(lang["INV_EQUIP"][Player.lang]);
+                }
+            break;
+
+            case ItemType.FOOD:
+            case ItemType.POTION:
+                slotMenuButtons.useButton.setActive(true);
+                slotMenuButtons.useButton.changeText(lang["INV_USE"][Player.lang]);
+            break;
+
+            case ItemType.OPENABLE:
+                slotMenuButtons.useButton.setActive(true);
+                slotMenuButtons.useButton.changeText(lang["INV_OPEN"][Player.lang]);
+            break;
+
+            default:
+                slotMenuButtons.useButton.setActive(false);
+                slotMenuButtons.useButton.changeText(lang["INV_NONUSABLE"][Player.lang]);
+            break;
         }
 
         v.btn.unhover();
@@ -604,50 +620,70 @@ function rawOnClick(key)
     if (!slotMenu.enabled) return;
 }
 
+function handleUseArmory(instance, type)
+{
+    if (instance.toupper() == Player.eqWeapon || instance.toupper() == Player.eqWeapon2h || instance.toupper() == Player.eqArmor)
+    {
+        foreach(i, v in getCharacterLabs())
+        {
+            if (v.render.instance == instance)
+            {
+                v.render.instance = "";
+                return invUnequip(i, instance);
+            }
+        }
+
+        return;
+    }
+
+    local found = 0;
+    switch (type)
+    {
+        case ItemType.WEAPON:
+            found = 0;
+        break;
+
+        case ItemType.RANGED:
+            found = 1;
+        break;
+
+        case ItemType.ARMOR:
+            found = 2;
+        break;
+    }
+
+    if (invEquip(found, instance))
+    {
+        getCharacterLabs()[found].render.instance = instance;
+    }
+}
+
 function handleUseItem(slot)
 {
     if (slot.instance == "") return;
 
-    local item = Daedalus.instance(slot.instance);
-    if (item.mainflag == 32 || item.mainflag == 128)
-    {
-        sendPacket(PacketType.USE_ITEM, slot.instance, 1);
-    }
-    else if (item.mainflag == 2 || item.mainflag == 4 || item.mainflag == 16)
-    {
-        if (slot.instance.toupper() == Player.eqWeapon || slot.instance.toupper() == Player.eqWeapon2h || slot.instance.toupper() == Player.eqArmor)
-        {
-            foreach(i, v in getCharacterLabs())
-            {
-                if (v.render.instance == slot.instance)
-                {
-                    v.render.instance = "";
-                    return invUnequip(i, slot.instance);
-                }
-            }
-        }
-        else
-        {
-            local found = 0;
-            switch (item.mainflag)
-            {
-                case 2:
-                    found = 0;
-                break;
+    local item = ServerItems.find(slot.instance);
 
-                case 4:
-                    found = 1;
-                break;
+    switch(item.type)
+    {
+        case ItemType.WEAPON:
+        case ItemType.RANGED:
+        case ItemType.ARMOR:
+            handleUseArmory(slot.instance, item.type);
+        break;
 
-                case 16:
-                    found = 2;
-                break;
-            }
-            if (invEquip(found, slot.instance))
-            {
-                getCharacterLabs()[found].render.instance = slot.instance;
-            }
-        }
+        case ItemType.FOOD:
+        case ItemType.POTION:
+            sendPacket(PacketType.USE_ITEM, slot.instance, 1);
+        break;
+
+        case ItemType.OPENABLE:
+            sendPacket(PacketType.OPEN_ITEM, slot.instance, 1);
+        break;
+
+        default:
+
+        break;
     }
 }
 
@@ -690,6 +726,8 @@ function handleItemChange()
 
         getItemSlots()[v.slot].setRender(v.instance, v.amount);
     }
+
+    updateGoldDraws();
 
     ITEM_CHANGE = false;
 }

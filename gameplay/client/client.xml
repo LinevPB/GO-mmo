@@ -1,6 +1,7 @@
 <server>
 
     <script src="language.nut" type="client" />
+    <script src="language2.nut" type="client" />
 
     <script src="guardians.nut" type="client" />
 

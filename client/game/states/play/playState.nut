@@ -20,13 +20,9 @@ function initPlayState()
     initSettings();
     EscMenu.Init();
     initDeathDraw();
+
     disableLogicalKey(GAME_INVENTORY, true);
     disableLogicalKey(GAME_SCREEN_STATUS, true);
-    Sky.setPlanetColor(PLANET_MOON, 220, 140, 20, 200);
-    Sky.setPlanetColor(PLANET_SUN, 220, 140, 20, 200);
-    Sky.setCloudsColor(220, 140, 20);
-    Sky.setLightingColor(255, 140, 20);
-    Sky.setFogColor(0, 220, 140, 20);
 
     initInteraction();
     initNpcs();
@@ -161,10 +157,16 @@ function resetAction()
     actionType = 0;
 }
 
+local function helperAction(val = false)
+{
+    enableQA(val);
+    Chat.Enable(val);
+}
+
 function launchFree()
 {
     actionType = 0;
-    enableQA(true);
+    helperAction(true);
 }
 
 function freeAction(key)
@@ -178,20 +180,20 @@ function freeAction(key)
 
         case KEY_C:
             actionType = 2;
-            enableQA(false);
+            helperAction();
             EscMenu.Enable(true, 3);
         break;
 
         case KEY_TAB:
         case KEY_I:
             actionType = 2;
-            enableQA(false);
+            helperAction();
             EscMenu.Enable(true, 2);
         break;
 
         case KEY_M:
             actionType = 2;
-            enableQA(false);
+            helperAction();
             EscMenu.Enable(true, 1);
         break;
 
@@ -206,7 +208,7 @@ function freeAction(key)
 
         case KEY_X:
             actionType = 2;
-            enableQA(false);
+            helperAction();
             EscMenu.Enable(true);
         break;
 
@@ -238,7 +240,6 @@ function inventoryAction(key)
     {
         case KEY_TAB:
         case KEY_I:
-        case KEY_ESCAPE:
             escMenuAction(KEY_ESCAPE);
         break;
     }
@@ -259,12 +260,6 @@ function statisticsAction(key)
     switch(key)
     {
         case KEY_C:
-            if (!statsCanUseKeys() && getCurrentSubmenu() == 3)
-            {
-                statsCannotUseKeys(key);
-                return;
-            }
-
             escMenuAction(KEY_ESCAPE);
         break;
     }
@@ -289,7 +284,8 @@ function escMenuAction(key)
 
             resetAction();
             EscMenu.Enable(false);
-            enableQA(true);
+
+            helperAction(true);
             return;
         break;
     }

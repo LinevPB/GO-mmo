@@ -9,4 +9,5 @@
 	<script src="other.nut" type="shared" />
 	<script src="potions.nut" type="shared" />
 	<script src="rangedWeapons.nut" type="shared" />
+	<script src="openable.nut" type="shared" />
 </server>

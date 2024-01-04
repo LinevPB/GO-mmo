@@ -12,7 +12,7 @@ ServerItems.add({
 ServerItems.add({
     name = {
         ["en"] = "Gold ore",
-        ["pl"] = "Bry³ka z³ota"
+        ["pl"] = "Bryï¿½ka zï¿½ota"
     },
     instance = "ITMI_GOLDNUGGET_ADDON",
     type = ItemType.OTHER,
