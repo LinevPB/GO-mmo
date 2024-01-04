@@ -14,6 +14,7 @@ class GlobalNpc
     draw = null;
     texture = null;
     coverTexture = null;
+    textureFrame = null;
     dead = null;
     dying = null;
     level = null;
@@ -37,18 +38,22 @@ class GlobalNpc
         draw.insertText(lang[instance.toupper()][Player.lang]);
         draw.setLineColor(0, 250, 80, 10);
 
-        texture = Texture(0, 0, 1000, 80, "SR_BLANK.TGA");
+        texture = Texture(0, 0, 1000, 100, "BAR_HEALTH.TGA");
         texture.setColor(250, 80, 80);
-        coverTexture = Texture(0, 0, 1000, 100, "TEXTBOX_BACKGROUND.TGA");
+        coverTexture = Texture(0, 0, 1000, 100, "BAR_BACK.TGA");
+        textureFrame = Texture(0, 0, 1000, 100, "WINDOW_FRAME.TGA");
 
         dead = false;
         dying = false;
 
         level = 0;
         max_health = 20;
+
         levelDraw = Draw(0, 0, level);
         levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
-        levelTex = Texture(0, 0, 100, 100, "INVENTORY_SLOT.TGA");
+        levelDraw.setColor(255, 100, 100);
+        levelTex = Texture(0, 0, 100, 100, "LEVEL_FRAME.TGA");
+
         visualVisible = false;
 
         currentAnim = "S_RUN";
@@ -81,8 +86,9 @@ class GlobalNpc
     {
         level = val;
         levelDraw.text = val;
-        local size = levelDraw.width > levelDraw.height ? levelDraw.width : levelDraw.height;
-        levelTex.setSize(size, size);
+
+        //local size = levelDraw.width > levelDraw.height ? levelDraw.width : levelDraw.height;
+        levelTex.setSize(levelDraw.width + 100, levelDraw.height);
     }
 
     function setHealth(val)
@@ -148,15 +154,18 @@ class GlobalNpc
         coverTexture.setPosition(dPos.x + draw.width / 2 - 500, dPos.y - draw.height - 150);
 
         dPos = coverTexture.getPosition();
-        texture.setPosition(dPos.x, dPos.y + 10);
+        texture.setPosition(dPos.x, dPos.y);
+        textureFrame.setPosition(dPos.x, dPos.y);
 
         local healthSize = 1000.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
         texture.setSize(healthSize, 100);
 
         levelTex.setPosition(texture.getPosition().x - levelTex.getSize().width, texture.getPosition().y - levelTex.getSize().height / 2);
-        levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2);
+        levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2 + 5, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2 + 10);
 
-        levelTex.rotation = 45;
+        // local temp = levelTex.getSize();
+        // levelTex.setPivotPoint(temp.width / 2, temp.height / 2);
+        // levelTex.rotation = 45;
     }
 
     function isSomethingVisible()
@@ -174,6 +183,7 @@ class GlobalNpc
 
         coverTexture.visible = val;
         texture.visible = val;
+        textureFrame.visible = val;
 
         levelTex.visible = val;
         levelDraw.visible = val;

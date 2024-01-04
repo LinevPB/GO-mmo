@@ -87,6 +87,27 @@ local function onPacket(packet) {
             }
         break;
 
+        case PacketType.CHAT_CLEAR_MESSAGE:
+            if (Player.gameState == GameState.PLAY)
+            {
+                onClearMessage(data);
+            }
+        break;
+
+        case PacketType.CHAT_OOC:
+            if (Player.gameState == GameState.PLAY)
+            {
+                onMessageOOC(data);
+            }
+        break;
+
+        case PacketType.CHAT_CRY:
+            if (Player.gameState == GameState.PLAY)
+            {
+                onMessageCry(data);
+            }
+        break;
+
         case PacketType.UPDATE_ITEM:
             Player.manageItem(data[0], data[1], data[2], data[3]);
         break;

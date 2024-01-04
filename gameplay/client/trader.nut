@@ -182,7 +182,7 @@ function initTrader()
     npc.spawn();
 
     equipItem(npc.npc, Items.id("ItAr_Vlk_H"));
-    setPlayerVisual(npc.npc, Player.bodyModel[0], 3, Player.headModel[1], 12);
+    setPlayerVisual(npc.npc, BodyModel[0], 3, HeadModel[1], 12);
     npc.playAni("S_HGUARD")
 
     npc.draw.setLineText(2, lang["TRADER"][Player.lang]);

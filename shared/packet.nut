@@ -47,7 +47,10 @@ enum PacketType {
     SAVE_DESC = 45,
     UPDATE_DESC = 46,
     ASK_FOR_REMEMBERED = 47,
-    SHOW_MESSAGE = 48
+    SHOW_MESSAGE = 48,
+    CHAT_CLEAR_MESSAGE = 49,
+    CHAT_OOC = 50,
+    CHAT_CRY = 51
 };
 
 function encode(args)

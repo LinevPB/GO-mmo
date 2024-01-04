@@ -186,7 +186,7 @@ function handleSlotsRelease()
 
 function setupInventorySlots()
 {
-    itemMenu = Window(200, invY, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "SR_BLANK.TGA");
+    itemMenu = Window(200, invY, Inventory.MAX_COLUMN * Inventory.SIZE, Inventory.MAX_ITEMS / Inventory.MAX_COLUMN * Inventory.SIZE, "");
     itemMenu.setBackgroundColor(75, 75, 100);
     getMainMenu().attach(itemMenu);
 }

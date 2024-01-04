@@ -4,8 +4,6 @@ Player <- {
     canProceed = false,
 
     helper = createNpc("Helper"),
-    bodyModel = ["Hum_Body_Naked0","Hum_Body_Babe0"],
-    headModel = ["Hum_Head_FatBald","Hum_Head_Fighter","Hum_Head_Pony","Hum_Head_Bald","Hum_Head_Thief","Hum_Head_Psionic","Hum_Head_Babe"],
     cBodyModel = 0,
     cBodyTexture = 1,
     cHeadModel = 6,
@@ -31,7 +29,7 @@ ITEM_CHANGE <- false;
 Player.updateVisual <- function(id = -1)
 {
     if (id == -1) id = heroId;
-    setPlayerVisual(id, Player.bodyModel[Player.cBodyModel], Player.cBodyTexture, Player.headModel[Player.cHeadModel], Player.cHeadTexture);
+    setPlayerVisual(id, BodyModel[Player.cBodyModel], Player.cBodyTexture, HeadModel[Player.cHeadModel], Player.cHeadTexture);
 }
 
 Player.manageItem <- function(act, instance, amount, slot)

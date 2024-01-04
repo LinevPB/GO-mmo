@@ -39,7 +39,7 @@ function initZiobro()
         npc.spawn();
 
         equipItem(npc.npc, Items.id(npcValues.armor));
-        setPlayerVisual(npc.npc, Player.bodyModel[0], 3, Player.headModel[1], random(1, 50));
+        setPlayerVisual(npc.npc, BodyModel[random(0, 1)], random(0, 4), HeadModel[random(0, 5)], random(1, 143));
         npc.playAni(npcValues.ani)
 
         npc.draw.setLineText(2, npcValues.name);

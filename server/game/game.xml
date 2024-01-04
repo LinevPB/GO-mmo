@@ -4,7 +4,9 @@
     <script src="groundItems.nut" type="server" />
 
     <script src="states/login/loginState.nut" type="server" />
+
     <script src="states/play/playState.nut" type="server" />
+    <script src="states/play/chat.nut" type="server" />
 
     <import src="npc/npc.xml" type="server" />
 

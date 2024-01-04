@@ -45,5 +45,6 @@ function interfaceRender()
     notificationRender();
     chatRender();
     mapRender();
+    playersNameRender();
 }
 addEventHandler("onRender", interfaceRender);

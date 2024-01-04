@@ -1,3 +1,6 @@
+local isInAction = false;
+local actionType = 0;
+
 function initPlayState()
 {
     enable_NicknameId(false);
@@ -79,28 +82,26 @@ function onMessage(data)
     //startBuffs();
 }
 
+function onClearMessage(data)
+{
+    Chat.Add([data[0], data[1], data[2], data[3]]);
+}
+
+function onMessageOOC(data)
+{
+    Chat.Add([data[0], data[1], data[2], "(OOC) " + data[3] + ": "], data[4]);
+}
+
+function onMessageCry(data)
+{
+    Chat.Add([data[0], data[1], data[2], data[3] + " krzyczy " + data[4]]);
+}
+
 function onSlidePlay(el)
 {
     onInvSlide(el);
     onTradeSlide(el);
     onSettingsSlide(el);
-}
-
-function watchHelperPosition()
-{
-    if (Player.gameState != GameState.PLAY) return;
-
-    local pos = getPlayerPosition(Player.helper);
-    if (pos.x != 38086 || pos.y != 4681 || pos.z != 44551)
-    {
-        setPlayerPosition(Player.helper, 38086, 4681, 44551);
-    }
-
-    local ang = getPlayerAngle(Player.helper);
-    if (ang != 250)
-    {
-        setPlayerAngle(Player.helper, 250);
-    }
 }
 
 function onRenderP(currentTime, lastTime)
@@ -113,12 +114,8 @@ function onRenderP(currentTime, lastTime)
     gi_render();
     statisticsRender();
     escMenuRender();
-
-    watchHelperPosition();
+    invRender();
 }
-
-local isInAction = false;
-local actionType = 0;
 
 function getActionType()
 {

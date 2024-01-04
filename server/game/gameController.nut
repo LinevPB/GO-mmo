@@ -79,11 +79,7 @@ function messageHandler(pid, data)
     local message = data[1];
     local nickname = findPlayer(sid).charName;
 
-    foreach(player in getPlayers()) {
-        if (player.logged) {
-            sendMessage(player.id, 25, 250, 50, nickname, message)
-        }
-    }
+    handleChatMessage(nickname, message);
 
     console.log(nickname + ": " + message);
 }
@@ -128,6 +124,8 @@ function selectHandler(pid, data)
 
     setupChar(pid, v[2], v[9], v[8], v[9], v[10], v[0], v[35], v[36]);
     sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[8], v[9], v[7], v[28], v[29], v[30], v[31], v[32], v[33]);
+    setPlayerVisual(pid, BodyModel[v[3]], v[4], HeadModel[v[5]], v[6]);
+
     updatePlayer(pid, v[11], v[12], v[13], v[14], v[15], v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23], v[24], v[34]);
     setPlayerPosition(pid, v[25], v[26], v[27]);
     spawnPlayer(pid);
@@ -182,6 +180,7 @@ function creationConfirmHandler(pid, data)
     sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex, fat, overlay);
 
     ChangeGameState(pid, GameState.CHARACTER_SELECTION);
+    setPlayerVisual(pid, BodyModel[bodyMod], bodyTex, HeadModel[headMod], headTex);
     setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0], fat, overlay);
 }
 

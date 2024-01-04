@@ -126,10 +126,11 @@ local function SH_calcTexHeight()
 local function SH_updatePosition()
 {
     local curs = getCursorPosition();
+    local cursSize = getCursorSize();
     local texWidth = SH_calcTexWidth();
     local texHeight = SH_calcTexHeight();
 
-    if (curs.x + texWidth > 8192)
+    if (curs.x + texWidth + cursSize.width > 8192)
     {
         curs.x = 8192 - texWidth;
     }
@@ -144,8 +145,8 @@ local function SH_updatePosition()
         curs.y -= texHeight;
     }
 
-    SH_tex.setPosition(curs.x, curs.y);
-    SH_cover.setPosition(curs.x, curs.y);
+    SH_tex.setPosition(curs.x + cursSize.width, curs.y + cursSize.height);
+    SH_cover.setPosition(curs.x + cursSize.width, curs.y + cursSize.height);
     SH_tex.setSize(texWidth, texHeight);
     SH_cover.setSize(texWidth, texHeight);
 

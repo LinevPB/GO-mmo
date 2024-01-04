@@ -13,10 +13,12 @@ local avatarFrame = Texture(1000, 1000, width, height - 400, "WINDOW_FRAME.TGA")
 local nameFrame = Texture(1000, 600 + height - 300, width, 300, "TEXTBOX_BACKGROUND.TGA");
 local nameDraw = Draw(0, 0, "My name");
 
-local healthTex = Texture(1000, 600 + height, width, 150, "SR_BLANK.TGA");
+local healthBackground = Texture(1000, 600 + height, width, 150, "MENU_CHOICE_BACK.TGA");
+local healthTex = Texture(1000 + 10, 600 + height, width - 10, 150, "BAR_HEALTH.TGA");
 local healthCover = Texture(1000, 600 + height, width, 150, "WINDOW_FRAME.TGA");
 
-local manaTex = Texture(1000, 600 + height + 150, width, 150, "SR_BLANK.TGA");
+local manaBackground = Texture(1000, 600 + height + 155, width, 140, "MENU_CHOICE_BACK.TGA");
+local manaTex = Texture(1000 + 10, 600 + height + 155, width - 10, 140, "BAR_MANA.TGA");
 local manaCover = Texture(1000, 600 + height + 150, width, 150, "WINDOW_FRAME.TGA");
 
 local paddingLR = 100;
@@ -133,8 +135,8 @@ function setupStatistics()
 
     setupStatsPositions();
 
-    healthTex.setColor(255, 0, 0);
-    manaTex.setColor(0, 0, 255);
+    // healthTex.setColor(255, 0, 0);
+    // manaTex.setColor(0, 0, 255);
 
     charDesc = TextArea();
 
@@ -196,6 +198,9 @@ function enableStatistics(val)
     nameFrame.visible = val;
     nameDraw.visible = val;
 
+    healthBackground.visible = val;
+    manaBackground.visible = val;
+
     healthTex.visible = val;
     manaTex.visible = val;
 
@@ -210,6 +215,12 @@ function enableStatistics(val)
     }
 
     isEnabled = val;
+
+    manaTex.top();
+    manaCover.top();
+
+    healthTex.top();
+    healthCover.top();
 }
 
 function statisticsRender()
@@ -224,7 +235,38 @@ function statisticsRender()
     {
         stopAni(Player.helper, "S_RUN");
         playAni(Player.helper, "S_RUN");
+
+        local pos = getPlayerPosition(Player.helper);
+        if (pos.x != 38086 || pos.y != 4681 || pos.z != 44551)
+        {
+            setPlayerPosition(Player.helper, 38086, 4681, 44551);
+        }
+
+        local ang = getPlayerAngle(Player.helper);
+        if (ang != 250)
+        {
+            setPlayerAngle(Player.helper, 250);
+        }
+
+        local cpos = Camera.getPosition();
+        local crot = Camera.getRotation();
+
+        if (cpos.x != 37925 || cpos.y != 4700 || cpos.z != 44486)
+        {
+            Camera.setPosition(37925, 4700, 44486);
+        }
+
+        if (crot != 95)
+        {
+            Camera.setRotation(0, 95, 0);
+        }
     }
+
+    local calcHealth = getPlayerHealth(heroId).tofloat() / getPlayerMaxHealth(heroId).tofloat();
+    local calcMana = getPlayerMana(heroId).tofloat() / getPlayerMaxMana(heroId).tofloat();
+
+    healthTex.setSize((width - 20) * calcHealth, 140);
+    manaTex.setSize((width - 20) * calcMana, 140);
 
     textAreaHoverHandler(charDesc);
 }

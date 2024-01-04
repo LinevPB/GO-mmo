@@ -750,4 +750,36 @@ function handleHoldedRender()
 
     holdedRender.setPosition(calcX, calcY);
 }
-addEventHandler("onRender", handleHoldedRender);
+
+
+function invRender()
+{
+    if (!Inventory.IsEnabled()) return;
+
+    handleHoldedRender();
+
+    local pos = getPlayerPosition(Player.helper);
+    if (pos.x != 38086 || pos.y != 4681 || pos.z != 44551)
+    {
+        setPlayerPosition(Player.helper, 38086, 4681, 44551);
+    }
+
+    local ang = getPlayerAngle(Player.helper);
+    if (ang != 250)
+    {
+        setPlayerAngle(Player.helper, 250);
+    }
+
+    local cpos = Camera.getPosition();
+    local crot = Camera.getRotation();
+
+    if (cpos.x != 37900 || cpos.y != 4680 || cpos.z != 44440)
+    {
+        Camera.setPosition(37900, 4680, 44440);
+    }
+
+    if (crot != 30)
+    {
+        Camera.setRotation(0, 30, 0);
+    }
+}
