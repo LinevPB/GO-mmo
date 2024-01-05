@@ -18,6 +18,7 @@ Player <- {
     gold = 3000000,
     level = 0,
     experience = 0,
+    skill_points = 0,
     qa = ["", "", "", "", "", ""],
     desc = "",
     overlay = "NORMAL",

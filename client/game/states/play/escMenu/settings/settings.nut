@@ -31,12 +31,18 @@ local currentMusicVol = null;
 local somethingChanged = false;
 local selectedResOpt = -1;
 
+local lastCamPos = null;
+local lastCamRot = null;
+
 function initSettings()
 {
+    lastCamPos = Camera.getPosition();
+    lastCamRot = Camera.getRotation();
+
     settingsMenu = Texture(0, 600, 8192, 8192 - 600, "BACKGROUND_BORDERLESS.TGA");
     settingsContainer = Texture(1000, 300, 6192, 8192, "WINDOW_BACKGROUND_SF.TGA");
 
-    actionMenu = Texture(0, 7692, 8192, 500, "WINDOW_BACKGROUND_SF.TGA");
+    actionMenu = Texture(0, 7692, 8192, 500, "DIALOG_BACKGROUND.TGA");
 
     actionSave = actionButton(6192, 7692, 1000, 500, lang["APPLY"][Player.lang]);
     actionCancel = actionButton(7192, 7692, 1000, 500, lang["CANCEL"][Player.lang]);
@@ -152,6 +158,20 @@ function enableSettings(val)
     updateGameSettings();
 
     EscMenu.Top();
+
+    if (val == true)
+    {
+        lastCamPos = Camera.getPosition();
+        lastCamRot = Camera.getRotation();
+
+        Camera.setPosition(37925, 4700, 44486);
+        Camera.setRotation(0, 95, 0);
+    }
+    else
+    {
+        Camera.setPosition(lastCamPos.x, lastCamPos.y, lastCamPos.z);
+        Camera.setRotation(lastCamRot.x, lastCamRot.y, lastCamRot.z);
+    }
 }
 
 function updateGameSettings()

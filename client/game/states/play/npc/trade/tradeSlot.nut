@@ -399,7 +399,17 @@ function tradeSlotRender()
     if (holding)
     {
         local curs = getCursorPosition();
-        holdedRender.setPosition(curs.x - cursorOffX, curs.y - cursorOffY);
+        local calcX = curs.x - cursorOffX;
+        local calcY = curs.y - cursorOffY;
+        local size = holdedRender.getSize();
+
+        if (calcX < 1) calcX = 1;
+        if (calcY < 1) calcY = 1;
+
+        if (calcX + size.width > 8190) calcX = 8190 - size.width;
+        if (calcY + size.height > 8190) calcY = 8190 - size.height;
+
+        holdedRender.setPosition(calcX, calcY);
     }
 
     local basketValue = 0;

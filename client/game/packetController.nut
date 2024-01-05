@@ -120,6 +120,10 @@ local function onPacket(packet) {
             Player.experience = data[0];
         break;
 
+        case PacketType.UPDATE_SKILLPOINTS:
+            Player.skill_points = data[0];
+        break;
+
         case PacketType.UPDATE_GOLD:
             Player.gold = data[0];
         break;

@@ -298,5 +298,5 @@ function onRenderS()
 function debug_funcx()
 {
     //sendPacket(PacketType.CHARACTERS_CREATE, 0);
-    //sendPacket(PacketType.CHARACTERS_SELECT, 0);
+    sendPacket(PacketType.CHARACTERS_SELECT, 0);
 }

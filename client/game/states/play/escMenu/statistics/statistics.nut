@@ -31,6 +31,10 @@ local statsContainers = null;
 local charDesc = null;
 local canUseKeys = true;
 
+local statsCover = Texture(3800, 1000, width + 2000, 6700, "WINDOW_BACKGROUND_SF.TGA");
+local statsNameTex = Texture(0, 0, 0, 0, "TEXTBOX_BACKGROUND.TGA");
+local statsNameDraw = Draw(0, 0, "Statystyki");
+
 function statsCanUseKeys()
 {
     return canUseKeys;
@@ -61,6 +65,9 @@ function updateDraws()
 
     statsContainers[0].getContainer()[2].updateName(lang["NEXT_LEVEL"][Player.lang]);
     statsContainers[0].getContainer()[2].updateVal(calcNextLevelExperience(Player.level));
+
+    statsContainers[0].getContainer()[3].updateName(lang["SKILL_POINTS"][Player.lang]);
+    statsContainers[0].getContainer()[3].updateVal(Player.skill_points);
 
     // attributes
     statsContainers[1].getContainer()[0].updateName(lang["STRENGTH"][Player.lang]);
@@ -104,15 +111,26 @@ local function calcY(posY, argheight)
     return (posY + argheight + 250);
 }
 
+local pageCont = null;
 function setupStatistics()
 {
-    local progress = StatsContainer(0, 0, width + 1300, 1700, lang["PROGRESS"][Player.lang]);
+    local sPos = statsCover.getPosition();
+    local sSize = statsCover.getSize();
+
+    pageCont = PageContainer(sPos.x, sPos.y + sSize.height - 600, sSize.width);
+
+    local page1 = Page();
+    local page2 = Page();
+
+    local progress = StatsContainer(0, 0, width + 1300, 2200, lang["PROGRESS"][Player.lang]);
     progress.attach(Stat(0, 0, "Level", "20"));
     progress.attach(Stat(0, 0, "Experience", "1944"));
     progress.attach(Stat(0, 0, "Next level", "2137"));
+    progress.attach(Stat(0, 0, "Skill points", "2137"));
     progress.setNameWidth(2200);
     progress.setValWidth(800);
-    progress.setPosition(4000, calcY(200, 500));
+    progress.setPosition(4000, calcY(600, 800));
+    page1.addElement(progress);
 
     local attributes = StatsContainer(0, 0, width + 1300, 2000, lang["ATTRIBUTES"][Player.lang]);
     attributes.attach(Stat(0, 0, "Strength", "1950/2000"));
@@ -121,7 +139,8 @@ function setupStatistics()
     attributes.attach(Stat(0, 0, "Mana", "1950/2000"));
     attributes.setNameWidth(2200);
     attributes.setValWidth(800);
-    attributes.setPosition(4000, calcY(progress.pos.y, progress.size.height));
+    attributes.setPosition(4000, calcY(progress.pos.y + 300, progress.size.height));
+    page1.addElement(attributes);
 
     local skills = StatsContainer(0, 0, width + 1000, 2400, lang["SKILLS"][Player.lang]);
     skills.attach(Stat(0, 0, "Skill 1h", "0"));
@@ -131,7 +150,8 @@ function setupStatistics()
     skills.attach(Stat(0, 0, "Magic Circle", "0"));
     skills.setNameWidth(2200);
     skills.setValWidth(800);
-    skills.setPosition(4000, calcY(attributes.pos.y + 100, attributes.size.height));
+    skills.setPosition(4000, calcY(600, 800));
+    page2.addElement(skills);
 
     setupStatsPositions();
 
@@ -144,6 +164,18 @@ function setupStatistics()
     lastCamRot = Camera.getRotation();
 
     statsContainers = getStatsContainers();
+
+    pageCont.addPage(page1);
+    pageCont.addPage(page2);
+
+    statsNameDraw.text = lang["STATISTICS"][Player.lang];
+    statsNameTex.setSize(statsNameDraw.width + 400, statsNameDraw.height + 100);
+
+    local snSize = statsNameTex.getSize();
+    statsNameTex.setPosition(sPos.x + sSize.width / 2 - snSize.width / 2, sPos.y - snSize.height / 4);
+
+    local snPos = statsNameTex.getPosition();
+    statsNameDraw.setPosition(snPos.x + snSize.width / 2 - statsNameDraw.width / 2, snPos.y + snSize.height / 2 - statsNameDraw.height / 2);
 }
 
 function saveDesc()
@@ -209,18 +241,20 @@ function enableStatistics(val)
 
     charDesc.enable(val);
 
-    foreach(v in statsContainers)
-    {
-        v.enable(val);
-    }
-
-    isEnabled = val;
-
     manaTex.top();
     manaCover.top();
 
     healthTex.top();
     healthCover.top();
+
+    statsCover.visible = val;
+
+    statsNameTex.visible = val;
+    statsNameDraw.visible = val;
+
+    pageCont.enable(val);
+
+    isEnabled = val;
 }
 
 function statisticsRender()

@@ -20,6 +20,7 @@ class PlayerStructure
 
     level = null;
     experience = null;
+    skillPoints = null;
     health = null;
     max_health = null;
     mana = null;
@@ -81,6 +82,7 @@ class PlayerStructure
         char_amount = 0;
         overlay = "NORMAL";
         fat = 0.0;
+        skillPoints = 0;
     }
 
     function addItem(instance, amount, loading = false, slot = -1)
@@ -192,6 +194,15 @@ class PlayerStructure
 
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `exp` = '" + val + "' WHERE `id`='" + charId + "'");
+    }
+
+    function setSkillPoints(val, loading=false)
+    {
+        skillPoints = val;
+        sendPlayerPacket(id, PacketType.UPDATE_SKILLPOINTS, val);
+
+        if (loading == false)
+            mysql.squery("UPDATE `characters` SET `skill_points` = '" + val + "' WHERE `id`='" + charId + "'");
     }
 
     function setHealth(val, loading=false)
@@ -388,6 +399,11 @@ class PlayerStructure
     {
         return mana;
     }
+
+    function getSkillPoints()
+    {
+        return skillPoints;
+    }
 }
 
 function respawnPlayer(pid)
@@ -431,7 +447,7 @@ function removePlayerById(id)
     }
 }
 
-function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, char_desc)
+function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, char_desc, sp)
 {
     local player = findPlayer(pid);
 
@@ -450,6 +466,7 @@ function updatePlayer(pid, level, exp, health, max_health, mana, max_mana, stren
     player.setMagicCircle(magic_circle, true);
     player.setGold(gold, true);
     player.setDescription(char_desc, true);
+    player.setSkillPoints(sp, true);
 }
 
 function GiveItem(pid, instance, amount, loading = false, slot = -1)

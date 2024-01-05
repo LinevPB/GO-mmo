@@ -114,7 +114,6 @@ local function addChatLine(...)
 
 function chatRender()
 {
-    print(Chat.Visible);
     foreach(i, v in Chat.Lines)
     {
         if (v.position.y == v.desiredY)

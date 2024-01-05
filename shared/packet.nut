@@ -51,7 +51,8 @@ enum PacketType {
     CHAT_CLEAR_MESSAGE = 49,
     CHAT_OOC = 50,
     CHAT_CRY = 51,
-    OPEN_ITEM = 52
+    OPEN_ITEM = 52,
+    UPDATE_SKILLPOINTS = 53
 };
 
 function encode(args)

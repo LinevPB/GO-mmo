@@ -117,7 +117,7 @@ function selectHandler(pid, data)
 
     local temp = findPlayer(pid);
 
-    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqArmor, eqWeapon, eqWeapon2h, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, x, y, z, qa1, qa2, qa3, qa4, qa5, qa6, char_desc, fat, overlay FROM characters WHERE slotId='" + slotId + "' AND pid='" + temp.dbId + "'");
+    local result = mysql.gquery("SELECT id, pid, name, bodyModel, bodyTex, headModel, headTex, slotId, eqArmor, eqWeapon, eqWeapon2h, level, exp, health, max_health, mana, max_mana, strength, dexterity, skill_1h, skill_2h, skill_bow, skill_cbow, magic_circle, gold, x, y, z, qa1, qa2, qa3, qa4, qa5, qa6, char_desc, fat, overlay, skill_points FROM characters WHERE slotId='" + slotId + "' AND pid='" + temp.dbId + "'");
     local v = result[0];
 
     if (v == null) return sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, -1);
@@ -126,7 +126,7 @@ function selectHandler(pid, data)
     sendPlayerPacket(pid, PacketType.CHARACTERS_SELECT, v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[8], v[9], v[7], v[28], v[29], v[30], v[31], v[32], v[33]);
     setPlayerVisual(pid, BodyModel[v[3]], v[4], HeadModel[v[5]], v[6]);
 
-    updatePlayer(pid, v[11], v[12], v[13], v[14], v[15], v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23], v[24], v[34]);
+    updatePlayer(pid, v[11], v[12], v[13], v[14], v[15], v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23], v[24], v[34], v[37]);
     setPlayerPosition(pid, v[25], v[26], v[27]);
     spawnPlayer(pid);
     ChangeGameState(pid, GameState.PLAY);

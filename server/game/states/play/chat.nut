@@ -1,5 +1,7 @@
 function handleChatMessage(nickname, message)
 {
+    if (message == "") return;
+
     local prefix = message.slice(0, 1);
 
     switch(prefix)

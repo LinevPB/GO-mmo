@@ -356,6 +356,8 @@ class DrawsSet
 
 function textAreaHoverHandler(el)
 {
+    if (el == null) return;
+
     if (el.text != el.getText())
     {
         el.save_btn.setActive(true);
