@@ -14,6 +14,7 @@ function ResetState()
     disableControls(true);
     Player.gameState = GameState.UNKNOWN;
     setCursorVisible(false);
+    setCursorTxt("SR_CURSOR.TGA");
 }
 
 function ChangeGameState(state)

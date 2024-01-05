@@ -51,7 +51,7 @@ class GlobalNpc
 
         levelDraw = Draw(0, 0, level);
         levelDraw.font = "FONT_OLD_20_WHITE_HI.TGA";
-        levelDraw.setColor(255, 100, 100);
+        levelDraw.setColor(255, 255, 255);
         levelTex = Texture(0, 0, 100, 100, "LEVEL_FRAME.TGA");
 
         visualVisible = false;

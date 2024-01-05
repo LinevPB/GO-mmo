@@ -115,6 +115,7 @@ function EscMenu::Enable(val, submenu = -1)
     setFreeze(val);
     disableControls(val);
     setCursorVisible(val);
+
     Camera.movementEnabled = !val;
 
     tex.visible = val;
