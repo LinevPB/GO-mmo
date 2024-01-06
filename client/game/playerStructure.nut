@@ -22,7 +22,9 @@ Player <- {
     qa = ["", "", "", "", "", ""],
     desc = "",
     overlay = "NORMAL",
-    fat = 0
+    fat = 0,
+    strength = 0,
+    dexterity = 0
 };
 
 ITEM_CHANGE <- false;

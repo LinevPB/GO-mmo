@@ -66,13 +66,12 @@ function NPC_updateCoords(pid, data)
             }
             else
             {
-                v.pos.x = posX;
-                v.pos.y = posY;
-                v.pos.z = posZ;
-
                 if (pid == v.focusId)
                 {
                     v.setAngleAtFocus();
+                    v.pos.x = posX;
+                    v.pos.y = posY;
+                    v.pos.z = posZ;
                 }
                 else if (v.focusId == -1)
                 {

@@ -54,7 +54,7 @@ function handlePlayerUnspawn(id)
         break;
     }
 }
-addEventHandler("onPlayerUnspawn", handlePlayerUnspawn);
+addEventHandler("onPlayerDestroy", handlePlayerUnspawn);
 
 
 function playersNameRender()

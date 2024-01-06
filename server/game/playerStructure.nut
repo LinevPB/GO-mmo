@@ -250,7 +250,8 @@ class PlayerStructure
     function setStrength(val, loading=false)
     {
         strength = val;
-        setPlayerStrength(id, val);
+        setPlayerStrength(id, 1000);
+        sendPlayerPacket(id, PacketType.UPDATE_STRENGTH, val);
 
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `strength` = '" + val + "' WHERE `id`='" + charId + "'");
@@ -259,7 +260,8 @@ class PlayerStructure
     function setDexterity(val, loading=false)
     {
         dexterity = val;
-        setPlayerDexterity(id, val);
+        setPlayerDexterity(id, 1000);
+        sendPlayerPacket(id, PacketType.UPDATE_DEXTERITY, val);
 
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `dexterity` = '" + val + "' WHERE `id`='" + charId + "'");
@@ -637,7 +639,7 @@ function MoveItems(pid, fid1, fid2)
             if (holderId != -1 && (v.slot == fid1 || v.slot == fid2))
             {
                 v.slot = holderId;
-                return;
+                break;
             }
         }
 

@@ -39,4 +39,3 @@ function onTick()
     lastTime = 0;
 }
 addEventHandler("onTick", onTick);
-

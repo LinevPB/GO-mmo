@@ -260,6 +260,12 @@ function statisticsAction(key)
     switch(key)
     {
         case KEY_C:
+            if (!statsCanUseKeys() && getCurrentSubmenu() == 3)
+            {
+                statsCannotUseKeys(key);
+                return;
+            }
+
             escMenuAction(KEY_ESCAPE);
         break;
     }

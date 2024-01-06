@@ -124,6 +124,14 @@ local function onPacket(packet) {
             Player.skill_points = data[0];
         break;
 
+        case PacketType.UPDATE_STRENGTH:
+            Player.strength = data[0];
+        break;
+
+        case PacketType.UPDATE_DEXTERITY:
+            Player.dexterity = data[0];
+        break;
+
         case PacketType.UPDATE_GOLD:
             Player.gold = data[0];
         break;

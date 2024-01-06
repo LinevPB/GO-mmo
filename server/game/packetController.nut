@@ -108,6 +108,38 @@ local function onPacket(pid, packet)
             handleRemembered(pid);
         break;
 
+        case PacketType.LEARN_STRENGTH:
+            learnStrength(pid, data[0]);
+        break;
+
+        case PacketType.LEARN_DEXTERITY:
+            learnDexterity(pid, data[0]);
+        break;
+
+        case PacketType.LEARN_HEALTH:
+            learnHealth(pid, data[0]);
+        break;
+
+        case PacketType.LEARN_MANA:
+            learnMana(pid, data[0]);
+        break;
+
+        case PacketType.LEARN_1H:
+            learnSkillWeapon(pid, 0, data[0]);
+        break;
+
+        case PacketType.LEARN_2H:
+            learnSkillWeapon(pid, 1, data[0]);
+        break;
+
+        case PacketType.LEARN_BOW:
+            learnSkillWeapon(pid, 2, data[0]);
+        break;
+
+        case PacketType.LEARN_CROSSBOW:
+            learnSkillWeapon(pid, 3, data[0]);
+        break;
+
         // case PacketType.TEST:
         //     local pos = getPlayerPosition(pid);
         //     local angle = getPlayerAngle(pid);

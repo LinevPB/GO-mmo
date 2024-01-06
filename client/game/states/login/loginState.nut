@@ -90,7 +90,7 @@ function initLoginState()
     // login window
     wW = 3000;
     wH = 4400;
-    ui.login.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND1.TGA");
+    ui.login.main = Window(8192 / 2 - wW / 2, 8192 / 2 - wH / 2, wW, wH, "WINDOW_BACKGROUND.TGA");
 
     temp = Label(0, 400, lang["SERVER_NAME"][Player.lang]);
     temp.setFont("Font_Old_20_White_Hi.TGA");

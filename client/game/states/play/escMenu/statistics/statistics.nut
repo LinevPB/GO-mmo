@@ -71,10 +71,10 @@ function updateDraws()
 
     // attributes
     statsContainers[1].getContainer()[0].updateName(lang["STRENGTH"][Player.lang]);
-    statsContainers[1].getContainer()[0].updateVal(getPlayerStrength(heroId));
+    statsContainers[1].getContainer()[0].updateVal(Player.strength);
 
     statsContainers[1].getContainer()[1].updateName(lang["DEXTERITY"][Player.lang]);
-    statsContainers[1].getContainer()[1].updateVal(getPlayerDexterity(heroId));
+    statsContainers[1].getContainer()[1].updateVal(Player.dexterity);
 
     statsContainers[1].getContainer()[2].updateName(lang["HEALTH"][Player.lang]);
     statsContainers[1].getContainer()[2].updateVal(getPlayerHealth(heroId) + "/" + getPlayerMaxHealth(heroId));

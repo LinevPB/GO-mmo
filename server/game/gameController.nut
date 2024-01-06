@@ -143,6 +143,8 @@ function createHandler(pid, data)
 function setupChar(pid, name, charSlot, eqArmor, eqWeapon, eqWeapon2h, charId, fat, overlay)
 {
     local temp = findPlayer(pid);
+    setPlayerName(pid, name);
+
     temp.charName = name;
     temp.charSlot = charSlot;
     temp.charId = charId;
@@ -180,8 +182,8 @@ function creationConfirmHandler(pid, data)
     sendPlayerPacket(pid, PacketType.CHARACTER_CREATION_CONFIRM, slotId, dbId, name, bodyMod, bodyTex, headMod, headTex, fat, overlay);
 
     ChangeGameState(pid, GameState.CHARACTER_SELECTION);
-    setPlayerVisual(pid, BodyModel[bodyMod], bodyTex, HeadModel[headMod], headTex);
     setupChar(pid, name, slotId, "-1", "-1", "-1", result1[0], fat, overlay);
+    setPlayerVisual(pid, BodyModel[bodyMod], bodyTex, HeadModel[headMod], headTex);
 }
 
 function transformTradeBasket(data)

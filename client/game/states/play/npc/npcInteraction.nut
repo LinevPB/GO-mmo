@@ -48,11 +48,11 @@ function initInteraction()
     intWindow = Window(0, 6500, 8192, 8192 - 6500, "DIALOG_BACKGROUND.TGA");
 
     dialogOpt = [
-        Button(8192/2 - 2500, 200, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2500, 500, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2500, 800, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2500, 1100, 8000/2, 300, "NONE", "", "NONE"),
-        Button(8192/2 - 2500, 1400, 8000/2, 300, "NONE", "", "NONE")
+        Button(8192/2 - 2500, 100, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 400, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 700, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 1000, 8000/2, 300, "NONE", "", "NONE"),
+        Button(8192/2 - 2500, 1300, 8000/2, 300, "NONE", "", "NONE")
     ];
 
     intWindow.attach(dialogOpt[0]);
@@ -156,7 +156,7 @@ function show_dialog_menu(dialogs)
         dialogOpt[i].centered = false;
         dialogOpt[i].align_left = true;
         dialogOpt[i].recolor();
-        dialogOpt[i].setPosition(8192/2-1000, dialogOpt[i].pos.y);
+        dialogOpt[i].setPosition(8192/2-1500, dialogOpt[i].pos.y);
         setDialogOptVisible(i, i < dialogs.len());
 
         if (i < dialogs.len())

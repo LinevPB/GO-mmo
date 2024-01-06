@@ -1,12 +1,12 @@
 <server>
-
-    <script src="language.nut" type="client" />
-    <script src="language2.nut" type="client" />
+    <script src="lang.nut" type="client" />
+    <script src="lang_pl.nut" type="client" />
+    <script src="lang_en.nut" type="client" />
 
     <script src="guardians.nut" type="client" />
 
     <script src="trader.nut" type="client" />
+    <script src="trainer.nut" type="client" />
 
     <script src="npc.nut" type="client" />
-
 </server>

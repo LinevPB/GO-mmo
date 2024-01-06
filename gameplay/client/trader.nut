@@ -196,7 +196,7 @@ function initTrader()
             event = DIALOG_MILKO_1_1
         },
         {
-            text = "Show me your goods",
+            text = "(Trade) Show me your goods",
             event = DIALOG_MILKO_2_1
         },
         {

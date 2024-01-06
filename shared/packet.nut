@@ -52,7 +52,17 @@ enum PacketType {
     CHAT_OOC = 50,
     CHAT_CRY = 51,
     OPEN_ITEM = 52,
-    UPDATE_SKILLPOINTS = 53
+    UPDATE_SKILLPOINTS = 53,
+    UPDATE_STRENGTH = 54,
+    UPDATE_DEXTERITY = 55,
+    LEARN_STRENGTH = 56,
+    LEARN_DEXTERITY = 57,
+    LEARN_HEALTH = 58,
+    LEARN_MANA = 59,
+    LEARN_1H = 60,
+    LEARN_2H = 61,
+    LEARN_BOW = 62,
+    LEARN_CROSSBOW = 63
 };
 
 function encode(args)
