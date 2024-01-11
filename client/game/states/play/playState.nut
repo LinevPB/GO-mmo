@@ -21,8 +21,11 @@ function initPlayState()
     EscMenu.Init();
     initDeathDraw();
 
+    disableLogicalKey(GAME_END, true);
     disableLogicalKey(GAME_INVENTORY, true);
     disableLogicalKey(GAME_SCREEN_STATUS, true);
+    disableLogicalKey(GAME_SCREEN_MAP, true);
+    disableLogicalKey(GAME_SCREEN_LOG, true);
 
     initInteraction();
     initNpcs();
@@ -206,7 +209,7 @@ function freeAction(key)
             }
         break;
 
-        case KEY_X:
+        case KEY_ESCAPE:
             actionType = 2;
             helperAction();
             EscMenu.Enable(true);
@@ -281,7 +284,7 @@ function escMenuAction(key)
     switch(key)
     {
         case KEY_ESCAPE:
-        case KEY_X:
+        // case KEY_X:
             if (!statsCanUseKeys() && getCurrentSubmenu() == 3)
             {
                 statsCannotUseKeys(key);

@@ -79,7 +79,7 @@ function messageHandler(pid, data)
     local message = data[1];
     local nickname = findPlayer(sid).charName;
 
-    handleChatMessage(nickname, message);
+    handleChatMessage(pid, nickname, message);
 
     console.log(nickname + ": " + message);
 }
@@ -328,7 +328,9 @@ function handleRemembered(pid)
     sendPlayerPacket(pid, PacketType.ASK_FOR_REMEMBERED, result[0][1], result[0][0]);
 }
 
-function handlePlayerDamage(pid, kid)
-{
 
+function handlePlayerDamage(pid, kid, desc)
+{
+    cancelEvent();
 }
+addEventHandler("onPlayerHit", handlePlayerDamage);

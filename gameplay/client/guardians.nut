@@ -49,3 +49,4 @@ function initZiobro()
         npc.set_ambient("SVM_1_GETOUTOFHERE.WAV");
     }
 }
+

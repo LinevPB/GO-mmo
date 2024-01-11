@@ -214,7 +214,7 @@ function onPlayerHit(kid, pid, desc)
         }
     }
 
-    sendPacket(PacketType.DAMAGE_DO, pid);
+    //sendPacket(PacketType.DAMAGE_DO, kid, desc.damage, desc.item_id);
 }
 addEventHandler("onPlayerHit", onPlayerHit);
 

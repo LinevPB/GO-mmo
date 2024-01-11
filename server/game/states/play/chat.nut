@@ -1,4 +1,4 @@
-function handleChatMessage(nickname, message)
+function handleChatMessage(pid, nickname, message)
 {
     if (message == "") return;
 
@@ -16,6 +16,12 @@ function handleChatMessage(nickname, message)
 
         case "#":
             sendEnvMessage(nickname, message);
+        break;
+
+        case "/":
+            local args = split(message, " ");
+            local cmd = args.remove(0);
+            onCommand(pid, cmd, args);
         break;
 
         default:
@@ -85,3 +91,4 @@ function sendClearMessage(pid, text, r = 255, g = 255, b = 255)
 
     sendPlayerPacket(pid, PacketType.CHAT_CLEAR_MESSAGE, r, g, b, text);
 }
+

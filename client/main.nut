@@ -5,6 +5,7 @@ function onInit()
 }
 addEventHandler("onInit", onInit);
 
+
 function onMainCreate(id)
 {
     if (id != heroId) return;
@@ -17,3 +18,10 @@ function onMainCreate(id)
     }
 }
 addEventHandler("onPlayerCreate", onMainCreate);
+
+
+function onDamage(desc)
+{
+    cancelEvent();
+}
+addEventHandler("onDamage", onDamage);

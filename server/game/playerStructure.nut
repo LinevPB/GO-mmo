@@ -366,6 +366,7 @@ class PlayerStructure
         if (experience >= calcNextLevelExperience(level))
         {
             setLevel(level + 1);
+            setSkillPoints(skill_points + 10);
             sendPlayerPacket(id, PacketType.LEVEL_UP);
         }
     }

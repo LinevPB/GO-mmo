@@ -97,7 +97,7 @@ local function onPacket(pid, packet)
         break;
 
         case PacketType.DAMAGE_DO:
-            handlePlayerDamage(pid, data[0]);
+            handlePlayerDamage(pid, data[0], data[1], data[2]);
         break;
 
         case PacketType.LOG_OUT:
