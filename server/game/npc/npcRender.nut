@@ -8,7 +8,7 @@ function onTickNpc()
     {
         if (v.dead) continue;
 
-        local players = findNearbyPlayers(Vec3(v.pos.x, v.pos.y, v.pos.z), 3500, "HK.ZEN");
+        local players = findNearbyPlayers(Vec3(v.pos.x, v.pos.y, v.pos.z), 3500, "SERVER/ARCHOLOS_MAINLAND.ZEN");
         v.streamedPlayers = players;
 
         foreach(k in players)

@@ -5,7 +5,7 @@ local myName = "";
 
 function initMap()
 {
-    map = Texture(0, 0, 8192, 8192, "MAP_WORLD_ORC.TGA");
+    map = Texture(600, 600, 8192 - 1200, 8192 - 1200, "MAP_ARCHOLOS.TGA");
     meOnMap = Draw(0, 0, "+ Hero");
     meOnMap.setColor(180, 180, 255);
 
@@ -31,12 +31,22 @@ function enableMap(val)
     mapEnabled = false;
 }
 
+local function calcMapX(x)
+{
+    return (4096 + x / 24.75);
+}
+
+local function calcMapY(y)
+{
+    return (4096 - y / 13.25)
+}
+
 function mapRender()
 {
     if (!mapEnabled) return;
 
     local pos = getPlayerPosition(heroId);
-    meOnMap.setPosition(4096 + pos.x / 24.75, 4096 - pos.z / 13.25);
+    meOnMap.setPosition(calcMapX(pos.x), calcMapY(pos.z));
 
     if (myName != getPlayerName(heroId))
     {

@@ -38,7 +38,7 @@ class GlobalNpc
         draw.insertText(lang[instance.toupper()][Player.lang]);
         draw.setLineColor(0, 250, 80, 10);
 
-        texture = Texture(0, 0, 1000, 100, "BAR_HEALTH.TGA");
+        texture = Texture(0, 0, 980, 80, "BAR_HEALTH.TGA");
         texture.setColor(250, 80, 80);
         coverTexture = Texture(0, 0, 1000, 100, "BAR_BACK.TGA");
         textureFrame = Texture(0, 0, 1000, 100, "WINDOW_FRAME.TGA");
@@ -154,11 +154,11 @@ class GlobalNpc
         coverTexture.setPosition(dPos.x + draw.width / 2 - 500, dPos.y - draw.height - 150);
 
         dPos = coverTexture.getPosition();
-        texture.setPosition(dPos.x, dPos.y);
+        texture.setPosition(dPos.x + 20, dPos.y + 20);
         textureFrame.setPosition(dPos.x, dPos.y);
 
-        local healthSize = 1000.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
-        texture.setSize(healthSize, 100);
+        local healthSize = 960.0 * (getPlayerHealth(npc).tofloat()/getPlayerMaxHealth(npc).tofloat());
+        texture.setSize(healthSize, 60);
 
         levelTex.setPosition(texture.getPosition().x - levelTex.getSize().width, texture.getPosition().y - levelTex.getSize().height / 2);
         levelDraw.setPosition(levelTex.getPosition().x + levelTex.getSize().width / 2 - levelDraw.width / 2 + 5, levelTex.getPosition().y + levelTex.getSize().height / 2 - levelDraw.height / 2 + 10);
