@@ -140,18 +140,18 @@ local function onPacket(pid, packet)
             learnSkillWeapon(pid, 3, data[0]);
         break;
 
-        // case PacketType.TEST:
-        //     local pos = getPlayerPosition(pid);
-        //     local angle = getPlayerAngle(pid);
-        //     local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";
-        //     local myfile = file("pos.txt", "r+");
-        //     local xd = myfile.read("a");
-        //     myfile.close();
-        //     myfile = file("pos.txt", "w+");
-        //     res += "\n" + xd;
-        //     myfile.write(res);
-        //     myfile.close();
-        // break;
+        case PacketType.TEST:
+            local pos = getPlayerPosition(pid);
+            local angle = getPlayerAngle(pid);
+            local res = "{ x = " + pos.x + ", y = " + pos.y + ", z = " + pos.z + ", angle = " + angle + " },";
+            local myfile = file("pos.txt", "r+");
+            local xd = myfile.read("a");
+            myfile.close();
+            myfile = file("pos.txt", "w+");
+            res += "\n" + xd;
+            myfile.write(res);
+            myfile.close();
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

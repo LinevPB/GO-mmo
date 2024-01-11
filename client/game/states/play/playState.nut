@@ -181,6 +181,10 @@ function freeAction(key)
             Chat.EnableInput(true);
         break;
 
+        case KEY_V:
+            sendPacket(PacketType.TEST, 0);
+        break;
+
         case KEY_C:
             actionType = 2;
             helperAction();

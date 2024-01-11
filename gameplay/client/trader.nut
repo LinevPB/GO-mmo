@@ -178,7 +178,7 @@ function DIALOG_MILKO_4_2()
 
 function initTrader()
 {
-    local npc = NPC(lang["TRADER"][Player.lang], 887.266, 247.734, 1057.5, 180.003);
+    local npc = NPC(lang["TRADER"][Player.lang], -94519.8, 182.188, -117966, 9.65164);
     npc.spawn();
 
     equipItem(npc.npc, Items.id("ItAr_Vlk_H"));

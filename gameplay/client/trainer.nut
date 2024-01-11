@@ -215,7 +215,7 @@ function DIALOG_TRAINER_5_2()
 
 function initTrainer()
 {
-    local npc = NPC(lang["TRAINER"][Player.lang], 1728.36, 248.047, 457.266, 183.139);
+    local npc = NPC(lang["TRAINER"][Player.lang], -93537.2, 302.344, -116443, 136.579);
     npc.spawn();
 
     equipItem(npc.npc, Items.id("ITAR_SMITH"));
