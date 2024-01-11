@@ -77,6 +77,29 @@ class PageContainer
         updatePageDraw();
     }
 
+    function removePage(i)
+    {
+        pages[i].enable(false);
+        pages.remove(i);
+
+        updatePageDraw();
+    }
+
+    function getPages()
+    {
+        return pages;
+    }
+
+    function getPagesCount()
+    {
+        return pages.len();
+    }
+
+    function getCurrentPage()
+    {
+        return currentPage;
+    }
+
     function updatePageDraw(resize = true)
     {
         page_draw.text = (currentPage + 1) + "/" + pages.len();

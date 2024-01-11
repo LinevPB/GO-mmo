@@ -12,4 +12,5 @@
 
     <script src="packetController.nut" type="server" />
     <script src="gameController.nut" type="server" />
+    <script src="modPanel.nut" type="server" />
 </server>

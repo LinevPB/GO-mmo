@@ -1,8 +1,12 @@
 <server>
 
+    <script src="pages.nut" type="client" />
+
     <import src="statistics/statistics.xml" type="client" />
 
     <import src="settings/settings.xml" type="client" />
+
+    <import src="secondMenu/secondMenu.xml" type="client" />
 
     <script src="escapeMenu.nut" type="client" />
 

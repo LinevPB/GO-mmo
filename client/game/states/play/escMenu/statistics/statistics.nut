@@ -122,7 +122,7 @@ function setupStatistics()
     local page1 = Page();
     local page2 = Page();
 
-    local progress = StatsContainer(0, 0, width + 1300, 2200, lang["PROGRESS"][Player.lang]);
+    local progress = StatsContainer(0, 0, width + 1300, 2000, lang["PROGRESS"][Player.lang]);
     progress.attach(Stat(0, 0, "Level", "20"));
     progress.attach(Stat(0, 0, "Experience", "1944"));
     progress.attach(Stat(0, 0, "Next level", "2137"));
@@ -142,7 +142,7 @@ function setupStatistics()
     attributes.setPosition(4000, calcY(progress.pos.y + 300, progress.size.height));
     page1.addElement(attributes);
 
-    local skills = StatsContainer(0, 0, width + 1000, 2400, lang["SKILLS"][Player.lang]);
+    local skills = StatsContainer(0, 0, width + 1300, 2400, lang["SKILLS"][Player.lang]);
     skills.attach(Stat(0, 0, "Skill 1h", "0"));
     skills.attach(Stat(0, 0, "Skill 2h", "0"));
     skills.attach(Stat(0, 0, "Skill Bow", "0"));
@@ -154,9 +154,6 @@ function setupStatistics()
     page2.addElement(skills);
 
     setupStatsPositions();
-
-    // healthTex.setColor(255, 0, 0);
-    // manaTex.setColor(0, 0, 255);
 
     charDesc = TextArea();
 

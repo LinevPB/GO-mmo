@@ -140,6 +140,14 @@ local function onPacket(pid, packet)
             learnSkillWeapon(pid, 3, data[0]);
         break;
 
+        case PacketType.KICK:
+            tryKick(pid, data[0]);
+        break;
+
+        case PacketType.BAN:
+            tryBan(pid, data[0]);
+        break;
+
         case PacketType.TEST:
             local pos = getPlayerPosition(pid);
             local angle = getPlayerAngle(pid);

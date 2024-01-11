@@ -1,0 +1,11 @@
+<server>
+
+    <script src="provWindow.nut" type="client" />
+
+    <script src="help.nut" type="client" />
+
+    <script src="playerList.nut" type="client" />
+
+    <script src="secMenu.nut" type="client" />
+
+</server>

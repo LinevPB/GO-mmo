@@ -67,3 +67,8 @@ function playersNameRender()
         v.changeName(getPlayerName(v.id));
     }
 }
+
+function getSpawnedPlayers()
+{
+    return spawnedPlayers;
+}

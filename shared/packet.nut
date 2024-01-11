@@ -63,7 +63,10 @@ enum PacketType {
     LEARN_2H = 61,
     LEARN_BOW = 62,
     LEARN_CROSSBOW = 63,
-    TEST = 64
+    KICK = 64,
+    BAN = 65,
+    SET_MOD = 66,
+    TEST = 67
 };
 
 function encode(args)

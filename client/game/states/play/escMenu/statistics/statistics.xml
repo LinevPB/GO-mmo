@@ -2,8 +2,6 @@
 
     <script src="statContainer.nut" type="client" />
 
-    <script src="pages.nut" type="client" />
-
     <script src="characterDesc.nut" type="client" />
 
     <script src="statistics.nut" type="client" />

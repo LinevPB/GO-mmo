@@ -55,6 +55,8 @@ function enableTimeDraws(val)
 
 function timeDrawsRender()
 {
+    if (igTime == null || realTime == null) return;
+
     local time = getTime();
     local timeFormat = format("%d:%02d", time.hour, time.min);
     igTime.text = "Czas w grze: " + timeFormat;

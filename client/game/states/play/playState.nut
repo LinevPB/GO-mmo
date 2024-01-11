@@ -38,6 +38,9 @@ function initPlayState()
     initMap();
     initNpcTrade();
 
+    initHelp();
+    initPlayerList();
+
     helperAction(true);
 }
 
@@ -373,6 +376,16 @@ function playButtonHandler(id)
     if (isTradeEnabled())
     {
         return tradeButtonHandler(id);
+    }
+
+    if (isSecMenuEnabled())
+    {
+        return secMenuBtnPress(id);
+    }
+
+    if (isPlayerListEnabled())
+    {
+        return playerListBtn(id);
     }
 
     npcButtonHandler(id);

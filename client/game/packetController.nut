@@ -215,6 +215,10 @@ local function onPacket(packet) {
         case PacketType.ASK_FOR_REMEMBERED:
             handleRemembered(data[0], data[1]);
         break;
+
+        case PacketType.SET_MOD:
+            setIsMod(data[0] == 1);
+        break;
     }
 }
 addEventHandler("onPacket", onPacket);

@@ -114,5 +114,13 @@ lang <- {
     ["QUIT"] = {},
     ["INV_OPEN"] = {},
     ["SKILL_POINTS"] = {},
-    ["TRAINER"] = {}
+    ["TRAINER"] = {},
+    ["REAL_TIME"] = {},
+    ["INGAME_TIME"] = {},
+    ["PLAYER_LIST"] = {},
+    ["HELP"] = {},
+    ["ID"] = {},
+    ["NAME"] = {},
+    ["PING"] = {},
+    ["NO_HELP"] = {}
 };

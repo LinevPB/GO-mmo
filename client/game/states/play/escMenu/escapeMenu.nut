@@ -106,6 +106,7 @@ function EscMenu::Init()
     subMenu(lang["QUIT"][Player.lang]);
 
     repositionSubmenus();
+    initSecMenu();
 }
 
 function EscMenu::Enable(val, submenu = -1)
@@ -135,11 +136,18 @@ function EscMenu::Enable(val, submenu = -1)
     if (val == true)
     {
         setHudMode(HUD_ALL, HUD_MODE_HIDDEN);
+
+        if (submenu == -1)
+        {
+            enableSecMenu(true);
+        }
     }
     else
     {
         setHudMode(HUD_ALL, HUD_MODE_DEFAULT);
         disableAnyWindow();
+        onTryCloseProvWindow();
+        enableSecMenu(false);
     }
 
     enabled = val;
@@ -194,10 +202,6 @@ function enableSubmenu(val)
 {
     switch(currentSubmenu)
     {
-        case -1: // no submenu
-
-        break;
-
         case 0: // back
             EscMenu.Enable(false);
             launchFree();
@@ -239,11 +243,10 @@ function escMenuRender()
         if (inSquare(getCursorPosition(), pos, size))
         {
             v.hover();
+            continue;
         }
-        else
-        {
-            v.unhover();
-        }
+
+        v.unhover();
     }
 }
 
@@ -253,20 +256,20 @@ function selectSubmenu(i, v)
     {
         submenus[currentSubmenu].deactivate();
         enableSubmenu(false);
+        enableSecMenu(true);
     }
 
-
-    if (i == currentSubmenu)
+    if (i == currentSubmenu || i == -1)
     {
         currentSubmenu = -1;
         return;
     }
 
-    if (i == -1) return;
-
     v.activate();
     currentSubmenu = i;
+    onTryCloseProvWindow();
     enableSubmenu(true);
+    enableSecMenu(false);
 }
 
 local pressed = -1;
@@ -278,8 +281,6 @@ function escMenuClickPress(key)
 
     statisticsPress();
     settingsPress();
-    //local result = statisticsPress();
-    //if (result == true) return;
 
     foreach(i, v in submenus)
     {
@@ -313,8 +314,10 @@ function escMenuClickRelease(key)
 
         if (inSquare(getCursorPosition(), pos, size))
         {
-            pressed = -1;
             selectSubmenu(i, v);
+            return;
         }
     }
+
+    pressed = -1;
 }
