@@ -4,6 +4,9 @@ local deathDraw = null;
 local deathTime = 0;
 local deathTimer = null;
 
+local igTime = null;
+local realTime = null;
+
 function updateDeathDraw()
 {
     deathDraw.text = lang["RESPAWN_INFO"][Player.lang] + "" + deathTime;
@@ -35,6 +38,38 @@ function initDeathDraw()
     deathDraw.setColor(255, 0, 0);
 }
 
+function initTimeDraws()
+{
+    igTime = Draw(100, 7400, "Czas w grze: 12:00");
+    realTime = Draw(100, 7600, "Czas realny: 12:00:00");
+
+    igTime.setColor(200, 170, 140);
+    realTime.setColor(200, 170, 140);
+}
+
+function enableTimeDraws(val)
+{
+    igTime.visible = val;
+    realTime.visible = val;
+}
+
+function timeDrawsRender()
+{
+    local time = getTime();
+    local timeFormat = format("%d:%02d", time.hour, time.min);
+    igTime.text = "Czas w grze: " + timeFormat;
+
+    time = date();
+    timeFormat = format("%d:%02d:%02d", time.hour, time.min, time.sec);
+    realTime.text = "Czas realny: " + timeFormat;
+}
+
+function initInterface()
+{
+    initDeathDraw();
+    initTimeDraws();
+}
+
 function interfaceRender()
 {
     local currentTime = getTickCount();
@@ -46,5 +81,6 @@ function interfaceRender()
     chatRender();
     mapRender();
     playersNameRender();
+    timeDrawsRender();
 }
 addEventHandler("onRender", interfaceRender);

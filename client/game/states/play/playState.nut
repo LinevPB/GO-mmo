@@ -13,13 +13,12 @@ function initPlayState()
     setFreeze(false);
     Camera.movementEnabled = true;
     Chat.Init();
-    Chat.Enable(true);
     Showcase.Init();
     Inventory.Init();
     setupStatistics();
     initSettings();
     EscMenu.Init();
-    initDeathDraw();
+    initInterface();
 
     disableLogicalKey(GAME_END, true);
     disableLogicalKey(GAME_INVENTORY, true);
@@ -36,10 +35,10 @@ function initPlayState()
     Player.refreshEq(16);
 
     initQA();
-    enableQA(true);
-
     initMap();
     initNpcTrade();
+
+    helperAction(true);
 }
 
 function loopedStorm()
@@ -160,10 +159,11 @@ function resetAction()
     actionType = 0;
 }
 
-local function helperAction(val = false)
+function helperAction(val = false)
 {
     enableQA(val);
     Chat.Enable(val);
+    enableTimeDraws(val);
 }
 
 function launchFree()
