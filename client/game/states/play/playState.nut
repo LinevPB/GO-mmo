@@ -19,6 +19,7 @@ function initPlayState()
     initSettings();
     EscMenu.Init();
     initInterface();
+    initPlayerInteraction();
 
     disableLogicalKey(GAME_END, true);
     disableLogicalKey(GAME_INVENTORY, true);
@@ -153,6 +154,14 @@ function handleAction(key)
             interactionAction(key);
         break;
 
+        case 5:
+            animListKey(key);
+        break;
+
+        case 6:
+            playerInteractionKey(key);
+        break;
+
     }
 }
 addEventHandler("onKey", handleAction);
@@ -218,7 +227,10 @@ function freeAction(key)
             if (result == true)
             {
                 actionType = 3;
+                return;
             }
+
+            focusInteract_Player();
         break;
 
         case KEY_ESCAPE:
@@ -396,6 +408,11 @@ function playButtonHandler(id)
     if (isAnimListEnabled())
     {
         return animListBtn(id);
+    }
+
+    if (isPlayerInteractionEnabled())
+    {
+        return playerInteractionBtn(id);
     }
 
     npcButtonHandler(id);

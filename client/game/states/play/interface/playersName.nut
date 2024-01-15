@@ -11,6 +11,8 @@ class SpawnedPlayer
         id = ind;
         name = nam;
         draw = Draw3d(0, 0, 0);
+        draw.insertText("");
+        draw.insertText("");
         draw.insertText(nam);
         draw.visible = true;
     }
@@ -21,7 +23,7 @@ class SpawnedPlayer
 
         if (pos.x != x || pos.z != z || pos.y != y)
         {
-            draw.setWorldPosition(x, y + 120, z);
+            draw.setWorldPosition(x, y + 160, z);
         }
     }
 
@@ -29,8 +31,19 @@ class SpawnedPlayer
     {
         if (val == name) return;
 
-        draw.setLineText(0, val);
+        draw.setLineText(2, val);
         name = val;
+    }
+
+    function showInfo(t1, t2)
+    {
+        draw.setLineText(0, t1);
+        draw.setLineText(1, t2);
+    }
+
+    function clearInfo()
+    {
+        showInfo("", "");
     }
 }
 
@@ -71,4 +84,14 @@ function playersNameRender()
 function getSpawnedPlayers()
 {
     return spawnedPlayers;
+}
+
+function findPlayer(pid)
+{
+    foreach(v in spawnedPlayers)
+    {
+        if (v.id == pid) return v;
+    }
+
+    return null;
 }

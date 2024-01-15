@@ -78,6 +78,7 @@ function enableAnimList(val)
 
     Camera.movementEnabled = !val;
     animVis = val;
+    enableQA(!val);
 
     if (val == true)
     {
@@ -101,6 +102,13 @@ function animMouseRelease(btn)
 
     if (getActionType() != 5) return;
     if (!animVis) return;
+
+    enableAnimList(false);
+}
+
+function animListKey(key)
+{
+    if (key != KEY_ESCAPE) return;
 
     enableAnimList(false);
 }

@@ -43,8 +43,8 @@ class NPC
         spawnNpc(npc, instance);
         setPlayerPosition(npc, pos.x, pos.y, pos.z);
         setPlayerAngle(npc, angle);
-        draw.setWorldPosition(pos.x, pos.y + 150, pos.z);
-        ambient_draw.setWorldPosition(pos.x, pos.y + 180, pos.z)
+        draw.setWorldPosition(pos.x, pos.y + 170, pos.z);
+        ambient_draw.setWorldPosition(pos.x, pos.y + 210, pos.z)
     }
 
     function interact()
