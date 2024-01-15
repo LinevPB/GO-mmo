@@ -37,6 +37,8 @@ class ChatLineDraw
 
     function alpha(r)
     {
+        if (draw.alpha == r) return;
+
         draw.alpha = r;
     }
 
@@ -99,6 +101,11 @@ class ChatLine
         foreach(v in draws)
             v.enable(val);
     }
+
+    function getHeight()
+    {
+        return draws[0].draw.height;
+    }
 }
 
 local function addChatLine(...)
@@ -109,34 +116,46 @@ local function addChatLine(...)
     Chat.Lines.append(chatLine);
 
     foreach(v in Chat.Lines)
+    {
         v.desiredY -= totalSpace;
+    }
 }
 
 function chatRender()
 {
     foreach(i, v in Chat.Lines)
     {
-        if (v.position.y == v.desiredY)
-            continue;
+        if (v.position.y == v.desiredY) continue;
 
         v.move(0, -10);
-        if (v.position.y <= v.desiredY) {
+
+        if (v.position.y <= v.desiredY)
+        {
             v.move(0, v.desiredY - v.position.y);
         }
 
-        if (v.position.y <= Span) {
+        if (v.position.y <= Span)
+        {
             local calcAlpha = 255 - (Span - (v.position.y)*1.5);
             v.alpha(calcAlpha);
-            if (calcAlpha <= 0) {
+
+            if (calcAlpha <= 0)
+            {
                 Chat.Lines.remove(i);
             }
+
+            continue;
         }
-        else if (v.position.y + totalSpace >= ifY) {
-            local calcAlpha = ifY - v.position.y;
+
+        if (v.position.y + totalSpace >= ifY)
+        {
+            local calcAlpha = 255 - (v.position.y + totalSpace - ifY);
             v.alpha(calcAlpha);
-        } else {
-            v.alpha(255);
+
+            continue;
         }
+
+        v.alpha(255);
     }
 }
 

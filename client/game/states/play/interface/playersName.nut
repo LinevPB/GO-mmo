@@ -42,7 +42,7 @@ function handlePlayerSpawn(id = -1)
     spawnedPlayers.append(struct);
 }
 addEventHandler("onPlayerSpawn", handlePlayerSpawn);
-addEventHandler("onInit", handlePlayerSpawn);
+// addEventHandler("onInit", handlePlayerSpawn);
 
 function handlePlayerUnspawn(id)
 {

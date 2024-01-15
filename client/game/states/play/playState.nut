@@ -175,6 +175,11 @@ function launchFree()
     helperAction(true);
 }
 
+function setActionType(typ)
+{
+    actionType = typ;
+}
+
 function freeAction(key)
 {
     switch(key)
@@ -388,6 +393,11 @@ function playButtonHandler(id)
         return playerListBtn(id);
     }
 
+    if (isAnimListEnabled())
+    {
+        return animListBtn(id);
+    }
+
     npcButtonHandler(id);
 }
 
@@ -395,12 +405,14 @@ function onClickPlay(key)
 {
     tradeClick(key);
     escMenuClickPress(key);
+    animMouseClick(key);
 }
 
 function onReleasePlay(key)
 {
     tradeRelease(key);
     escMenuClickRelease(key);
+    animMouseRelease(key);
 }
 
 function handlePlayerRespawn(id)

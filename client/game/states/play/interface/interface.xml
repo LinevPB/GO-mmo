@@ -12,6 +12,8 @@
 
     <script src="playersName.nut" type="client" />
 
+    <script src="animList.nut" type="client" />
+
     <script src="interface.nut" type="client" />
 
 </server>

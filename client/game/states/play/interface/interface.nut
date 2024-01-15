@@ -70,6 +70,7 @@ function initInterface()
 {
     initDeathDraw();
     initTimeDraws();
+    initAnimList();
 }
 
 function interfaceRender()
