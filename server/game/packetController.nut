@@ -148,6 +148,10 @@ local function onPacket(pid, packet)
             tryBan(pid, data[0]);
         break;
 
+        case PacketType.PLAYER_PLAYANI:
+            playPlayerAnimation(pid, data[0]);
+        break;
+
         case PacketType.TEST:
             local pos = getPlayerPosition(pid);
             local angle = getPlayerAngle(pid);

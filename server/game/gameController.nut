@@ -173,8 +173,8 @@ function creationConfirmHandler(pid, data)
     local player = findPlayer(pid);
     local dbId = player.dbId;
 
-    local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`, `fat`, `overlay`) VALUES (NULL,'" +
-    dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1', '" + fat + "', '" + overlay + "')");
+    local result = mysql.squery("INSERT INTO `characters` (`id`, `pid`, `slotId`, `name`, `bodyModel`, `bodyTex`, `headModel`, `headTex`, `eqWeapon`, `eqArmor`, `fat`, `overlay`, `x`, `y`, `z`) VALUES (NULL,'" +
+    dbId + "','" + slotId + "','" + name + "','" + bodyMod + "','" + bodyTex + "','" + headMod + "','" + headTex + "','-1', '-1', '" + fat + "', '" + overlay + "', '-93537.2', '302.344', '-116443')");
     local result1 = mysql.gquery("SELECT id FROM characters WHERE pid='" + dbId + "' AND slotId='" + slotId + "'");
     player.charId = result1[0];
     player.charName = name;
@@ -334,3 +334,15 @@ function handlePlayerDamage(pid, kid, desc)
     cancelEvent();
 }
 addEventHandler("onPlayerHit", handlePlayerDamage);
+
+function playPlayerAnimation(pid, anim)
+{
+    foreach(v in ANIMS)
+    {
+        if (v.name != anim) continue;
+
+        playAni(pid, v.instance);
+
+        return;
+    }
+}

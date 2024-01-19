@@ -45,16 +45,22 @@ class SpawnedPlayer
     {
         showInfo("", "");
     }
+
+    function destroy()
+    {
+        draw.visible = false;
+        draw = null;
+    }
 }
 
-function handlePlayerSpawn(id = -1)
+function handlePlayerSpawnName(id = -1)
 {
     if (id == -1) id = heroId;
 
     local struct = SpawnedPlayer(id, getPlayerName(id));
     spawnedPlayers.append(struct);
 }
-addEventHandler("onPlayerSpawn", handlePlayerSpawn);
+addEventHandler("onPlayerSpawn", handlePlayerSpawnName);
 // addEventHandler("onInit", handlePlayerSpawn);
 
 function handlePlayerUnspawn(id)
@@ -63,18 +69,24 @@ function handlePlayerUnspawn(id)
     {
         if (v.id != id) continue;
 
+        v.destroy();
         spawnedPlayers.remove(i);
         break;
     }
 }
-addEventHandler("onPlayerDestroy", handlePlayerUnspawn);
 
 
 function playersNameRender()
 {
-    foreach(v in spawnedPlayers)
+    foreach(i, v in spawnedPlayers)
     {
         local pos = getPlayerPosition(v.id);
+        if (pos == null)
+        {
+            v.destroy();
+            spawnedPlayers.remove(i);
+            continue;
+        }
 
         v.updateDrawPosition(pos.x, pos.y, pos.z);
         v.changeName(getPlayerName(v.id));

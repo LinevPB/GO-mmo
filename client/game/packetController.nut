@@ -216,8 +216,16 @@ local function onPacket(packet) {
             handleRemembered(data[0], data[1]);
         break;
 
+        case PacketType.UPDATE_OVERLAY:
+            Player.overlay = data[0];
+        break;
+
         case PacketType.SET_MOD:
             setIsMod(data[0] == 1);
+        break;
+
+        case PacketType.PLAYER_DISCONNECT:
+            onPlayerDisconnect(data[0]);
         break;
     }
 }

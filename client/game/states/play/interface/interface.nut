@@ -49,6 +49,8 @@ function initTimeDraws()
 
 function enableTimeDraws(val)
 {
+    if (igTime == null || realTime == null) return;
+
     igTime.visible = val;
     realTime.visible = val;
 }

@@ -71,7 +71,7 @@ function focusInteract_Player()
     if (isInteracting) return false;
     if (getActionType() != 0) return;
 
-    enablePlayerInteraction(val);
+    enablePlayerInteraction(true);
 
     return true;
 }

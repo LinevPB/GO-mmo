@@ -285,7 +285,7 @@ function initPlayerList()
     kickBtn = controlBtn(0, 0, "Kick", { r = 180, g = 180, b = 255 });
     banBtn = controlBtn(0, 0, "Ban");
 
-    handlePlayerSpawn(heroId);
+    handlePlayerSpawnList(heroId);
 }
 
 function enablePlayerList(val)
@@ -338,7 +338,7 @@ function scanSets()
     }
 }
 
-function handlePlayerSpawn(id = -1)
+function handlePlayerSpawnList(id = -1)
 {
     if (id == -1) id = heroId;
 
@@ -367,9 +367,9 @@ function handlePlayerSpawn(id = -1)
 
     scanSets();
 }
-addEventHandler("onPlayerSpawn", handlePlayerSpawn);
+addEventHandler("onPlayerSpawn", handlePlayerSpawnList);
 
-function handlePlayerUnspawn(id)
+function handlePlayerUnspawnList(id)
 {
     foreach(i, v in players)
     {
@@ -382,7 +382,6 @@ function handlePlayerUnspawn(id)
     players.sort();
     scanSets();
 }
-addEventHandler("onPlayerDestroy", handlePlayerUnspawn);
 
 function playerListRender()
 {

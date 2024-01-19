@@ -12,5 +12,6 @@
     <script src="quickAccess.nut" type="client" />
 
     <script src="playState.nut" type="client" />
+    <script src="sprint.nut" type="client" />
 
 </server>

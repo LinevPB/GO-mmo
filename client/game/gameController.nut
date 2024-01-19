@@ -156,3 +156,9 @@ function onUnhover(el)
         case GameState.PLAY: invUnhover(el); break;
     }
 }
+
+function onPlayerDisconnect(pid)
+{
+    handlePlayerUnspawnList(pid);
+    handlePlayerUnspawn(pid);
+}

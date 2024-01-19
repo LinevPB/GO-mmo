@@ -1,8 +1,9 @@
-local isInAction = false;
 local actionType = 0;
 
 function initPlayState()
 {
+    actionType = 0;
+
     enable_NicknameId(false);
     enableEvent_RenderFocus(true);
     setHudMode(HUD_FOCUS_NAME, HUD_MODE_HIDDEN);
@@ -30,7 +31,7 @@ function initPlayState()
     initInteraction();
     initNpcs();
     setPlayerStrength(heroId, 100);
-    applyPlayerOverlay(heroId, Mds.id("HUMANS_SPRINT.MDS"));
+
     Player.refreshEq(2);
     Player.refreshEq(4);
     Player.refreshEq(16);
@@ -126,7 +127,7 @@ function getActionType()
 
 function handleAction(key)
 {
-    if (key == KEY_Z)
+    if (key == KEY_Z && DEBUG)
     {
         exitGame();
     }
@@ -244,6 +245,7 @@ function freeAction(key)
         break;
     }
 }
+
 
 function chatAction(key)
 {
@@ -452,3 +454,4 @@ function handlePlayerDeath(id, sec)
         startDeathDraw(sec);
     }
 }
+

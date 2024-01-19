@@ -24,6 +24,11 @@ function onDisconnect(pid, reason)
     }
 
     removePlayerById(pid);
+
+    foreach(v in getPlayers())
+    {
+        sendPlayerPacket(v.id, PacketType.PLAYER_DISCONNECT, pid);
+    }
 }
 addEventHandler("onPlayerDisconnect", onDisconnect);
 

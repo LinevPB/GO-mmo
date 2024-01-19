@@ -66,7 +66,10 @@ enum PacketType {
     KICK = 64,
     BAN = 65,
     SET_MOD = 66,
-    TEST = 67
+    PLAYER_PLAYANI = 67,
+    UPDATE_OVERLAY = 68,
+    PLAYER_DISCONNECT = 69,
+    TEST = 70
 };
 
 function encode(args)

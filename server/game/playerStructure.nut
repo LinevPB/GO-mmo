@@ -334,6 +334,7 @@ class PlayerStructure
     {
         overlay = getOverlayById(val);
         applyPlayerOverlay(id, Mds.id(overlay));
+        sendPlayerPacket(id, PacketType.UPDATE_OVERLAY, overlay);
 
         if (loading == false)
             mysql.squery("UPDATE `characters` SET `overlay` = '" + val + "' WHERE `id`='" + charId + "'");
