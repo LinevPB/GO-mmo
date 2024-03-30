@@ -221,7 +221,7 @@ local function onPacket(packet) {
         break;
 
         case PacketType.SET_MOD:
-            setIsMod(data[0] == 1);
+            setIsMod(data[0]);
         break;
 
         case PacketType.PLAYER_DISCONNECT:

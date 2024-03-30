@@ -1,5 +1,6 @@
 local listBtn = null;
 local helpBtn = null;
+local factionBtn = null;
 local secTex = null;
 
 local menuOpened = -1;
@@ -30,9 +31,10 @@ class menuBtn
 
 function initSecMenu()
 {
+    factionBtn = menuBtn(6800, 6200, "FACTION");
     listBtn = menuBtn(6800, 6800, lang["PLAYER_LIST"][Player.lang]);
     helpBtn = menuBtn(6800, 7400, lang["HELP"][Player.lang]);
-    secTex = Texture(6700, 6700, 1200, 1200, "WINDOW_BACKGROUND_SF.TGA");
+    secTex = Texture(6700, 6100, 1200, 1800, "WINDOW_BACKGROUND_SF.TGA");
 }
 
 function enableSecMenu(val)
@@ -41,6 +43,7 @@ function enableSecMenu(val)
 
     secTex.visible = val;
 
+    factionBtn.enable(val);
     listBtn.enable(val);
     helpBtn.enable(val);
 
@@ -58,6 +61,11 @@ function onTryCloseProvWindow(ptr = -1)
 
         case 1: // help window
             enableHelp(false);
+            enableSecMenu(true);
+        break;
+
+        case 2: // faction window
+            enableFactionPanel(false);
             enableSecMenu(true);
         break;
     }
@@ -89,6 +97,12 @@ function secMenuBtnPress(id)
             enableHelp(true);
             enableSecMenu(false);
             setProvMenu(1);
+        break;
+
+        case factionBtn.getId():
+            enableFactionPanel(true);
+            enableSecMenu(false);
+            setProvMenu(2);
         break;
     }
 }

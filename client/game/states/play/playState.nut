@@ -40,8 +40,9 @@ function initPlayState()
     initMap();
     initNpcTrade();
 
-    initHelp();
+    initFaction();
     initPlayerList();
+    initHelp();
 
     helperAction(true);
 }

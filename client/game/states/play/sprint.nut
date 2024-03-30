@@ -1,9 +1,12 @@
-addEventHandler("onInit", function() {
-    disableLogicalKey(GAME_SLOW, true);
-});
-
 local sprinting = false;
-function sprint()
+
+function sprint_init()
+{
+    disableLogicalKey(GAME_SLOW, true);
+}
+addEventHandler("onInit", sprint_init);
+
+function sprint_render()
 {
     local pressed = isKeyPressed(KEY_LSHIFT);
 
@@ -22,4 +25,4 @@ function sprint()
     sprinting = true;
     applyPlayerOverlay(heroId, Mds.id("HUMANS_SPRINT.MDS"));
 }
-addEventHandler("onRender", sprint);
+addEventHandler("onRender", sprint_render);

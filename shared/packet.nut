@@ -88,6 +88,7 @@ function encode(args)
             case "bool": typeIdentifier = "b"; break;
             default: break;
         }
+
         if (typeIdentifier == "s" && valueStr.len() == 0)
         {
             valueStr = "e";
