@@ -1,4 +1,4 @@
-DEBUG <- true;
+DEBUG <- false;
 distance_draw <- 1000;
 
 BodyModel <- ["Hum_Body_Naked0", "Hum_Body_Babe0"];

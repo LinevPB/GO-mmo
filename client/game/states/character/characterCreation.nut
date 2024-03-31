@@ -27,10 +27,10 @@ function initCharacterCreation()
 {
     setCursorVisible(true);
 
-    setPlayerPosition(Player.helper, 37730, 4660, 44830);
-    setPlayerAngle(Player.helper, 230);
+    setPlayerPosition(Player.helper, -93389.7, 177, -114043);
+    setPlayerAngle(Player.helper, 236);
 
-    Camera.setPosition(37520, 4680, 44655);
+    Camera.setPosition(-93562.1, 177, -114176);
     Camera.setRotation(0, 50, 0);
 
     // arrows
@@ -252,9 +252,9 @@ function onRenderC()
     }
 
     local pos = getPlayerPosition(Player.helper);
-    if (pos.x != 37730 || pos.z != 44830)
+    if (pos.x != -93389 || pos.z != -114043)
     {
-        setPlayerPosition(Player.helper, 37730, pos.y, 44830);
+        setPlayerPosition(Player.helper, -93389, pos.y, -114043);
     }
 
     dropdownRender();

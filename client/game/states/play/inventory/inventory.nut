@@ -797,9 +797,9 @@ function invRender()
     handleHoldedRender();
 
     local pos = getPlayerPosition(Player.helper);
-    if (pos.x != 38086 || pos.y != 4681 || pos.z != 44551)
+    if (pos.x != -93389 || pos.y != 177 || pos.z != -114043)
     {
-        setPlayerPosition(Player.helper, 38086, 4681, 44551);
+        setPlayerPosition(Player.helper, -93389, 177, -114043);
     }
 
     local ang = getPlayerAngle(Player.helper);
@@ -811,9 +811,9 @@ function invRender()
     local cpos = Camera.getPosition();
     local crot = Camera.getRotation();
 
-    if (cpos.x != 37900 || cpos.y != 4680 || cpos.z != 44440)
+    if (cpos.x != -93562 || cpos.y != 177 || cpos.z != -114176)
     {
-        Camera.setPosition(37900, 4680, 44440);
+        Camera.setPosition(-93562, 177, -114176);
     }
 
     if (crot != 30)
