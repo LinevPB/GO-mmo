@@ -1,4 +1,4 @@
-# core
+# Screenshots
  
 MMORPG Gamemode for G2O
 ![login](https://github.com/LinevPB/GO-mmo/assets/45857349/bb8052f2-ce71-45d9-93a0-74caab9bf366)
